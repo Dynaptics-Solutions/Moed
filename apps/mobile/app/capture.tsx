@@ -122,15 +122,13 @@ export default function Capture() {
       )}
 
       <View style={styles.actions}>
-        {/* Goes to `types` — the seven-kind picker — once the other kinds exist. Task
-            is the only one built, so it goes straight to its form for now. */}
         <Button
           label="Make this a…"
           variant="secondary"
           style={styles.action}
           onPress={() =>
             router.replace({
-              pathname: '/task',
+              pathname: '/types',
               params: {
                 title: parsed.title,
                 lengthMinutes: String(lengthMinutes),

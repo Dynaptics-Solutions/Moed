@@ -1,77 +1,63 @@
 import { dayLoad, formatMinutes, gate, type GateOption } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { Sheet } from '@/components/Sheet';
-import { useDayLimit } from '@/db/dayLimits';
-import { createRecord, moveRecord, useDayRecords } from '@/db/records';
-import { useUpcomingDays } from '@/db/upcoming';
+import { moveRecord } from '@/db/records';
+import { decodeDraft } from '@/lib/draft';
+import { useSaveDraft } from '@/lib/saveDraft';
 import { useTheme } from '@/theme';
 
 /**
  * `gate` — the over-limit gate, and the core interaction of the whole product.
  *
- * It names the overage in minutes, offers two concrete fixes, and always allows "Add it
- * anyway". It never resolves anything itself: every option here is one tap to accept.
- * The app proposes; it never moves anything.
+ * It names the overage in minutes, offers at most two concrete fixes, and always allows
+ * "Add it anyway". It never resolves anything itself: every option here is one tap to
+ * accept. The app proposes; it never moves anything.
  */
 export default function Gate() {
   const theme = useTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<{
-    title: string;
-    lengthMinutes: string;
-    startAt: string;
-  }>();
+  const params = useLocalSearchParams<{ draft?: string }>();
+  const { commit, load, limit, rows, upcoming } = useSaveDraft();
 
-  const today = useMemo(() => new Date(), []);
+  const draft = decodeDraft(params.draft);
 
-  const title = params.title ?? '';
-  const lengthMinutes = Number(params.lengthMinutes ?? 0);
-  const startAt = Number(params.startAt) || today.getTime();
+  // Nothing to decide about. Reached by a stale link or a reload; the day is the
+  // honest place to be rather than an empty sheet.
+  if (!draft) {
+    router.replace('/');
+    return null;
+  }
 
-  const limit = useDayLimit(today);
-  const { data: dayRecords } = useDayRecords(today);
-  const upcoming = useUpcomingDays(today);
-
-  const load = dayLoad(dayRecords ?? []);
+  const adding = draft.lengthMinutes ?? 0;
   const decision = gate(
-    { ...load, limit, adding: lengthMinutes },
-    (dayRecords ?? [])
+    { committed: load.committed, fixed: load.fixed, limit, adding, addingIsFixed: draft.isFixed },
+    rows
       .filter((r) => !r.isFixed && r.state === 'open')
       .map((r) => ({ id: r.id, title: r.title, lengthMinutes: r.lengthMinutes })),
     upcoming,
   );
 
-  const land = (id: string) => router.replace({ pathname: '/', params: { landed: id } });
-
-  const addAnyway = async () => {
-    const created = await createRecord({ kind: 'task', title, lengthMinutes, startAt });
-    land(created.id);
-  };
-
   const accept = async (option: GateOption) => {
     if (option.kind === 'shorten') {
-      const created = await createRecord({
-        kind: 'task',
-        title,
-        lengthMinutes: option.toMinutes,
-        startAt,
-      });
-      land(created.id);
+      await commit({ ...draft, lengthMinutes: option.toMinutes });
       return;
     }
 
     // Move carries everything: the record keeps its length, reminder and project, and
     // nothing else on either day shifts.
     await moveRecord(option.record.id, option.day.date);
-    const created = await createRecord({ kind: 'task', title, lengthMinutes, startAt });
-    land(created.id);
+    await commit(draft);
   };
+
+  const after = dayLoad([
+    ...rows,
+    { lengthMinutes: adding, isFixed: draft.isFixed ?? false, state: 'open' },
+  ]);
 
   return (
     <Sheet accent={theme.colors.over}>
@@ -83,10 +69,10 @@ export default function Gate() {
       </Text>
 
       <CapacityBar
-        committed={load.committed + lengthMinutes}
-        fixed={load.fixed}
+        committed={after.committed}
+        fixed={after.fixed}
         limit={limit}
-        composition={`${formatMinutes(load.committed + lengthMinutes)} work · ${formatMinutes(load.fixed)} fixed`}
+        composition={`${formatMinutes(after.committed)} work · ${formatMinutes(after.fixed)} fixed`}
       />
 
       <View style={styles.options}>
@@ -131,7 +117,7 @@ export default function Gate() {
 
       {/* Always available. A screen that has to say no says why, and offers the way
           through — this is never a dead end. */}
-      <Button label="Add it anyway" variant="secondary" onPress={() => void addAnyway()} />
+      <Button label="Add it anyway" variant="secondary" onPress={() => void commit(draft)} />
 
       <Pressable onPress={() => router.replace('/')} style={styles.cancel}>
         <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>Not now</Text>

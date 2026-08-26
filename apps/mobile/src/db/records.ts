@@ -54,6 +54,11 @@ export type NewRecord = {
   isFixed?: boolean;
   projectId?: string | null;
   notes?: string | null;
+  /** Routine steps. One block, several steps -- it costs the day once, not six times. */
+  steps?: string[] | null;
+  /** Errand stops. One trip on the day, not three loose tasks. */
+  stops?: string[] | null;
+  recurrenceId?: string | null;
 };
 
 /**
@@ -77,11 +82,11 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
     startAt: input.startAt ?? null,
     isFixed: input.isFixed ?? false,
     projectId: input.projectId ?? null,
-    recurrenceId: null,
+    recurrenceId: input.recurrenceId ?? null,
     remindAt: null,
     notes: input.notes ?? null,
-    steps: null,
-    stops: null,
+    steps: input.steps ?? null,
+    stops: input.stops ?? null,
     state: 'open' as const,
     slipCount: 0,
   };

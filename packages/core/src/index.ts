@@ -21,3 +21,11 @@ export {
   isWeekend,
   mondayIndex,
 } from './dates';
+export {
+  describeRecurrence,
+  occurrences,
+  remainingOccurrences,
+  recurrenceCost,
+  joinWords,
+} from './recurrence';
+export type { Recurrence, RecurrenceLabels, Frequency, Ends } from './recurrence';
