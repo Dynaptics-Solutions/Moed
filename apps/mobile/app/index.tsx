@@ -1,141 +1,149 @@
-import { ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { formatMinutes } from '@moed/core';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { sqlite } from '@/db/client';
-import { syncedTables } from '@/db/schema';
+import { AddAffordance } from '@/components/AddAffordance';
+import { CapacityBar } from '@/components/CapacityBar';
+import { RecordRow, type RecordRowProps } from '@/components/RecordRow';
+import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
 import { useTheme } from '@/theme';
 
 /**
- * Phase 0's verification surface, and not a product screen — it exists to prove the
- * foundations are live on a real device: both families at their real scale, the token
- * palette following the system theme, and a database that actually migrated.
+ * `day` — home, and the screen every other list in the planner copies.
  *
- * It goes when `day` arrives.
+ * Static data, deliberately: the build plan puts the day view before capture so the
+ * type, the spacing and the grouping can be got right without a form or a database in
+ * the way. Records arrive from SQLite when capture lands.
  */
-export default function Foundations() {
+
+const at = (hour: number, minute = 0) => {
+  const d = new Date();
+  d.setHours(hour, minute, 0, 0);
+  return d;
+};
+
+type PlannedRecord = RecordRowProps & { at?: Date };
+
+const TODAY = new Date();
+
+/** 5h 20m of chosen load, 2h 30m of fixed, against a 9h 30m day. */
+const COMMITTED_MINUTES = 320;
+const FIXED_MINUTES = 150;
+const LIMIT_MINUTES = 570;
+
+const RECORDS: PlannedRecord[] = [
+  { title: 'Standup — Operon', done: true, at: at(9, 30) },
+  {
+    title: 'Rewrite the onboarding copy',
+    meta: 'Operon · 2h block',
+    at: at(10, 0),
+  },
+  { title: 'Reply to Marta re: contract', overdue: true, at: at(11, 0) },
+  { title: 'Dentist', meta: 'Kensington · leave 13:35', at: at(14, 0) },
+  {
+    title: 'Draft Q4 roadmap',
+    meta: 'Operon · due Friday',
+    trailing: '1h',
+    at: at(15, 30),
+  },
+];
+
+export default function Day() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const scheme = useColorScheme() ?? 'light';
 
-  const tables = sqlite
-    .getAllSync<{ name: string }>(
-      "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name",
-    )
-    .map((row) => row.name);
-
-  const synced = Object.keys(syncedTables).length;
-  const health = tables.filter((name) => name.startsWith('health_')).length;
+  const grouped = PARTS.map((part) => ({
+    part,
+    records: RECORDS.filter((r) => r.at && dayPart(r.at) === part),
+  })).filter((g) => g.records.length > 0);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: theme.colors.bg }}
-      contentContainerStyle={{
-        paddingTop: insets.top + 20,
-        paddingBottom: insets.bottom + 28,
-        paddingHorizontal: 20,
-        gap: 22,
-      }}
+    <View
+      style={[styles.screen, { backgroundColor: theme.colors.bg, paddingTop: insets.top + 20 }]}
     >
       <View style={styles.header}>
-        <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>Phase 0</Text>
-        <Text style={[theme.type.screenTitle, { color: theme.colors.ink }]}>Foundations</Text>
-        <Text style={[theme.type.body, { color: theme.colors.ink2 }]}>
-          No planner yet. This screen confirms the type, the palette and the database are real on
-          this device.
-        </Text>
-      </View>
-
-      <Card>
-        <CardLabel>Type</CardLabel>
-        <Text style={[theme.type.bigNumber, { color: theme.colors.ink }]}>9h 30m</Text>
-        <Text style={[theme.type.rowTitle, { color: theme.colors.ink }]}>
-          Archivo carries every row and every label.
-        </Text>
-        <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
-          Cormorant Garamond above, Archivo here. If either falls back to a system face, the bundled
-          font did not load.
-        </Text>
-      </Card>
-
-      <Card>
-        <CardLabel>Palette</CardLabel>
-        <View style={styles.swatches}>
-          {(
-            [
-              ['acc', theme.colors.acc],
-              ['taupe', theme.colors.taupe],
-              ['over', theme.colors.over],
-              ['ink3', theme.colors.ink3],
-            ] as const
-          ).map(([name, value]) => (
-            <View key={name} style={styles.swatch}>
-              <View
-                style={[styles.chip, { backgroundColor: value, borderColor: theme.colors.line }]}
-              />
-              <Text style={[theme.type.meta, { color: theme.colors.ink2 }]}>{name}</Text>
-            </View>
-          ))}
+        <View>
+          <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
+            {weekdayName(TODAY)}
+          </Text>
+          <Text style={[theme.type.screenTitle, styles.date, { color: theme.colors.ink }]}>
+            {dayTitle(TODAY)}
+          </Text>
         </View>
-        <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
-          Following the {scheme} theme. Switch the system appearance and these change with it.
-        </Text>
-      </Card>
+        <View
+          style={[
+            styles.avatar,
+            { backgroundColor: theme.colors.accSoft, borderColor: theme.colors.line },
+          ]}
+        >
+          <Text
+            style={[
+              theme.type.chip,
+              { fontFamily: theme.fonts.uiSemiBold, color: theme.colors.acc },
+            ]}
+          >
+            JM
+          </Text>
+        </View>
+      </View>
 
-      <Card>
-        <CardLabel>Database</CardLabel>
-        <Row label="Tables" value={String(tables.length)} />
-        <Row label="Synced" value={String(synced)} />
-        <Row label="Local only" value={`${health} health`} />
-        <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
-          Health tables carry no sync columns and have no server-side counterpart. They cannot leak
-          because there is nowhere for them to go.
-        </Text>
-      </Card>
-    </ScrollView>
-  );
+      <View style={styles.bar}>
+        <CapacityBar
+          committed={COMMITTED_MINUTES}
+          fixed={FIXED_MINUTES}
+          limit={LIMIT_MINUTES}
+          composition={`${formatMinutes(COMMITTED_MINUTES)} work · ${formatMinutes(FIXED_MINUTES)} fixed`}
+        />
+      </View>
 
-  function Card({ children }: { children: React.ReactNode }) {
-    return (
-      <View
-        style={[
-          styles.card,
-          theme.shadow,
-          {
-            backgroundColor: theme.colors.card,
-            borderColor: theme.colors.line,
-            borderRadius: theme.geometry.card.radius,
-          },
-        ]}
+      {/* Lists scroll, screens do not. */}
+      <ScrollView
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
       >
-        {children}
-      </View>
-    );
-  }
+        {grouped.map((group, groupIndex) => (
+          <View key={group.part} style={groupIndex > 0 && styles.groupGap}>
+            <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
+              {group.part}
+            </Text>
+            <View style={styles.group}>
+              {group.records.map((record, i) => (
+                <RecordRow
+                  key={record.title}
+                  {...record}
+                  first={i === 0}
+                  trailing={record.trailing ?? (record.at ? clockTime(record.at) : undefined)}
+                />
+              ))}
+            </View>
+          </View>
+        ))}
+      </ScrollView>
 
-  function CardLabel({ children }: { children: React.ReactNode }) {
-    return <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>{children}</Text>;
-  }
-
-  function Row({ label, value }: { label: string; value: string }) {
-    return (
-      <View style={[styles.row, { borderTopColor: theme.colors.line2 }]}>
-        <Text style={[theme.type.rowTitle, { color: theme.colors.ink }]}>{label}</Text>
-        <Text style={[theme.type.rowTitle, { color: theme.colors.ink2 }]}>{value}</Text>
-      </View>
-    );
-  }
+      <AddAffordance bottomInset={insets.bottom} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  header: { gap: 7 },
-  card: { borderWidth: 1, padding: 18, gap: 11 },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    paddingTop: 11,
+  screen: { flex: 1, paddingHorizontal: 20 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+  date: { marginTop: 7 },
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 3,
+    flexGrow: 0,
+    flexShrink: 0,
   },
-  swatches: { flexDirection: 'row', gap: 18 },
-  swatch: { gap: 5, alignItems: 'center' },
-  chip: { width: 34, height: 34, borderRadius: 17, borderWidth: 1 },
+  bar: { marginTop: 20 },
+  list: { flex: 1, marginTop: 24 },
+  listContent: { paddingBottom: 8 },
+  group: { marginTop: 9 },
+  groupGap: { marginTop: 22 },
 });

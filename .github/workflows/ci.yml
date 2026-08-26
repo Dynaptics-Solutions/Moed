@@ -27,8 +27,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  mobile:
-    name: Mobile — typecheck, lint, bundle
+  build:
+    name: Typecheck, lint, test, bundle
     # Self-hosted when `CI_RUNNER` is set, GitHub-hosted otherwise. Behaviour is
     # identical until the variable exists, and deleting it moves everything back within
     # seconds — which is the point: a CI box that dies should cost a variable, not an
@@ -55,6 +55,11 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm format:check
+
+      # The capacity bar's arithmetic is the one number the product exists to report,
+      # and the mockups disagreed with each other about it until the formula was
+      # settled. These tests are what keep the code on the formula's side.
+      - run: pnpm test
 
       # tsc does not see through a native module boundary, and lint does not resolve
       # assets. Bundling is what catches a missing font weight, an unresolvable .sql
