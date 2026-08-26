@@ -73,7 +73,19 @@ export default function RootLayout() {
           headerShown: false,
           contentStyle: { backgroundColor: theme.colors.bg },
         }}
-      />
+      >
+        {/* Sheets are routes, not local state — so the back gesture, the Android back
+            button and the scrim all dismiss the same way without being wired by hand. */}
+        <Stack.Screen
+          name="capture"
+          options={{ presentation: 'transparentModal', animation: 'fade' }}
+        />
+        <Stack.Screen
+          name="gate"
+          options={{ presentation: 'transparentModal', animation: 'fade' }}
+        />
+        <Stack.Screen name="task" options={{ presentation: 'modal' }} />
+      </Stack>
     </>
   );
 }

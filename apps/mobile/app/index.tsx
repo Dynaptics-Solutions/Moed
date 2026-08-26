@@ -1,61 +1,60 @@
-import { formatMinutes } from '@moed/core';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { dayLoad, formatMinutes } from '@moed/core';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useMemo, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AddAffordance } from '@/components/AddAffordance';
 import { CapacityBar } from '@/components/CapacityBar';
-import { RecordRow, type RecordRowProps } from '@/components/RecordRow';
+import { RecordRow } from '@/components/RecordRow';
+import { useDayLimit } from '@/db/dayLimits';
+import { deleteRecord, setDone, useDayRecords, type PlannerRecord } from '@/db/records';
 import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
 import { useTheme } from '@/theme';
 
 /**
  * `day` — home, and the screen every other list in the planner copies.
  *
- * Static data, deliberately: the build plan puts the day view before capture so the
- * type, the spacing and the grouping can be got right without a form or a database in
- * the way. Records arrive from SQLite when capture lands.
+ * Records come from SQLite through a live query, so a write anywhere re-renders this
+ * without a store in between. The database is the state.
  */
-
-const at = (hour: number, minute = 0) => {
-  const d = new Date();
-  d.setHours(hour, minute, 0, 0);
-  return d;
-};
-
-type PlannedRecord = RecordRowProps & { at?: Date };
-
-const TODAY = new Date();
-
-/** 5h 20m of chosen load, 2h 30m of fixed, against a 9h 30m day. */
-const COMMITTED_MINUTES = 320;
-const FIXED_MINUTES = 150;
-const LIMIT_MINUTES = 570;
-
-const RECORDS: PlannedRecord[] = [
-  { title: 'Standup — Operon', done: true, at: at(9, 30) },
-  {
-    title: 'Rewrite the onboarding copy',
-    meta: 'Operon · 2h block',
-    at: at(10, 0),
-  },
-  { title: 'Reply to Marta re: contract', overdue: true, at: at(11, 0) },
-  { title: 'Dentist', meta: 'Kensington · leave 13:35', at: at(14, 0) },
-  {
-    title: 'Draft Q4 roadmap',
-    meta: 'Operon · due Friday',
-    trailing: '1h',
-    at: at(15, 30),
-  },
-];
-
 export default function Day() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const { landed } = useLocalSearchParams<{ landed?: string }>();
+
+  const today = useMemo(() => new Date(), []);
+  const limit = useDayLimit(today);
+  const { data: records } = useDayRecords(today);
+
+  const rows = useMemo(() => records ?? [], [records]);
+  const load = dayLoad(rows);
+
+  // Adding a record returns here with the new row highlighted and one undo. No success
+  // screen and no confirmation dialog — undo, not confirm.
+  //
+  // Tracked as which record has been dismissed rather than a boolean, so the state is
+  // derived from the route and the effect only ever clears it on a timer.
+  const [dismissed, setDismissed] = useState<string | null>(null);
+  const showUndo = Boolean(landed) && dismissed !== landed;
+
+  useEffect(() => {
+    if (!showUndo || !landed) return;
+    const timer = setTimeout(() => setDismissed(landed), 6000);
+    return () => clearTimeout(timer);
+  }, [showUndo, landed]);
 
   const grouped = PARTS.map((part) => ({
     part,
-    records: RECORDS.filter((r) => r.at && dayPart(r.at) === part),
+    records: rows.filter((r) => r.startAt !== null && dayPart(new Date(r.startAt)) === part),
   })).filter((g) => g.records.length > 0);
+
+  const undo = async () => {
+    if (!landed) return;
+    await deleteRecord(landed);
+    setDismissed(landed);
+  };
 
   return (
     <View
@@ -64,10 +63,10 @@ export default function Day() {
       <View style={styles.header}>
         <View>
           <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
-            {weekdayName(TODAY)}
+            {weekdayName(today)}
           </Text>
           <Text style={[theme.type.screenTitle, styles.date, { color: theme.colors.ink }]}>
-            {dayTitle(TODAY)}
+            {dayTitle(today)}
           </Text>
         </View>
         <View
@@ -89,10 +88,14 @@ export default function Day() {
 
       <View style={styles.bar}>
         <CapacityBar
-          committed={COMMITTED_MINUTES}
-          fixed={FIXED_MINUTES}
-          limit={LIMIT_MINUTES}
-          composition={`${formatMinutes(COMMITTED_MINUTES)} work · ${formatMinutes(FIXED_MINUTES)} fixed`}
+          committed={load.committed}
+          fixed={load.fixed}
+          limit={limit}
+          composition={
+            load.committed + load.fixed === 0
+              ? undefined
+              : `${formatMinutes(load.committed)} work · ${formatMinutes(load.fixed)} fixed`
+          }
         />
       </View>
 
@@ -102,28 +105,94 @@ export default function Day() {
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       >
-        {grouped.map((group, groupIndex) => (
-          <View key={group.part} style={groupIndex > 0 && styles.groupGap}>
-            <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
-              {group.part}
-            </Text>
-            <View style={styles.group}>
-              {group.records.map((record, i) => (
-                <RecordRow
-                  key={record.title}
-                  {...record}
-                  first={i === 0}
-                  trailing={record.trailing ?? (record.at ? clockTime(record.at) : undefined)}
-                />
-              ))}
-            </View>
-          </View>
-        ))}
+        {grouped.length === 0
+          ? null
+          : grouped.map((group, groupIndex) => (
+              <View key={group.part} style={groupIndex > 0 ? styles.groupGap : undefined}>
+                <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
+                  {group.part}
+                </Text>
+                <View style={styles.group}>
+                  {group.records.map((record, i) => (
+                    <Row
+                      key={record.id}
+                      record={record}
+                      first={i === 0}
+                      highlighted={record.id === landed}
+                    />
+                  ))}
+                </View>
+              </View>
+            ))}
       </ScrollView>
 
-      <AddAffordance bottomInset={insets.bottom} />
+      {showUndo && (
+        <Pressable
+          onPress={() => void undo()}
+          style={[
+            styles.undo,
+            theme.shadow,
+            {
+              backgroundColor: theme.colors.card,
+              borderColor: theme.colors.line,
+              borderRadius: theme.geometry.input.radius,
+            },
+          ]}
+        >
+          <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>Added</Text>
+          <Text
+            style={[
+              theme.type.bodySmall,
+              { fontFamily: theme.fonts.uiSemiBold, color: theme.colors.acc },
+            ]}
+          >
+            Undo
+          </Text>
+        </Pressable>
+      )}
+
+      <AddAffordance bottomInset={insets.bottom} onPress={() => router.push('/capture')} />
     </View>
   );
+
+  function Row({
+    record,
+    first,
+    highlighted,
+  }: {
+    record: PlannerRecord;
+    first: boolean;
+    highlighted: boolean;
+  }) {
+    const trailing =
+      record.startAt !== null
+        ? clockTime(new Date(record.startAt))
+        : formatMinutes(record.lengthMinutes);
+
+    return (
+      <View
+        style={
+          highlighted
+            ? [
+                styles.highlight,
+                {
+                  backgroundColor: theme.colors.accSoft,
+                  borderRadius: theme.geometry.input.radius,
+                },
+              ]
+            : undefined
+        }
+      >
+        <RecordRow
+          title={record.title}
+          done={record.state === 'done'}
+          trailing={trailing}
+          first={first || highlighted}
+          onToggle={() => void setDone(record.id, record.state !== 'done')}
+        />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -146,4 +215,14 @@ const styles = StyleSheet.create({
   listContent: { paddingBottom: 8 },
   group: { marginTop: 9 },
   groupGap: { marginTop: 22 },
+  highlight: { paddingHorizontal: 10, marginHorizontal: -10 },
+  undo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 10,
+  },
 });
