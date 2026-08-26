@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AddAffordance } from '@/components/AddAffordance';
 import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
+import { SegmentedSwitch } from '@/components/SegmentedSwitch';
 import { useDayLimit } from '@/db/dayLimits';
 import { deleteRecord, setDone, useDayRecords, type PlannerRecord } from '@/db/records';
 import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
@@ -97,6 +98,13 @@ export default function Day() {
               : `${formatMinutes(load.committed)} work · ${formatMinutes(load.fixed)} fixed`
           }
         />
+      </View>
+
+      {/* The design puts this switch on the Calendar tab, not on Today — the two reach
+          the same screen. It sits here until the bottom tabs exist, because otherwise
+          week and month are unreachable. */}
+      <View style={styles.switch}>
+        <SegmentedSwitch active="day" />
       </View>
 
       {/* Lists scroll, screens do not. */}
@@ -211,7 +219,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   bar: { marginTop: 20 },
-  list: { flex: 1, marginTop: 24 },
+  switch: { marginTop: 16 },
+  list: { flex: 1, marginTop: 20 },
   listContent: { paddingBottom: 8 },
   group: { marginTop: 9 },
   groupGap: { marginTop: 22 },

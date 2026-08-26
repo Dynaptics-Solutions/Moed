@@ -1,3 +1,4 @@
+import { dayBounds, monthGridBounds, weekBounds } from '@moed/core';
 import { and, eq, gte, isNull, lt } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { randomUUID } from 'expo-crypto';
@@ -6,23 +7,21 @@ import { db } from './client';
 import { records, type RecordKind } from './schema';
 import { currentUserId } from '@/lib/user';
 
+// Re-exported so callers reach for one place; the arithmetic itself is core's, and tested.
+export { dayBounds, weekBounds, monthGridBounds };
+
 export type PlannerRecord = typeof records.$inferSelect;
 
-/** Local midnight to local midnight. A day is the user's day, not UTC's. */
-export function dayBounds(date: Date): { start: number; end: number } {
-  const start = new Date(date);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 1);
-  return { start: start.getTime(), end: end.getTime() };
-}
-
 /**
- * The day's records, live. A write anywhere re-renders every screen reading this table
- * — the database is the state, so there is no store to keep in step with it.
+ * Every scheduled record between two instants, live. A write anywhere re-renders every
+ * screen reading this table — the database is the state, so there is no store to keep
+ * in step with it.
+ *
+ * Day, week and month all read through here. They are the same records seen at three
+ * scales, and querying them three different ways is how the three views start
+ * disagreeing about what a day holds.
  */
-export function useDayRecords(date: Date) {
-  const { start, end } = dayBounds(date);
+export function useRangeRecords(start: number, end: number) {
   const userId = currentUserId();
 
   return useLiveQuery(
@@ -40,6 +39,11 @@ export function useDayRecords(date: Date) {
       .orderBy(records.startAt),
     [start, end, userId],
   );
+}
+
+export function useDayRecords(date: Date) {
+  const { start, end } = dayBounds(date);
+  return useRangeRecords(start, end);
 }
 
 export type NewRecord = {

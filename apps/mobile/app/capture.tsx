@@ -1,4 +1,4 @@
-import { dayLoad, gate, parseCapture, parsedSummary } from '@moed/core';
+import { dayLoad, gate, isSameDay, parseCapture, parsedSummary } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
@@ -62,7 +62,7 @@ export default function Capture() {
     // The gate only has standing over the day the record would actually overfill.
     // Something scheduled for Thursday is Thursday's problem, and this sheet does not
     // know Thursday's shape.
-    const landsToday = sameDay(new Date(startAt), today);
+    const landsToday = isSameDay(new Date(startAt), today);
 
     if (decision.fits || !landsToday) {
       const created = await createRecord({
@@ -149,11 +149,6 @@ export default function Capture() {
     </Sheet>
   );
 }
-
-const sameDay = (a: Date, b: Date) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate();
 
 const styles = StyleSheet.create({
   line: { flexDirection: 'row', gap: 11, alignItems: 'flex-start' },
