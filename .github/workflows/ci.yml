@@ -1,0 +1,80 @@
+name: CI
+
+# Typecheck, lint, format and bundle on every push and PR. There is no deploy job yet
+# because there is nothing to deploy — the API arrives with Phase 0's token-verification
+# endpoint, and the mobile app ships through EAS, not through a server.
+#
+# Design prototypes and planning documents cannot break a build, so they do not get one.
+# `paths-ignore` skips the whole workflow rather than skipping jobs inside it: a skipped
+# job still queues a runner.
+#
+# One caveat if branch protection ever requires this check: a PR touching only documents
+# would sit "expected" forever, because a workflow that never runs reports nothing. Add
+# the same paths-ignore to the protection rule, or make the check optional.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['design/**', 'design_planning/**', '**/*.md', '.gitignore']
+  pull_request:
+    branches: [main]
+    paths-ignore: ['design/**', 'design_planning/**', '**/*.md', '.gitignore']
+  workflow_dispatch:
+
+concurrency:
+  # Cancel superseded PR checks, but never cancel a push run.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  mobile:
+    name: Mobile — typecheck, lint, bundle
+    # Self-hosted when `CI_RUNNER` is set, GitHub-hosted otherwise. Behaviour is
+    # identical until the variable exists, and deleting it moves everything back within
+    # seconds — which is the point: a CI box that dies should cost a variable, not an
+    # afternoon. Sharing OperonPulse's runner needs it registered at org scope; a
+    # repo-scoped runner cannot be claimed by a second repository.
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # `--frozen-lockfile` so CI fails on a lockfile that does not match package.json
+      # rather than quietly resolving something else. Note .npmrc pins
+      # `node-linker=hoisted`: Metro cannot follow pnpm's symlinks.
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm format:check
+
+      # tsc does not see through a native module boundary, and lint does not resolve
+      # assets. Bundling is what catches a missing font weight, an unresolvable .sql
+      # migration, or a package Metro cannot follow — the failures that otherwise only
+      # appear on a device.
+      - name: Bundle for Android
+        working-directory: apps/mobile
+        run: pnpm exec expo export --platform android --output-dir dist
+
+      # The generated migration is committed, so a drift between schema.ts and drizzle/
+      # means someone edited the schema without running `pnpm db:generate`. That ships an
+      # app whose database is missing whatever they added, and it fails on device only.
+      - name: Migrations match the schema
+        working-directory: apps/mobile
+        run: |
+          set -euo pipefail
+          pnpm db:generate
+          if ! git diff --quiet -- drizzle; then
+            echo "::error::drizzle/ is out of date with src/db/schema.ts. Run 'pnpm db:generate' and commit the result."
+            git diff --stat -- drizzle
+            exit 1
+          fi
+          echo "drizzle/ matches the schema"

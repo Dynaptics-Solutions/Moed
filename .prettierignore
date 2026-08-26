@@ -1,0 +1,15 @@
+node_modules
+pnpm-lock.yaml
+
+# The design prototypes and the planning documents are written by hand and read as
+# prose. Prettier rewrites emphasis markers and rewraps tables, which is churn in the
+# one place where the exact wording is the artefact.
+design/
+design_planning/
+CLAUDE.md
+*.md
+
+# generated
+apps/mobile/.expo
+apps/mobile/dist
+apps/mobile/drizzle

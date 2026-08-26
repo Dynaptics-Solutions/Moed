@@ -49,11 +49,17 @@ Platform differences are real, not cosmetic: iOS gets 13px radii, bottom tabs an
 
 ```
 CLAUDE.md          this file
+apps/mobile/       the app — Expo, TypeScript, Expo Router
+  app/             routes
+  src/theme/       the ported design tokens; the only place a hex belongs
+  src/db/          Drizzle schema and the SQLite client
+  drizzle/         generated migrations — commit them, never hand-edit
 design/            the HTML prototypes — references, not code to lift
   index.dc.html    start here: links every design
   README.md        the build spec
   standalone/      self-contained copies, for opening from disk
 design_planning/   build plan and the decisions already settled
+.github/workflows/ typecheck, lint, format and bundle on every push
 ```
 
 Start with `design/index.dc.html`. `design/mockups.dc.html` has all 51 screens live, `design/storyboard.dc.html` is the navigation graph, and `design/README.md` is the spec to build from.
