@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#EDEAE2;font-family:"Archivo",system-ui,sans-serif}
+a{color:#1F5C4A}a:hover{color:#14130F}
+</style></helmet>
+
+<div style="max-width:960px;margin:0 auto;padding:64px 56px 96px;background:#F2EFE8;min-height:100vh;box-sizing:border-box">
+
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">Before the designs · August 2026</div>
+<h1 style="margin:16px 0 0;font:400 46px/1.08 'Libre Caslon Text',serif;color:#14130F;letter-spacing:-.01em;max-width:16ch">What is already out there, and what is missing</h1>
+<p style="margin:18px 0 0;font:400 15.5px/1.65 'Archivo';color:#4C4840;max-width:62ch;text-wrap:pretty">A scan of the daily-planner category on the App Store and Play Store, what each app is actually built around, where reviewers say they break down, and the feature set I would build from that. Sources are 2026 review round-ups and public user reviews, not hands-on testing — treat the scoring as a design read, not a benchmark.</p>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">01 — The field</div>
+
+<div style="margin-top:26px;display:flex;flex-direction:column">
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Structured</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Timeline</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Tasks and calendar events on one vertical axis for the day, with week and month views, widgets and calendar sync. The clearest expression of "a day is a length of time" — the idea behind direction <b style="color:#1F5C4A">Rail</b>.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Sunsama</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Ritual</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Drag tasks onto a time-blocked calendar, set a daily goal, and close the day with a reflection step. Almost alone in treating planning as a twice-daily ritual rather than a list you poke at.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Todoist</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Task manager</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">The polish benchmark: natural-language entry, a "Today" view, recurring tasks, and Karma gamification. Reviewers note the calendar sits alongside as a separate view rather than a native unified one.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">TickTick</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Task manager+</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">The same job as Todoist with more surface area — habits, pomodoro, calendar. The standing summary is that Todoist is cleaner and TickTick is more feature-rich.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Any.do</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Unified view</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Sells itself directly on the problem: tasks in one app and calendar in another that never talk. Functional free tier, with calendar sync, recurring tasks and AI planning behind premium.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Notion</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Workspace</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Not a planner, a kit for building one: relational databases, timeline and calendar views, tens of thousands of templates. Reviewers consistently flag the flexibility as intimidating for beginners.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Google Calendar</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Default</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Free, universal, and the thing your app has to sync with rather than beat. Strong at events, deliberately weak at daily planning systems.</div>
+</div>
+
+<div style="display:flex;gap:24px;padding:20px 0;border-top:1px solid rgba(20,19,15,.12);border-bottom:1px solid rgba(20,19,15,.12)">
+<div style="width:132px;flex:none"><div style="font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">AI schedulers</div><div style="margin-top:5px;font:500 10.5px 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#8C8577">Motion et al.</div></div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">AI task prioritisation, AI calendar, AI meeting assistant. The loudest 2026 category and the one with the sharpest backlash — see gap 05.</div>
+</div>
+
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">02 — Coverage, as we read it</div>
+
+<div style="margin-top:24px;display:grid;grid-template-columns:120px repeat(6,1fr);gap:0;font:500 11px 'Archivo'">
+<div></div>
+<div style="padding:0 6px 12px;color:#8C8577;line-height:1.3">One unified day</div>
+<div style="padding:0 6px 12px;color:#8C8577;line-height:1.3">Time blocking</div>
+<div style="padding:0 6px 12px;color:#8C8577;line-height:1.3">Fast capture</div>
+<div style="padding:0 6px 12px;color:#8C8577;line-height:1.3">Painless reschedule</div>
+<div style="padding:0 6px 12px;color:#8C8577;line-height:1.3">Handles slippage</div>
+<div style="padding:0 6px 12px;color:#8C8577;line-height:1.3">Useful free tier</div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">Structured</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">Sunsama</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">Todoist</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">TickTick</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">Any.do</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">Notion</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+
+<div style="padding:11px 0;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10);font:400 14px 'Archivo';color:#14130F">Google Cal</div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span></div>
+<div style="padding:11px 6px;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="display:block;width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span></div>
+</div>
+
+<div style="margin-top:16px;display:flex;gap:20px;align-items:center;font:400 11.5px 'Archivo';color:#8C8577">
+<span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:50%;background:#1F5C4A"></span>Built around it</span>
+<span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:50%;background:#1F5C4A;opacity:.4"></span>Present, not the point</span>
+<span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(20,19,15,.25);box-sizing:border-box"></span>Weak or absent</span>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">03 — Where the category breaks down</div>
+
+<div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+
+<div style="padding:22px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:24px">
+<div style="width:28px;flex:none;font:400 22px/1 'Libre Caslon Text',serif;color:#1F5C4A">01</div>
+<div style="flex:1">
+<div style="font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">The list and the calendar still live apart</div>
+<div style="margin-top:8px;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:60ch">Reviewers describe Todoist's calendar as a separate view rather than a native unified one, and Any.do markets its unified view specifically at people whose to-do app and calendar never talk. The problem is well known and still only half solved.</div>
+<div style="margin-top:11px;padding:12px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.55 'Archivo';color:#1F5C4A;max-width:60ch">Our move — there is no task list and no calendar. There is one day.</div>
+</div>
+</div>
+
+<div style="padding:22px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:24px">
+<div style="width:28px;flex:none;font:400 22px/1 'Libre Caslon Text',serif;color:#1F5C4A">02</div>
+<div style="flex:1">
+<div style="font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">Nothing shows you the day is full</div>
+<div style="margin-top:8px;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:60ch">Every app lets you add a tenth task to a day that holds six. Sunsama's daily goal and Journal it!'s time blocks gesture at capacity; none of them stop you, or show you what will not fit.</div>
+<div style="margin-top:11px;padding:12px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.55 'Archivo';color:#1F5C4A;max-width:60ch">Our move — the day has a visible ceiling. Adding past it shows you what falls off the bottom.</div>
+</div>
+</div>
+
+<div style="padding:22px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:24px">
+<div style="width:28px;flex:none;font:400 22px/1 'Libre Caslon Text',serif;color:#1F5C4A">03</div>
+<div style="flex:1">
+<div style="font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">Unfinished work vanishes or nags</div>
+<div style="margin-top:8px;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:60ch">Most planners either roll a missed task silently into tomorrow or turn it red forever. Both teach you to stop trusting the list. Sunsama's end-of-day reflection is the rare app that makes you look at what did not happen.</div>
+<div style="margin-top:11px;padding:12px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.55 'Archivo';color:#1F5C4A;max-width:60ch">Our move — slippage is a first-class object with its own tray and a 20-second evening close-out.</div>
+</div>
+</div>
+
+<div style="padding:22px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:24px">
+<div style="width:28px;flex:none;font:400 22px/1 'Libre Caslon Text',serif;color:#1F5C4A">04</div>
+<div style="flex:1">
+<div style="font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">Clean apps become cockpits</div>
+<div style="margin-top:8px;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:60ch">The pattern is documented across the category: launch focused, accumulate integrations and views, end up needing twenty minutes to learn. One 2026 review of Routine put it as overly complex yet not powerful — the worst of both.</div>
+<div style="margin-top:11px;padding:12px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.55 'Archivo';color:#1F5C4A;max-width:60ch">Our move — a hard cap of four tabs and one capture affordance. Section 06 lists what we refuse to build.</div>
+</div>
+</div>
+
+<div style="padding:22px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:24px">
+<div style="width:28px;flex:none;font:400 22px/1 'Libre Caslon Text',serif;color:#1F5C4A">05</div>
+<div style="flex:1">
+<div style="font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">AI is being added where it is not wanted</div>
+<div style="margin-top:8px;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:60ch">2026's headline features are AI prioritisation, AI calendars and AI meeting assistants. The counter-position is getting louder — one widely shared piece argues you do not need AI to tell you what to do today, because you already know.</div>
+<div style="margin-top:11px;padding:12px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.55 'Archivo';color:#1F5C4A;max-width:60ch">Our move — no auto-scheduling. AI only parses what you type, and only on capture.</div>
+</div>
+</div>
+
+<div style="padding:22px 0;border-top:1px solid rgba(20,19,15,.12);border-bottom:1px solid rgba(20,19,15,.12);display:flex;gap:24px">
+<div style="width:28px;flex:none;font:400 22px/1 'Libre Caslon Text',serif;color:#1F5C4A">06</div>
+<div style="flex:1">
+<div style="font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">The paywall lands after you have moved in</div>
+<div style="margin-top:8px;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:60ch">A recurring review complaint across planning apps: basic planning, sync or export turns out to be paid only after you have invested the setup time, with no clear statement up front of what stays free.</div>
+<div style="margin-top:11px;padding:12px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.55 'Archivo';color:#1F5C4A;max-width:60ch">Our move — planning is free forever and works offline. Paid is sync across devices and shared projects, stated on the sign-up screen.</div>
+</div>
+</div>
+
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">04 — The features, in plain words</div>
+<p style="margin:20px 0 0;font:400 15px/1.65 'Archivo';color:#4C4840;max-width:60ch">One sentence each, no jargon. Grouped by whether it ships at launch or after.</p>
+
+<div style="margin-top:32px;padding:22px 24px 6px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Group A · Ships at launch</div>
+<div style="margin-top:8px;font:400 20px/1.25 'Libre Caslon Text',serif;color:#14130F">Nobody will switch without these</div>
+<div style="margin-top:16px">
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">01</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Your calendar shows up here</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Connect Google or Apple Calendar and your existing events appear in the day. Anything you add in the app goes back to them.</div></div>
+
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">02</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Type it the way you would say it</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Write "dentist thu 2pm" in one box and it files itself on Thursday at two. No form to fill in.</div></div>
+
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">03</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Things that repeat, repeat</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Set a task once for every Monday, the first of the month, or every third day.</div></div>
+
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">04</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Reminders before, not on the day</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">A notification fifteen minutes before the thing, not a red badge the morning of.</div></div>
+
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">05</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Three ways to look at it</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Today, the week, or by project. Same information, different zoom.</div></div>
+
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">06</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Today on your home screen</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">A widget with the next few items, so most days you never open the app.</div></div>
+
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">07</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Works with no signal</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Everything lives on the phone. Signing in only copies it to your other devices.</div></div>
+
+</div>
+</div>
+</div>
+
+<div style="margin-top:26px;padding:24px 26px 10px;background:#1F5C4A;border-radius:4px">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:rgba(242,239,232,.6)">Group B · Ships at launch</div>
+<div style="margin-top:8px;font:400 20px/1.25 'Libre Caslon Text',serif;color:#F2EFE8">The four that make it worth switching</div>
+<div style="margin-top:18px;display:flex;flex-direction:column">
+<div style="padding:18px 0;border-top:1px solid rgba(242,239,232,.18)">
+<div style="font:600 15px 'Archivo';color:#F2EFE8">1 · The day has a ceiling</div>
+<div style="margin-top:6px;font:400 14px/1.6 'Archivo';color:rgba(242,239,232,.78);max-width:58ch">The app counts hours left in your day, not tasks left on a list. Add a seventh task to a day that holds six and it shows you which one falls off the bottom — before you commit to it.</div>
+<div style="margin-top:8px;font:400 13px/1.55 'Archivo';color:rgba(242,239,232,.5)">Fixes the thing every planner lets you do: promise yourself fourteen hours of work.</div></div>
+<div style="padding:18px 0;border-top:1px solid rgba(242,239,232,.18)">
+<div style="font:600 15px 'Archivo';color:#F2EFE8">2 · Nothing disappears quietly</div>
+<div style="margin-top:6px;font:400 14px/1.6 'Archivo';color:rgba(242,239,232,.78);max-width:58ch">A task you did not get to moves into a tray you can see, with a count on it. It never slides silently into tomorrow, and it never turns red and stays red.</div>
+<div style="margin-top:8px;font:400 13px/1.55 'Archivo';color:rgba(242,239,232,.5)">You keep trusting the list, which is the whole point of having one.</div></div>
+<div style="padding:18px 0;border-top:1px solid rgba(242,239,232,.18)">
+<div style="font:600 15px 'Archivo';color:#F2EFE8">3 · Two minutes at the end of the day</div>
+<div style="margin-top:6px;font:400 14px/1.6 'Archivo';color:rgba(242,239,232,.78);max-width:58ch">Each evening the app shows what is left with three buttons per item — done, move, drop. Work through it and the day is closed.</div>
+<div style="margin-top:8px;font:400 13px/1.55 'Archivo';color:rgba(242,239,232,.5)">Tomorrow starts from a decision you made, not from yesterday's leftovers.</div></div>
+<div style="padding:18px 0;border-top:1px solid rgba(242,239,232,.18)">
+<div style="font:600 15px 'Archivo';color:#F2EFE8">4 · Move one thing, not five</div>
+<div style="margin-top:6px;font:400 14px/1.6 'Archivo';color:rgba(242,239,232,.78);max-width:58ch">Drag a task to Thursday and its length, its reminder and its place in the day go with it. There is no cleanup afterwards.</div>
+<div style="margin-top:8px;font:400 13px/1.55 'Archivo';color:rgba(242,239,232,.5)">Rescheduling is the most common action in a planner and the one most apps make painful.</div></div>
+</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">05 — Enhancements we could add after launch</div>
+<p style="margin:20px 0 0;font:400 15px/1.65 'Archivo';color:#4C4840;max-width:60ch">Ordered by how much they are worth against how long they take. The first three are small and would make the launch feel finished; the last three are real projects.</p>
+<div style="margin-top:24px">
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">01</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">A timer on the block you are working on</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Tap a task to start the clock. The block fills in as you work, so the day shows what actually happened, not just what was planned.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#E3EAE6;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#1F5C4A;margin-top:2px">Small</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">02</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Hours you can protect</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Mark a stretch as deep work. New tasks cannot be dropped into it and the app will not suggest it.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#E3EAE6;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#1F5C4A;margin-top:2px">Small</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">03</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Next thing, on your watch</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">One complication showing the current block and the next one. No list, no interaction.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#E3EAE6;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#1F5C4A;margin-top:2px">Small</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">04</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">What actually happened this week</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">One screen on Sunday: hours planned against hours spent, and the three things that slipped most often. No charts for their own sake.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#EFE7D8;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#8A6B33;margin-top:2px">Medium</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">05</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Bring your list across in one tap</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Import from Todoist, TickTick or Apple Reminders during setup. The single biggest reason people do not switch is retyping everything.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#EFE7D8;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#8A6B33;margin-top:2px">Medium</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">06</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Travel time added for you</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">A task with an address gets its getting-there time attached, so a two o'clock across town blocks out from half one.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#EFE7D8;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#8A6B33;margin-top:2px">Medium</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">07</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">Say what you want moved</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">"Push everything after lunch by an hour." Typed, not tapped — and it only ever does what you asked, never rearranges on its own.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#EFE7D8;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#8A6B33;margin-top:2px">Medium</div>
+</div>
+<div style="padding:17px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:18px;align-items:flex-start">
+<div style="width:22px;flex:none;font:500 12px/1.5 'Archivo';color:#B3ADA0">08</div>
+<div style="flex:1;max-width:58ch"><div style="font:600 14.5px/1.4 'Archivo';color:#14130F">One project, two people</div>
+<div style="margin-top:5px;font:400 14px/1.6 'Archivo';color:#4C4840">Share a single project so a partner or colleague can see it and tick things off. This is the paid tier, and the only thing behind it.</div></div>
+<div style="flex:none;padding:5px 9px;border-radius:3px;background:#F1E0DC;font:600 10px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#A8402F;margin-top:2px">Large</div>
+</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">06 — What we deliberately do not build</div>
+
+<div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:9px;max-width:66ch">
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">AI auto-scheduling</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">A notes and wiki system</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">Team boards and assignment</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">Habit streaks</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">Gamification and karma points</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">Templates gallery</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">Gantt and dependencies</span>
+<span style="padding:10px 14px;border:1px solid rgba(20,19,15,.16);border-radius:3px;font:400 13.5px 'Archivo';color:#8C8577;text-decoration:line-through">Meeting assistant</span>
+</div>
+<p style="margin:18px 0 0;font:400 13.5px/1.65 'Archivo';color:#8C8577;max-width:60ch">Each of these is somebody's favourite feature in a competitor. Each is also how a focused planner turns into a cockpit. Worth revisiting individually, not as a batch.</p>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">07 — What this means for the three directions</div>
+
+<div style="margin-top:24px;display:flex;flex-direction:column">
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:20px;align-items:flex-start">
+<div style="width:74px;flex:none;font:600 12px 'Archivo';color:#1F5C4A">Rail</div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Strongest fit. Capacity and slippage are already the visual language — the rail shows hours, the unscheduled tray is the slippage tray. Closest competitor is Structured, so the bar for polish is high.</div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.12);display:flex;gap:20px;align-items:flex-start">
+<div style="width:74px;flex:none;font:600 12px 'Archivo';color:#1F5C4A">Ledger</div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Reads as calm and trustworthy, which is the honest answer to gap 04. Needs a way to show capacity that is not a timeline — a filled-hours bar under the date, for instance.</div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.12);border-bottom:1px solid rgba(20,19,15,.12);display:flex;gap:20px;align-items:flex-start">
+<div style="width:74px;flex:none;font:600 12px 'Archivo';color:#1F5C4A">Deck</div>
+<div style="flex:1;font:400 14.5px/1.6 'Archivo';color:#4C4840">Best at one-thing-at-a-time focus and at the close-out ritual, which is naturally a card you swipe. Weakest at showing a whole week's capacity at a glance.</div>
+</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">08 — Your template idea — and how I would change it</div>
+<p style="margin:20px 0 0;font:400 15px/1.65 'Archivo';color:#4C4840;max-width:60ch">The instinct is right: not everything in a planner is the same shape. A morning routine is genuinely not a task. But <b>Category + Type as two things the user assembles is one concept too many</b> — that is the Notion trap from section 01, where flexibility becomes homework.</p>
+
+<div style="margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div style="padding:20px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#B0483A">As proposed</div>
+<div style="margin-top:12px;font:400 15px/1.55 'Archivo';color:#4C4840">User creates a Category, then picks a Type from a list.</div>
+<div style="margin-top:14px;font:400 13px/1.6 'Archivo';color:#8C8577">Two decisions before anything exists, both made when the user knows least. And a checklist has no duration, so it cannot sit on the rail — the two ideas collide.</div>
+</div>
+<div style="padding:20px;background:#1F5C4A;border-radius:4px">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,232,.6)">As I would build it</div>
+<div style="margin-top:12px;font:400 15px/1.55 'Archivo';color:#F2EFE8">Types are the engine. Templates are the interface.</div>
+<div style="margin-top:14px;font:400 13px/1.6 'Archivo';color:rgba(242,239,232,.72)">The user picks "Morning routine" off a short shelf and edits it. The type is already set correctly underneath. Nobody chooses a type from a menu on day one.</div>
+</div>
+</div>
+
+<div style="margin-top:34px;font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">The four types, and why each earns its place</div>
+<p style="margin:10px 0 0;font:400 14px/1.6 'Archivo';color:#8C8577;max-width:58ch">A type only exists if it <i>behaves</i> differently on the rail. Anything that is only a different colour or icon is a tag, not a type.</p>
+<div style="margin-top:18px">
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Task</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">One thing, one length, one block on the rail.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">The default. Everything is this unless it needs to be something else.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Routine</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">A checklist that repeats and resets — and occupies <b>one</b> block, not ten.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">This is your "Morning Routine". Six ticks inside a single 40-minute block, so it costs the day 40 minutes, not six entries. Resets each morning.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Session</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Timed work with no finish line. Done means time spent.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Reading, practice, admin. You cannot tick it off, you can only give it an hour. Pairs with the focus timer from section 05.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Errand</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">v2</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">No time of its own, tied to a place, batches with others nearby.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Groceries, post office, pharmacy. The app groups them into one trip rather than three orphan tasks with no duration.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Appointment</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">auto</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Fixed, cannot be moved by you, comes from the calendar.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Not user-creatable — it appears because your calendar says so. Listed here because it is the fifth behaviour on the rail.</div></div>
+</div>
+</div>
+
+<div style="margin-top:34px;padding:22px 24px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">The template shelf</div>
+<div style="margin-top:10px;font:400 20px/1.25 'Libre Caslon Text',serif;color:#14130F">Eight to start with. Not a gallery.</div>
+<div style="margin-top:8px;font:400 13.5px/1.6 'Archivo';color:#8C8577;max-width:58ch">Notion ships tens of thousands of templates and reviewers call it intimidating. A short shelf that covers the common cases is worth more than a searchable library.</div>
+<div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:8px">
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Morning routine <span style="color:#8C8577;font-weight:400">· routine</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Shutdown <span style="color:#8C8577;font-weight:400">· routine</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Deep work <span style="color:#8C8577;font-weight:400">· session</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Weekly review <span style="color:#8C8577;font-weight:400">· routine</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Errand run <span style="color:#8C8577;font-weight:400">· errand</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Workout <span style="color:#8C8577;font-weight:400">· routine</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Ship a feature <span style="color:#8C8577;font-weight:400">· task set</span></span>
+<span style="padding:9px 13px;border-radius:3px;background:#E9E6DD;font:500 13px 'Archivo';color:#1F5C4A">Travel day <span style="color:#8C8577;font-weight:400">· mixed</span></span>
+</div>
+<div style="margin-top:16px;font:400 13px/1.6 'Archivo';color:#8C8577;max-width:58ch">"Save this day as a template" is the ninth entry, and it is how the shelf grows without us curating one.</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">09 — AI — where it earns its place, and where it does not</div>
+<p style="margin:20px 0 0;font:400 15px/1.65 'Archivo';color:#4C4840;max-width:60ch">Section 03 gap 05 is the position: no auto-scheduling. That is not anti-AI, it is a rule about who decides. One line, applied to every feature below.</p>
+<div style="margin-top:20px;padding:16px 18px;background:#1F5C4A;border-radius:4px;max-width:60ch">
+<div style="font:500 15px/1.6 'Archivo';color:#F2EFE8">AI may propose. It may never move anything on its own, and every proposal must be undoable in one tap.</div>
+</div>
+
+<div style="margin-top:30px;font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">Six uses that pass that test</div>
+<div style="margin-top:16px">
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Parse what you type</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">"dentist thu 2pm, 25 min drive" becomes a dated block with travel time attached.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Already in v1. Pure typing-saved; the result is visible before you confirm it.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Say it instead</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Hold the capture button, talk, get three structured items you can edit.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">The highest-value AI on a phone, because the alternative is typing while walking.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">How long this usually takes you</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Suggests a duration from your own history of similar work, and says why.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">"You have run this 4 times, averaging 40m." Fixes the hardest part of a capacity model — people cannot estimate.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Break it down</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">v2</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">On demand, turns "Draft Q4 roadmap" into five editable steps as a routine or task set.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Only when asked, never on capture. Otherwise every one-line task becomes a project.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Explain the slippage</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">v2</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">At the weekly review: "this moved six times, always on days with a meeting before 10."</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">An observation about your own data, not advice. This is the one that makes the tray useful instead of guilt-inducing.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Move things by sentence</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">v2</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">"Push everything after lunch by an hour." Shows the result, waits for a tap.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Typed rescheduling from section 05. It only does what you asked.</div></div>
+</div>
+</div>
+
+<div style="margin-top:26px;padding:20px 22px;border:1px solid rgba(176,72,58,.3);border-radius:4px;background:#FBF6F4;max-width:62ch">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#B0483A">And what it will not do</div>
+<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">
+<span style="padding:8px 12px;border:1px solid rgba(20,19,15,.14);border-radius:3px;font:400 13px 'Archivo';color:#8C8577;text-decoration:line-through">Fill your day for you</span>
+<span style="padding:8px 12px;border:1px solid rgba(20,19,15,.14);border-radius:3px;font:400 13px 'Archivo';color:#8C8577;text-decoration:line-through">Rank your priorities</span>
+<span style="padding:8px 12px;border:1px solid rgba(20,19,15,.14);border-radius:3px;font:400 13px 'Archivo';color:#8C8577;text-decoration:line-through">Rewrite your task titles</span>
+<span style="padding:8px 12px;border:1px solid rgba(20,19,15,.14);border-radius:3px;font:400 13px 'Archivo';color:#8C8577;text-decoration:line-through">A chat panel</span>
+<span style="padding:8px 12px;border:1px solid rgba(20,19,15,.14);border-radius:3px;font:400 13px 'Archivo';color:#8C8577;text-decoration:line-through">Attend your meetings</span>
+</div>
+<div style="margin-top:14px;font:400 13px/1.6 'Archivo';color:#8C8577">Every one of these exists in a competitor. Every one of them is the reason the 2026 backlash is happening.</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">10 — Three more features worth adding</div>
+<div style="margin-top:20px">
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Someday, separate from slipped</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">v1</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Things with no date and no intention yet live somewhere other than the slippage tray.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Right now the tray would fill with wishes and stop meaning anything. Slipped means you meant to and did not. Someday means you have not decided.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">Capacity check on invites</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">v2</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Accepting a meeting shows what it costs that day before you accept.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">The main way days get overfull is other people. A capacity model that ignores invites is only half a model.</div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:20px;align-items:flex-start">
+<div style="width:96px;flex:none"><div style="font:600 14px/1.3 'Archivo';color:#14130F">One trip, several errands</div>
+<div style="margin-top:4px;font:600 9.5px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#B3ADA0">v2</div></div>
+<div style="flex:1;max-width:54ch"><div style="font:400 14px/1.6 'Archivo';color:#14130F">Errands near each other collapse into a single block with a route.</div>
+<div style="margin-top:5px;font:400 13px/1.6 'Archivo';color:#8C8577">Follows directly from the Errand type. Turns four orphan tasks into one 40-minute thing you will actually do.</div></div>
+</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">11 — What each type actually changes</div>
+<p style="margin:20px 0 0;font:400 15px/1.65 'Archivo';color:#4C4840;max-width:60ch">This is the part that justifies having types at all: a different sheet when you create it, and different behaviour when it reaches the day. Everything shares a title, a project and notes — only the rows below differ.</p>
+
+<div style="margin-top:22px;padding:18px 20px;background:#1F5C4A;border-radius:4px;max-width:62ch">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,232,.6)">Two rules that hold across all of them</div>
+<div style="margin-top:12px;font:500 14.5px/1.6 'Archivo';color:#F2EFE8">1 · A duration is required on everything you create. The ceiling cannot work without it, so it is the one field we will not let you skip.</div>
+<div style="margin-top:10px;font:500 14.5px/1.6 'Archivo';color:#F2EFE8">2 · Only things with a time write out to your real calendar. Anything in the tray stays inside the app, so we never fill a shared calendar with your to-do list.</div>
+</div>
+
+<div style="margin-top:14px">
+<div style="padding:28px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:150px 1fr 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Task</div>
+<div style="margin-top:7px;font:600 9.5px/1 'Archivo';letter-spacing:.12em;text-transform:uppercase;color:#1F5C4A">the default</div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Fields on the sheet</div>
+<div style="margin-top:8px"><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Duration</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Day</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Time — optional</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Reminder</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Repeat</span>
+</div></div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">How it lands on the day</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">One block, as long as its duration. With a time it is placed and counts against the ceiling immediately. Without one it waits in the tray and counts only once you drop it on a day.</div>
+<div style="margin-top:12px;padding:11px 13px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 12.5px/1.55 'Archivo';color:#1F5C4A">A task with no time is not late. It is unplaced. Those are different states and the tray keeps them apart.</div></div>
+</div>
+<div style="padding:28px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:150px 1fr 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Routine</div>
+<div style="margin-top:7px;font:600 9.5px/1 'Archivo';letter-spacing:.12em;text-transform:uppercase;color:#1F5C4A">repeating checklist</div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Fields on the sheet</div>
+<div style="margin-top:8px"><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Steps — the checklist</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Total duration</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Repeats on</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Starts at, or “flexible”</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Resets at</span>
+</div></div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">How it lands on the day</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840"><b>One</b> recurring block of the total duration, never one block per step. The steps live inside it and are ticked in place. Exported to your calendar as a single repeating event — six ticks do not become six calendar entries.</div>
+<div style="margin-top:12px;padding:11px 13px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 12.5px/1.55 'Archivo';color:#1F5C4A">Finish all the steps early and the unused minutes go back to the day as free time. That is the payoff for estimating honestly.</div></div>
+</div>
+<div style="padding:28px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:150px 1fr 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Session</div>
+<div style="margin-top:7px;font:600 9.5px/1 'Archivo';letter-spacing:.12em;text-transform:uppercase;color:#1F5C4A">time, not a checkbox</div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Fields on the sheet</div>
+<div style="margin-top:8px"><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Target time</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Day</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Split allowed</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Repeat</span>
+</div></div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">How it lands on the day</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">A block of the target length, and it can be split — two thirty-minute halves rather than one hour. There is no tick box; a ring fills as time accumulates and it closes itself when the target is met.</div>
+<div style="margin-top:12px;padding:11px 13px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 12.5px/1.55 'Archivo';color:#1F5C4A">This is the only type where the focus timer is the primary control rather than an extra.</div></div>
+</div>
+<div style="padding:28px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:150px 1fr 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Errand</div>
+<div style="margin-top:7px;font:600 9.5px/1 'Archivo';letter-spacing:.12em;text-transform:uppercase;color:#1F5C4A">place, not time</div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Fields on the sheet</div>
+<div style="margin-top:8px"><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Place or address</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Time at the stop</span>
+<span style="font:600 9px/1 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A;flex:none">required</span></div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Do it by</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Any day, or a specific one</span>
+</div></div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">How it lands on the day</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">Never placed on its own. Errands near each other collapse into one <b>Errand run</b> block whose length is the sum of the stops plus the travel between them. Only the run reaches your calendar.</div>
+<div style="margin-top:12px;padding:11px 13px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 12.5px/1.55 'Archivo';color:#1F5C4A">Four orphan tasks with no duration become one forty-minute thing you will actually do.</div></div>
+</div>
+<div style="padding:28px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:150px 1fr 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Appointment</div>
+<div style="margin-top:7px;font:600 9.5px/1 'Archivo';letter-spacing:.12em;text-transform:uppercase;color:#1F5C4A">read-only, from your calendar</div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Fields on the sheet</div>
+<div style="margin-top:8px"><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">— nothing; it already exists</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Travel time to add</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Prep block before it</span>
+</div><div style="padding:9px 0;border-top:1px solid rgba(20,19,15,.09);display:flex;align-items:baseline;gap:9px">
+<span style="flex:1;font:400 13.5px/1.45 'Archivo';color:#14130F">Leave-by alert</span>
+</div></div></div>
+<div><div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">How it lands on the day</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">It is already on the rail because your calendar says so, and you cannot move it here. What you can add is what surrounds it: travel time, a prep block, and an alert for when to leave.</div>
+<div style="margin-top:12px;padding:11px 13px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 12.5px/1.55 'Archivo';color:#1F5C4A">Fixed time is what makes the rest of the day compressible. Appointments set the ceiling; they do not compete for it.</div></div>
+</div>
+</div>
+
+<div style="margin-top:34px;padding:22px 24px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px;max-width:62ch">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">What this means for the create flow</div>
+<div style="margin-top:12px;font:400 14.5px/1.65 'Archivo';color:#4C4840">The capture bar stays one line, always. You type, and it makes a Task — because that is what most things are. The type only comes up when you need it: choosing a template, or tapping "make this a routine" on something you have already written. Nobody is asked to pick a type before they have typed anything.</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">12 — Meals, events, expenses: should we?</div>
+
+<div style="margin-top:22px;padding:22px 24px;border:1px solid rgba(176,72,58,.3);border-radius:4px;background:#FBF6F4;max-width:62ch">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#B0483A">Say the awkward part first</div>
+<div style="margin-top:12px;font:400 15px/1.65 'Archivo';color:#4C4840">Adding three new domains is <i>precisely</i> the pattern gap 04 describes: a focused app launches, accumulates areas, becomes a cockpit. If we do this the way most apps do it — three more tabs — we will have built the thing we said we would not build.</div>
+<div style="margin-top:12px;font:400 15px/1.65 'Archivo';color:#4C4840">There is one version of this that works, and it depends on a single idea holding.</div>
+</div>
+
+<div style="margin-top:34px;padding:26px 28px;background:#1F5C4A;border-radius:4px;max-width:62ch">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,232,.6)">The idea that makes it one app</div>
+<div style="margin-top:14px;font:400 26px/1.25 'Libre Caslon Text',serif;color:#F2EFE8">Everything you plan spends one of two things: hours, or money.</div>
+<div style="margin-top:14px;font:400 14.5px/1.65 'Archivo';color:rgba(242,239,232,.78)">We already built a ceiling for hours. Money is the same mechanic with a different unit — a weekly cap, a bar that fills, and a screen that tells you what will not fit. Meals and events are not new domains; they are things that draw down one or both budgets.</div>
+<div style="margin-top:14px;font:400 14.5px/1.65 'Archivo';color:rgba(242,239,232,.78)">If a feature cannot be expressed as spending hours or money, it does not belong in this app.</div>
+</div>
+
+<div style="margin-top:14px">
+<div style="padding:26px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:170px 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Meal planning</div>
+<div style="margin-top:10px;display:inline-block;padding:6px 11px;border-radius:3px;background:#E3EAE6;font:600 10px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">Yes — as a type</div></div>
+<div style="max-width:58ch">
+<div style="font:400 14.5px/1.65 'Archivo';color:#14130F">Dinner is already a Routine: a repeating block of a known length. Deciding it in advance is planning; cooking it costs 40 minutes; the ingredients are an Errand run. All three mechanics exist.</div>
+<div style="margin-top:12px;padding:13px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.6 'Archivo';color:#1F5C4A">Build it as a Meal type — a routine with a shopping list attached. Planning the week generates one errand run and five 40-minute blocks. That is the whole feature.</div>
+<div style="margin-top:11px;font:400 13px/1.6 'Archivo';color:#8C8577"><b style="color:#B0483A">Risk · </b>Do not build a recipe database, nutrition tracking or macro counting. That is Mealime's product, it needs content operations we do not have, and reviewers of meal apps complain most about clunky imports and locked exports.</div>
+</div>
+</div>
+<div style="padding:26px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:170px 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Expense tracking</div>
+<div style="margin-top:10px;display:inline-block;padding:6px 11px;border-radius:3px;background:#E3EAE6;font:600 10px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#1F5C4A">Yes — as a second ceiling</div></div>
+<div style="max-width:58ch">
+<div style="font:400 14.5px/1.65 'Archivo';color:#14130F">This is the strongest fit of the three, because it is the same screen we already designed. A weekly spend cap, a bar, and a sheet that says "this puts you 40 over" is S2 with pesos instead of minutes.</div>
+<div style="margin-top:12px;padding:13px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.6 'Archivo';color:#1F5C4A">Build the ceiling, not the ledger. You set a weekly cap, log what you spend in one line, and the app tells you what is left. Meals and events draw from it automatically.</div>
+<div style="margin-top:11px;font:400 13px/1.6 'Archivo';color:#8C8577"><b style="color:#B0483A">Risk · </b>Do not build bank sync, receipt scanning, or categories-of-categories. That is YNAB, it needs regulated integrations, and it doubles the surface area of the app on its own.</div>
+</div>
+</div>
+<div style="padding:26px 0;border-top:1px solid rgba(20,19,15,.14);display:grid;grid-template-columns:170px 1fr;gap:28px;align-items:start">
+<div><div style="font:400 22px/1.15 'Libre Caslon Text',serif;color:#14130F">Event planning</div>
+<div style="margin-top:10px;display:inline-block;padding:6px 11px;border-radius:3px;background:#F1E0DC;font:600 10px/1 'Archivo';letter-spacing:.1em;text-transform:uppercase;color:#A8402F">No — you already have it</div></div>
+<div style="max-width:58ch">
+<div style="font:400 14.5px/1.65 'Archivo';color:#14130F">An event is a project with a fixed date, a countdown, a task list and a budget. We have projects, dates, tasks and — with the above — a budget. There is nothing left to build.</div>
+<div style="margin-top:12px;padding:13px 15px;background:#E9E6DD;border-left:2px solid #1F5C4A;font:500 13px/1.6 'Archivo';color:#1F5C4A">Add a due date and a spend cap to Projects, and a countdown on the project screen. A birthday, a launch and a trip are all the same object.</div>
+<div style="margin-top:11px;font:400 13px/1.6 'Archivo';color:#8C8577"><b style="color:#B0483A">Risk · </b>A real event planner — guest lists, RSVPs, vendors, seating — is a different product for different people. Building it would be the moment this stops being a planner.</div>
+</div>
+</div>
+</div>
+
+<div style="margin-top:40px;font:400 21px/1.25 'Libre Caslon Text',serif;color:#14130F">What the app becomes</div>
+<p style="margin:10px 0 0;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:58ch">Two ceilings, four types, one shelf of templates. Not five apps in a drawer.</p>
+<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:62ch">
+<div style="padding:20px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Ceiling one</div>
+<div style="margin-top:9px;font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Hours in a day</div>
+<div style="margin-top:8px;font:400 13px/1.6 'Archivo';color:#8C8577">Tasks, routines, sessions, errands, meals. Everything that takes time.</div>
+</div>
+<div style="padding:20px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Ceiling two</div>
+<div style="margin-top:9px;font:400 19px/1.2 'Libre Caslon Text',serif;color:#14130F">Money in a week</div>
+<div style="margin-top:8px;font:400 13px/1.6 'Archivo';color:#8C8577">Groceries, events, anything with a price. Everything that costs.</div>
+</div>
+</div>
+
+<div style="margin-top:28px;padding:22px 24px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px;max-width:62ch">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">My recommendation on sequencing</div>
+<div style="margin-top:12px;font:400 14.5px/1.65 'Archivo';color:#4C4840">Ship v1 as hours only, exactly as designed. Add the money ceiling as v1.1 — it reuses the screens, so it is cheap, and it is the feature that makes the app feel bigger than a to-do list. Meals follow it, because meals need the shopping list to have somewhere to charge. Events need nothing beyond a date and a cap on Projects.</div>
+<div style="margin-top:12px;font:400 14.5px/1.65 'Archivo';color:#4C4840">Doing all four at launch is how the thing becomes a cockpit before anyone has used it once.</div>
+</div>
+
+<div style="margin-top:28px;padding:20px 22px;border:1px dashed rgba(20,19,15,.2);border-radius:4px;max-width:62ch">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">One knock-on</div>
+<div style="margin-top:10px;font:400 14px/1.65 'Archivo';color:#4C4840">If money is in scope, this is no longer a "daily planner" and the naming shortlist changes with it. Day-prefixed names — Daycap, Dayspan, Daykeep — get narrower than the product. Something about capacity or room would carry both ceilings.</div>
+</div>
+
+<div style="margin-top:52px;height:1px;background:rgba(20,19,15,.14)"></div>
+<div style="margin-top:14px;font:600 10.5px/1 'Archivo';letter-spacing:.18em;text-transform:uppercase;color:#8C8577">13 — Bills, and everything else you could plan</div>
+
+<p style="margin:20px 0 0;font:400 15px/1.65 'Archivo';color:#4C4840;max-width:60ch">Bills are the best idea in this conversation so far, because they are not a new feature. They are the money version of something we already designed.</p>
+
+<div style="margin-top:26px;padding:26px 28px;background:#1F5C4A;border-radius:4px;max-width:62ch">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,232,.6)">The symmetry</div>
+<div style="margin-top:14px;font:400 24px/1.3 'Libre Caslon Text',serif;color:#F2EFE8">An appointment is a fixed cost in hours. A bill is a fixed cost in money.</div>
+<div style="margin-top:16px;font:400 14.5px/1.65 'Archivo';color:rgba(242,239,232,.78)">Neither can be moved by you, both have a date, and both lower the ceiling before you have decided anything. Your real money for the week is not the cap — it is the cap minus what is already promised. That is exactly how the day works once appointments are on the rail.</div>
+</div>
+
+<div style="margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:62ch">
+<div style="padding:20px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Fields on the sheet</div>
+<div style="margin-top:10px">
+<div style="padding:8px 0;border-top:1px solid rgba(20,19,15,.09);font:400 13.5px 'Archivo';color:#14130F">Amount <span style="font:600 9px 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A">required</span></div>
+<div style="padding:8px 0;border-top:1px solid rgba(20,19,15,.09);font:400 13.5px 'Archivo';color:#14130F">Due date <span style="font:600 9px 'Archivo';letter-spacing:.08em;text-transform:uppercase;color:#B0483A">required</span></div>
+<div style="padding:8px 0;border-top:1px solid rgba(20,19,15,.09);font:400 13.5px 'Archivo';color:#14130F">Repeats — monthly, quarterly</div>
+<div style="padding:8px 0;border-top:1px solid rgba(20,19,15,.09);font:400 13.5px 'Archivo';color:#14130F">Fixed or variable amount</div>
+<div style="padding:8px 0;border-top:1px solid rgba(20,19,15,.09);font:400 13.5px 'Archivo';color:#14130F">Alert me — days before</div>
+<div style="padding:8px 0;border-top:1px solid rgba(20,19,15,.09);font:400 13.5px 'Archivo';color:#14130F">Autopay on or off</div>
+</div>
+</div>
+<div style="padding:20px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10px/1 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">How it behaves</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">It appears on the day it is due and reduces that week's money ceiling from the moment you add it. A variable bill reserves last month's amount until you confirm the real one.</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">Alerts follow the same rule as the day: <b>"leave by" becomes "pay by"</b>. One notification, timed so you can still act, not a badge that lives forever.</div>
+<div style="margin-top:11px;font:400 13.5px/1.65 'Archivo';color:#4C4840">An unpaid bill goes to the slippage tray with the number of days it has slipped — the same object, counting money instead of minutes.</div>
+</div>
+</div>
+
+<div style="margin-top:22px;padding:18px 20px;background:#E9E6DD;border-left:2px solid #1F5C4A;max-width:62ch;font:500 14px/1.65 'Archivo';color:#1F5C4A">Autopay bills still show, but greyed and un-actionable — the point of listing them is that they have already taken the money, not that you need to do something.</div>
+
+<div style="margin-top:44px;font:400 22px/1.25 'Libre Caslon Text',serif;color:#14130F">Everything else you could plan, run through the test</div>
+<p style="margin:10px 0 0;font:400 14.5px/1.65 'Archivo';color:#4C4840;max-width:58ch">One question decides each: can it be expressed as spending hours or money? If yes, it needs no new machinery and it is nearly free to add. If no, it is a different product.</p>
+
+<div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="padding:22px 24px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#1F5C4A">Passes · costs us almost nothing</div>
+<div style="margin-top:14px">
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Subscriptions</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Bills you forgot you had. A bill with a flag, and a yearly total on the review screen. This one sells itself.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Savings goals</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">The money ceiling inverted — a floor you protect rather than a cap you spend to. Same bar, other direction.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Debt payoff</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">A repeating bill with an end date and a countdown. Nothing new.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Trips</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">A project with a date, a spend cap and a packing routine. All three exist.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Home upkeep</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Routines with long intervals — filters, servicing, renewals. The repeat engine already handles it.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Study and exams</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Sessions with a deadline. Already covered by the Session type.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Medication</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">A routine with hard times and no flexibility. Add it, but design the reminders carefully — a missed dose is not a missed task.</div></div>
+</div>
+</div>
+<div style="padding:22px 24px;border:1px solid rgba(176,72,58,.3);border-radius:4px;background:#FBF6F4">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#B0483A">Fails · a different product</div>
+<div style="margin-top:14px">
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Recipes and nutrition</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Needs a content operation and a database we would have to maintain forever. Meals work without it.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Guest lists and RSVPs</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Event logistics is its own category with its own users. Nothing to do with capacity.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Bank and card sync</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Regulated integrations, ongoing compliance, and it turns a planner into a finance app.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Investments</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Live market data, tax implications, and a duty of care we do not want.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Team projects</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Assignment, permissions, comments. This is the Microsoft Planner problem from section 01.</div></div>
+<div style="padding:12px 0;border-top:1px solid rgba(20,19,15,.09)">
+<div style="font:600 13.5px/1.4 'Archivo';color:#14130F">Journaling and mood</div>
+<div style="margin-top:4px;font:400 13px/1.6 'Archivo';color:#8C8577">Nothing is spent. Legitimate product, wrong app.</div></div>
+</div>
+</div>
+</div>
+
+<div style="margin-top:32px;padding:22px 24px;background:#FBFAF6;border:1px solid rgba(20,19,15,.10);border-radius:4px;max-width:62ch">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Where this leaves the roadmap</div>
+<div style="margin-top:12px;font:400 14.5px/1.65 'Archivo';color:#4C4840"><b>v1</b> hours only — the six screens already designed. <b>v1.1</b> the money ceiling, and bills with it, because bills are the reason anyone would set a cap in the first place. <b>v1.2</b> meals and subscriptions, which are both a type on top of what v1.1 built. Trips, savings and upkeep after that, in whatever order users ask for them.</div>
+<div style="margin-top:12px;font:400 14.5px/1.65 'Archivo';color:#4C4840">Nine of the ten things in the left column need no new concepts. That is the test working — and it is the only reason this can grow without becoming the cockpit.</div>
+</div>
+
+<p style="margin:32px 0 0;font:400 13px/1.65 'Archivo';color:#8C8577;max-width:62ch">Sources: 2026 planner round-ups from The Digital Project Manager, Plaky, 2sync, Any.do and Journal it!, plus public user reviews on Capterra and Efficient App. Coverage scoring in section 02 is our design judgment from those write-ups, not first-hand testing.</p>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:1200}}"></script>
+</body>
+</html>

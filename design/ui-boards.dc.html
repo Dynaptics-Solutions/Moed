@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter+Tight:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#EEEBE4;font-family:"Archivo",system-ui,sans-serif}
+a{color:#1F5C4A}a:hover{color:#14130F}
+.dv-turn{padding:44px 48px 36px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#14130F;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 "Archivo",system-ui,sans-serif;color:#14130F}
+.dv-sub{margin:0 0 26px;font:400 12.5px/1.6 "Archivo",system-ui,sans-serif;color:rgba(20,19,15,.55);max-width:660px}
+.dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:10px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#14130F;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11.5px/1.3 "Archivo",system-ui,sans-serif;color:rgba(20,19,15,.55)}
+.dv-olabel b{font-weight:600;color:#14130F}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#1F5C4A;color:#fff}
+.dv-next{margin:26px 0 0;font:12px/1.6 "Archivo",system-ui,sans-serif;color:rgba(20,19,15,.5)}
+.dv-spec{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;max-width:442px}
+.dv-spec span{font:500 10px/1 "Archivo",system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:rgba(20,19,15,.06);color:rgba(20,19,15,.6)}
+</style></helmet>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#24443C"/><g transform="translate(140 75)"><circle cx="60" cy="75" r="58" fill="none" stroke="#F5F2ED" stroke-width="7"/><path d="M28 118V52l32 34 32-34v66" fill="none" stroke="#F5F2ED" stroke-width="7" stroke-linejoin="round"/><path d="M60 6v26" stroke="#F5F2ED" stroke-width="7" stroke-linecap="round"/><circle cx="60" cy="44" r="6" fill="#F5F2ED"/></g></svg></template>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Getting in — splash, sign in, sign up</span></div>
+<p class="dv-sub">The entry flow for each direction, before the main app. Splash and sign-in on iOS, account creation on Android. The footer link on each sign-in screen switches it to sign up, and the primary button drops you into that direction's main app in turn <a class="dv-oid" href="#t1">1</a>.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a><b>Ledger</b> entry — quiet, typeset</div>
+<div class="dv-card" style="padding:30px;background:#EDEAE2;display:flex;flex-direction:column;gap:26px">
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 700 }}" hint-size="380px,700px">
+<div style="height:100%;background:#F2EFE8;font-family:'Archivo',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 34px 46px;box-sizing:border-box;position:relative">
+<div style="width:46px;height:46px;border:1.5px solid #1F5C4A;border-radius:3px;display:flex;align-items:center;justify-content:center">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h9" stroke="#1F5C4A" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+<div style="margin-top:26px;font:400 44px/1 'Libre Caslon Text',serif;color:#14130F;letter-spacing:-.01em">Ledger</div>
+<div style="margin-top:16px;width:34px;height:1px;background:rgba(20,19,15,.22)"></div>
+<div style="margin-top:16px;font:500 10.5px/1 'Archivo';letter-spacing:.2em;text-transform:uppercase;color:#8C8577">A day, written down</div>
+<div style="position:absolute;left:34px;right:34px;bottom:52px">
+<div style="height:2px;background:rgba(20,19,15,.10);border-radius:1px;overflow:hidden"><div style="width:62%;height:100%;background:#1F5C4A"></div></div>
+<div style="margin-top:11px;font:400 11px 'Archivo';color:#A9A398;text-align:center">Syncing 26 August</div>
+</div>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 700 }}" hint-size="380px,700px">
+<div style="height:100%;background:#F2EFE8;font-family:'Archivo',system-ui,sans-serif;display:flex;flex-direction:column;padding:74px 30px 40px;box-sizing:border-box">
+<sc-if value="{{ aSignin }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Sign in</div>
+<div style="margin-top:12px;font:400 34px/1.1 'Libre Caslon Text',serif;color:#14130F">Welcome back</div>
+<div style="margin-top:34px;display:flex;flex-direction:column;gap:24px">
+<div><div style="font:600 10px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Email</div>
+<div style="margin-top:9px;padding-bottom:9px;border-bottom:1px solid rgba(20,19,15,.22);font:400 16px 'Archivo';color:#14130F">jo@studio.co</div></div>
+<div><div style="font:600 10px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#1F5C4A">Password</div>
+<div style="margin-top:9px;padding-bottom:9px;border-bottom:1.5px solid #1F5C4A;display:flex;align-items:center;justify-content:space-between">
+<span style="font:400 16px/1 'Archivo';color:#14130F;letter-spacing:.22em">••••••••<span style="display:inline-block;width:1.5px;height:17px;background:#1F5C4A;vertical-align:-3px;margin-left:2px;letter-spacing:0"></span></span>
+<span style="font:500 11.5px 'Archivo';color:#8C8577">Show</span></div></div>
+</div>
+<div style="margin-top:16px;font:500 12px 'Archivo';color:#1F5C4A">Forgotten your password?</div>
+<a href="#1a" style="margin-top:32px;height:50px;border-radius:6px;background:#1F5C4A;color:#F2EFE8;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Archivo';text-decoration:none">Continue</a>
+<div style="margin-top:22px;display:flex;align-items:center;gap:12px"><div style="flex:1;height:1px;background:rgba(20,19,15,.12)"></div><span style="font:500 10.5px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#A9A398">or</span><div style="flex:1;height:1px;background:rgba(20,19,15,.12)"></div></div>
+<div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+<div style="height:48px;border-radius:6px;border:1px solid rgba(20,19,15,.18);display:flex;align-items:center;justify-content:center;gap:10px;font:500 14px 'Archivo';color:#14130F">
+<svg width="15" height="18" viewBox="0 0 15 18"><path d="M12.4 9.6c0-2 1.6-3 1.7-3.1-.9-1.4-2.4-1.5-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.2 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2 2.5 2 1 0 1.4-.6 2.6-.6s1.5.6 2.6.6c1.1 0 1.8-1 2.4-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.2-.8-2.2-3ZM10.5 3.6c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.5 2.3-1.2Z" fill="#14130F"/></svg>Continue with Apple</div>
+<div style="height:48px;border-radius:6px;border:1px solid rgba(20,19,15,.18);display:flex;align-items:center;justify-content:center;gap:10px;font:500 14px 'Archivo';color:#14130F">
+<svg width="16" height="16" viewBox="0 0 16 16"><path d="M15.5 8.2c0-.6 0-1-.1-1.5H8v2.8h4.2c-.1.7-.5 1.8-1.5 2.5l2.3 1.8c1.4-1.3 2.5-3.2 2.5-5.6Z" fill="#4285F4"/><path d="M8 16c2 0 3.8-.7 5-1.8l-2.3-1.8c-.6.4-1.5.8-2.7.8-2 0-3.8-1.3-4.4-3.2L1.2 11.8C2.5 14.3 5 16 8 16Z" fill="#34A853"/><path d="M3.6 9.9c-.2-.5-.3-1-.3-1.6s.1-1.1.3-1.6L1.2 4.9C.7 6 .4 7 .4 8.3s.3 2.3.8 3.4l2.4-1.8Z" fill="#FBBC05"/><path d="M8 3.2c1.4 0 2.4.6 2.9 1.1l2.1-2C11.7.9 10 .3 8 .3 5 .3 2.5 2 1.2 4.9l2.4 1.8C4.2 4.8 6 3.2 8 3.2Z" fill="#EA4335"/></svg>Continue with Google</div>
+</div>
+<div style="flex:1"></div>
+<div onClick="{{ aToSignup }}" style="text-align:center;font:400 13px 'Archivo';color:#6E6A60;cursor:pointer">New here? <span style="color:#1F5C4A;font-weight:600;border-bottom:1px solid rgba(31,92,74,.4)">Create an account</span></div>
+</div>
+</sc-if>
+<sc-if value="{{ aSignup }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Step 1 of 2</div>
+<div style="margin-top:12px;font:400 34px/1.1 'Libre Caslon Text',serif;color:#14130F">Start a ledger</div>
+<div style="margin-top:10px;font:400 13.5px/1.6 'Archivo';color:#6E6A60">You can bring a calendar across in a moment.</div>
+<div style="margin-top:30px;display:flex;flex-direction:column;gap:24px">
+<div><div style="font:600 10px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Name</div>
+<div style="margin-top:9px;padding-bottom:9px;border-bottom:1px solid rgba(20,19,15,.22);font:400 16px 'Archivo';color:#14130F">Jo Mensah</div></div>
+<div><div style="font:600 10px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Email</div>
+<div style="margin-top:9px;padding-bottom:9px;border-bottom:1px solid rgba(20,19,15,.22);font:400 16px 'Archivo';color:#A9A398">you@example.com</div></div>
+<div><div style="font:600 10px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#8C8577">Password</div>
+<div style="margin-top:9px;padding-bottom:9px;border-bottom:1px solid rgba(20,19,15,.22);font:400 16px 'Archivo';color:#A9A398">8 characters or more</div></div>
+</div>
+<a href="#1a" style="margin-top:34px;height:50px;border-radius:6px;background:#1F5C4A;color:#F2EFE8;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Archivo';text-decoration:none">Create account</a>
+<div style="margin-top:16px;font:400 11.5px/1.6 'Archivo';color:#8C8577;text-align:center">By continuing you agree to the terms and privacy notice.</div>
+<div style="flex:1"></div>
+<div onClick="{{ aToSignin }}" style="text-align:center;font:400 13px 'Archivo';color:#6E6A60;cursor:pointer">Already have one? <span style="color:#1F5C4A;font-weight:600;border-bottom:1px solid rgba(31,92,74,.4)">Sign in</span></div>
+</div>
+</sc-if>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 660 }}" surface="#F2EFE8" hint-size="380px,660px">
+<div style="min-height:100%;background:#F2EFE8;font-family:'Archivo',system-ui,sans-serif;display:flex;flex-direction:column;padding:20px 26px 26px;box-sizing:border-box">
+<div style="width:34px;height:34px;border-radius:3px;border:1px solid rgba(20,19,15,.18);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9.5 3 5 7.5 9.5 12" stroke="#14130F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div style="margin-top:22px;font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Step 2 of 2</div>
+<div style="margin-top:11px;font:400 30px/1.12 'Libre Caslon Text',serif;color:#14130F">Where do your days come from?</div>
+<div style="margin-top:26px;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;gap:13px;padding:15px 0;border-top:1px solid rgba(20,19,15,.10)">
+<span style="width:19px;height:19px;border-radius:50%;background:#1F5C4A;flex:none;display:flex;align-items:center;justify-content:center"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4.2 3.6 6.8 9 1.4" stroke="#F2EFE8" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+<div style="flex:1"><div style="font:400 15.5px 'Archivo';color:#14130F">Google Calendar</div><div style="margin-top:3px;font:400 11.5px 'Archivo';color:#8C8577">jo@studio.co</div></div></div>
+<div style="display:flex;align-items:center;gap:13px;padding:15px 0;border-top:1px solid rgba(20,19,15,.10)">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none"></span>
+<div style="flex:1"><div style="font:400 15.5px 'Archivo';color:#14130F">Outlook</div></div></div>
+<div style="display:flex;align-items:center;gap:13px;padding:15px 0;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none"></span>
+<div style="flex:1"><div style="font:400 15.5px 'Archivo';color:#14130F">Nothing — start empty</div></div></div>
+</div>
+<div style="flex:1"></div>
+<a href="#1a" style="height:50px;border-radius:6px;background:#1F5C4A;color:#F2EFE8;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Archivo';text-decoration:none">Open my day</a>
+<div style="margin-top:14px;text-align:center;font:500 13px 'Archivo';color:#8C8577">Skip for now</div>
+</div>
+</x-import>
+
+</div>
+</div>
+
+<div class="dv-opt" id="2b">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a><b>Rail</b> entry — dark, instrument-like</div>
+<div class="dv-card" style="padding:30px;background:#1A1917;display:flex;flex-direction:column;gap:26px">
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 700 }}" dark="{{ true }}" hint-size="380px,700px">
+<div style="height:100%;background:#121110;font-family:'Inter Tight',system-ui,sans-serif;display:flex;flex-direction:column;justify-content:center;padding:60px 34px 46px;box-sizing:border-box;position:relative;overflow:hidden">
+<div style="position:absolute;left:34px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.09)"></div>
+<div style="position:absolute;left:30px;top:150px;width:9px;height:1px;background:rgba(255,255,255,.18)"></div>
+<div style="position:absolute;left:30px;top:230px;width:9px;height:1px;background:rgba(255,255,255,.18)"></div>
+<div style="position:absolute;left:28px;top:310px;width:13px;height:2px;background:#E4622F"></div>
+<div style="position:absolute;left:30px;top:390px;width:9px;height:1px;background:rgba(255,255,255,.18)"></div>
+<div style="position:absolute;left:30px;top:470px;width:9px;height:1px;background:rgba(255,255,255,.18)"></div>
+<div style="padding-left:26px">
+<div style="font:800 54px/.95 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.035em">Rail</div>
+<div style="margin-top:14px;font:500 11.5px/1 'Inter Tight';letter-spacing:.2em;text-transform:uppercase;color:#E4622F">Time you can see</div>
+</div>
+<div style="position:absolute;left:60px;right:34px;bottom:52px;display:flex;align-items:center;gap:12px">
+<div style="flex:1;height:2px;background:rgba(255,255,255,.09);border-radius:1px;overflow:hidden"><div style="width:62%;height:100%;background:#E4622F"></div></div>
+<span style="font:500 10.5px 'Inter Tight';letter-spacing:.1em;text-transform:uppercase;color:#5E5952">Week 35</span>
+</div>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 700 }}" dark="{{ true }}" hint-size="380px,700px">
+<div style="height:100%;background:#121110;font-family:'Inter Tight',system-ui,sans-serif;display:flex;flex-direction:column;padding:74px 28px 40px;box-sizing:border-box">
+<sc-if value="{{ bSignin }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font:800 32px/1 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.025em">Sign in</div>
+<div style="margin-top:9px;font:400 13.5px/1.55 'Inter Tight';color:#7E7870">Your rail is waiting where you left it.</div>
+<div style="margin-top:30px;display:flex;flex-direction:column;gap:11px">
+<div style="height:52px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 15px;font:500 14.5px 'Inter Tight';color:#EDE9E3">jo@studio.co</div>
+<div style="height:52px;border-radius:9px;background:#1C1A18;border:1.5px solid #E4622F;display:flex;align-items:center;justify-content:space-between;padding:0 15px">
+<span style="font:500 14.5px/1 'Inter Tight';color:#EDE9E3;letter-spacing:.2em">••••••••<span style="display:inline-block;width:1.5px;height:16px;background:#E4622F;vertical-align:-3px;margin-left:2px;letter-spacing:0"></span></span>
+<span style="font:500 11.5px 'Inter Tight';color:#7E7870">Show</span></div>
+</div>
+<a href="#1b" style="margin-top:18px;height:52px;border-radius:9px;background:#E4622F;color:#1A0D06;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Inter Tight';text-decoration:none">Sign in</a>
+<div style="margin-top:11px;height:52px;border-radius:9px;background:rgba(255,255,255,.055);display:flex;align-items:center;justify-content:center;gap:9px;font:600 14px 'Inter Tight';color:#EDE9E3">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="8" r="3.4" stroke="#E4622F" stroke-width="1.5"/><path d="M9.4 8H15M13 8v2.6M11.2 8v2" stroke="#E4622F" stroke-width="1.5" stroke-linecap="round"/></svg>Use a passkey</div>
+<div style="margin-top:20px;text-align:center;font:500 12.5px 'Inter Tight';color:#7E7870">Forgot password</div>
+<div style="flex:1"></div>
+<div style="padding:16px;border-radius:9px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06)">
+<div style="font:600 11px 'Inter Tight';letter-spacing:.12em;text-transform:uppercase;color:#E4622F">Local first</div>
+<div style="margin-top:6px;font:400 12.5px/1.55 'Inter Tight';color:#8B857B">Everything works offline. Signing in only syncs across your devices.</div>
+</div>
+<div onClick="{{ bToSignup }}" style="margin-top:18px;text-align:center;font:400 13px 'Inter Tight';color:#7E7870;cursor:pointer">No account? <span style="color:#E4622F;font-weight:600">Create one</span></div>
+</div>
+</sc-if>
+<sc-if value="{{ bSignup }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="display:flex;gap:5px">
+<div style="flex:1;height:3px;border-radius:2px;background:#E4622F"></div>
+<div style="flex:1;height:3px;border-radius:2px;background:#E4622F"></div>
+<div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.10)"></div>
+</div>
+<div style="margin-top:26px;font:800 32px/1.05 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.025em">How long is<br/>your working day?</div>
+<div style="margin-top:9px;font:400 13.5px/1.55 'Inter Tight';color:#7E7870">The rail is drawn to this. You can change it later.</div>
+<div style="margin-top:28px;display:flex;flex-direction:column;gap:9px">
+<div style="height:56px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+<span style="font:500 14.5px 'Inter Tight';color:#8B857B">Starts</span><span style="font:600 15px 'Inter Tight';color:#EDE9E3">08:30</span></div>
+<div style="height:56px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+<span style="font:500 14.5px 'Inter Tight';color:#8B857B">Ends</span><span style="font:600 15px 'Inter Tight';color:#EDE9E3">18:00</span></div>
+<div style="height:56px;border-radius:9px;background:rgba(228,98,47,.10);border:1.5px solid #E4622F;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+<span style="font:500 14.5px 'Inter Tight';color:#EDE9E3">Protect a deep-work block</span>
+<div style="width:40px;height:23px;border-radius:12px;background:#E4622F;display:flex;align-items:center;justify-content:flex-end;padding:0 3px;box-sizing:border-box"><div style="width:17px;height:17px;border-radius:50%;background:#1A0D06"></div></div></div>
+</div>
+<div style="flex:1"></div>
+<a href="#1b" style="height:52px;border-radius:9px;background:#E4622F;color:#1A0D06;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Inter Tight';text-decoration:none">Draw my rail</a>
+<div onClick="{{ bToSignin }}" style="margin-top:16px;text-align:center;font:400 13px 'Inter Tight';color:#7E7870;cursor:pointer">Back to <span style="color:#E4622F;font-weight:600">sign in</span></div>
+</div>
+</sc-if>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 660 }}" dark="{{ true }}" surface="#121110" hint-size="380px,660px">
+<div style="min-height:100%;background:#121110;font-family:'Inter Tight',system-ui,sans-serif;display:flex;flex-direction:column;padding:20px 26px 26px;box-sizing:border-box">
+<div style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.055);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9.5 3 5 7.5 9.5 12" stroke="#EDE9E3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div style="margin-top:24px;font:800 30px/1.05 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.025em">Check your email</div>
+<div style="margin-top:9px;font:400 13.5px/1.55 'Inter Tight';color:#7E7870">Six digits sent to jo@studio.co</div>
+<div style="margin-top:30px;display:flex;gap:8px">
+<div style="flex:1;height:60px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:600 24px 'Inter Tight';color:#EDE9E3">4</div>
+<div style="flex:1;height:60px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:600 24px 'Inter Tight';color:#EDE9E3">1</div>
+<div style="flex:1;height:60px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font:600 24px 'Inter Tight';color:#EDE9E3">7</div>
+<div style="flex:1;height:60px;border-radius:9px;background:#1C1A18;border:1.5px solid #E4622F;display:flex;align-items:center;justify-content:center"><span style="display:inline-block;width:2px;height:24px;background:#E4622F"></span></div>
+<div style="flex:1;height:60px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08)"></div>
+<div style="flex:1;height:60px;border-radius:9px;background:#1C1A18;border:1px solid rgba(255,255,255,.08)"></div>
+</div>
+<div style="margin-top:18px;font:500 12.5px 'Inter Tight';color:#7E7870">Resend in <span style="color:#EDE9E3">0:24</span></div>
+<div style="flex:1"></div>
+<a href="#1b" style="height:52px;border-radius:9px;background:#E4622F;color:#1A0D06;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Inter Tight';text-decoration:none">Verify</a>
+</div>
+</x-import>
+
+</div>
+</div>
+
+<div class="dv-opt" id="2c">
+<div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a><b>Deck</b> entry — warm, full-bleed</div>
+<div class="dv-card" style="padding:30px;background:#EBE3EF;display:flex;flex-direction:column;gap:26px">
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 700 }}" dark="{{ true }}" hint-size="380px,700px">
+<div style="height:100%;background:#6B2F8C;font-family:'Work Sans',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden">
+<div style="position:absolute;left:50%;top:206px;width:186px;height:118px;margin-left:-93px;border-radius:20px;background:rgba(255,255,255,.10);transform:rotate(-9deg)"></div>
+<div style="position:absolute;left:50%;top:198px;width:186px;height:118px;margin-left:-93px;border-radius:20px;background:rgba(255,255,255,.14);transform:rotate(5deg)"></div>
+<div style="position:absolute;left:50%;top:192px;width:186px;height:118px;margin-left:-93px;border-radius:20px;background:#F0C97A;transform:rotate(-2deg);box-shadow:0 14px 30px rgba(20,5,30,.28)"></div>
+<div style="position:relative;margin-top:-190px;text-align:center">
+<div style="font:700 50px/1 'Fraunces',serif;color:#fff;letter-spacing:-.02em">Deck</div>
+<div style="margin-top:13px;font:500 11.5px/1 'Work Sans';letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">One card at a time</div>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:56px;display:flex;justify-content:center;gap:7px">
+<span style="width:7px;height:7px;border-radius:50%;background:#F0C97A"></span>
+<span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28)"></span>
+<span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28)"></span>
+</div>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 700 }}" hint-size="380px,700px">
+<div style="height:100%;background:#F6F2F8;font-family:'Work Sans',system-ui,sans-serif;display:flex;flex-direction:column;padding:70px 26px 36px;box-sizing:border-box">
+<sc-if value="{{ cSignin }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font:700 40px/1.02 'Fraunces',serif;color:#241A2B;letter-spacing:-.015em">Hello<br/>again</div>
+<div style="margin-top:12px;font:400 14px/1.55 'Work Sans';color:#7E6C88">Nine cards are waiting for you today.</div>
+<div style="margin-top:30px;display:flex;flex-direction:column;gap:10px">
+<div style="height:56px;border-radius:16px;background:#fff;display:flex;align-items:center;padding:0 18px;font:500 15px 'Work Sans';color:#241A2B;box-shadow:0 1px 3px rgba(36,26,43,.07)">jo@studio.co</div>
+<div style="height:56px;border-radius:16px;background:#fff;border:1.5px solid #6B2F8C;display:flex;align-items:center;justify-content:space-between;padding:0 18px;box-sizing:border-box">
+<span style="font:500 15px/1 'Work Sans';color:#241A2B;letter-spacing:.22em">••••••••<span style="display:inline-block;width:2px;height:17px;background:#6B2F8C;vertical-align:-3px;margin-left:2px;letter-spacing:0"></span></span>
+<span style="font:600 12px 'Work Sans';color:#9B8AA5">Show</span></div>
+</div>
+<a href="#1c" style="margin-top:18px;height:56px;border-radius:16px;background:#241A2B;color:#fff;display:flex;align-items:center;justify-content:center;font:600 15px 'Work Sans';text-decoration:none">Sign in</a>
+<div style="margin-top:16px;text-align:center;font:600 12.5px 'Work Sans';color:#6B2F8C">Forgot password?</div>
+<div style="margin-top:26px;display:flex;align-items:center;gap:12px"><div style="flex:1;height:1px;background:#DFD5E5"></div><span style="font:500 11px 'Work Sans';color:#9B8AA5">or</span><div style="flex:1;height:1px;background:#DFD5E5"></div></div>
+<div style="margin-top:18px;display:flex;gap:10px">
+<div style="flex:1;height:52px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<svg width="16" height="19" viewBox="0 0 15 18"><path d="M12.4 9.6c0-2 1.6-3 1.7-3.1-.9-1.4-2.4-1.5-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.2 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2 2.5 2 1 0 1.4-.6 2.6-.6s1.5.6 2.6.6c1.1 0 1.8-1 2.4-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.2-.8-2.2-3ZM10.5 3.6c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.5 2.3-1.2Z" fill="#241A2B"/></svg></div>
+<div style="flex:1;height:52px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<svg width="18" height="18" viewBox="0 0 16 16"><path d="M15.5 8.2c0-.6 0-1-.1-1.5H8v2.8h4.2c-.1.7-.5 1.8-1.5 2.5l2.3 1.8c1.4-1.3 2.5-3.2 2.5-5.6Z" fill="#4285F4"/><path d="M8 16c2 0 3.8-.7 5-1.8l-2.3-1.8c-.6.4-1.5.8-2.7.8-2 0-3.8-1.3-4.4-3.2L1.2 11.8C2.5 14.3 5 16 8 16Z" fill="#34A853"/><path d="M3.6 9.9c-.2-.5-.3-1-.3-1.6s.1-1.1.3-1.6L1.2 4.9C.7 6 .4 7 .4 8.3s.3 2.3.8 3.4l2.4-1.8Z" fill="#FBBC05"/><path d="M8 3.2c1.4 0 2.4.6 2.9 1.1l2.1-2C11.7.9 10 .3 8 .3 5 .3 2.5 2 1.2 4.9l2.4 1.8C4.2 4.8 6 3.2 8 3.2Z" fill="#EA4335"/></svg></div>
+</div>
+<div style="flex:1"></div>
+<div onClick="{{ cToSignup }}" style="text-align:center;font:400 13.5px 'Work Sans';color:#7E6C88;cursor:pointer">New to Deck? <span style="color:#6B2F8C;font-weight:600">Sign up</span></div>
+</div>
+</sc-if>
+<sc-if value="{{ cSignup }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="display:flex;gap:6px">
+<span style="width:26px;height:5px;border-radius:3px;background:#6B2F8C"></span>
+<span style="width:9px;height:5px;border-radius:3px;background:#DFD5E5"></span>
+<span style="width:9px;height:5px;border-radius:3px;background:#DFD5E5"></span>
+</div>
+<div style="margin-top:24px;font:700 38px/1.02 'Fraunces',serif;color:#241A2B;letter-spacing:-.015em">Make your<br/>first deck</div>
+<div style="margin-top:12px;font:400 14px/1.55 'Work Sans';color:#7E6C88">Name it after the thing you keep putting off.</div>
+<div style="margin-top:28px;display:flex;flex-direction:column;gap:10px">
+<div style="height:56px;border-radius:16px;background:#fff;display:flex;align-items:center;padding:0 18px;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<span style="font:500 15px 'Work Sans';color:#241A2B">Operon</span><span style="display:inline-block;width:2px;height:17px;background:#6B2F8C;margin-left:3px"></span></div>
+<div style="height:56px;border-radius:16px;background:#fff;display:flex;align-items:center;padding:0 18px;font:500 15px 'Work Sans';color:#B5A8BC;box-shadow:0 1px 3px rgba(36,26,43,.07)">jo@studio.co</div>
+</div>
+<div style="margin-top:20px;font:600 10.5px 'Work Sans';letter-spacing:.16em;text-transform:uppercase;color:#9B8AA5">Colour</div>
+<div style="margin-top:12px;display:flex;gap:10px">
+<span style="width:38px;height:38px;border-radius:13px;background:#6B2F8C;box-shadow:0 0 0 2px #F6F2F8,0 0 0 4px #6B2F8C"></span>
+<span style="width:38px;height:38px;border-radius:13px;background:#F0C97A"></span>
+<span style="width:38px;height:38px;border-radius:13px;background:#3B6B4E"></span>
+<span style="width:38px;height:38px;border-radius:13px;background:#A8402F"></span>
+<span style="width:38px;height:38px;border-radius:13px;background:#241A2B"></span>
+</div>
+<div style="flex:1"></div>
+<a href="#1c" style="height:56px;border-radius:16px;background:#241A2B;color:#fff;display:flex;align-items:center;justify-content:center;font:600 15px 'Work Sans';text-decoration:none">Deal me in</a>
+<div onClick="{{ cToSignin }}" style="margin-top:16px;text-align:center;font:400 13.5px 'Work Sans';color:#7E6C88;cursor:pointer">Have an account? <span style="color:#6B2F8C;font-weight:600">Sign in</span></div>
+</div>
+</sc-if>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 660 }}" surface="#F6F2F8" hint-size="380px,660px">
+<div style="min-height:100%;background:#F6F2F8;font-family:'Work Sans',system-ui,sans-serif;display:flex;flex-direction:column;padding:18px 24px 24px;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:34px;height:34px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(36,26,43,.08)"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9.5 3 5 7.5 9.5 12" stroke="#6B2F8C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div style="flex:1;display:flex;gap:6px">
+<span style="flex:1;height:5px;border-radius:3px;background:#6B2F8C"></span>
+<span style="flex:1;height:5px;border-radius:3px;background:#6B2F8C"></span>
+<span style="flex:1;height:5px;border-radius:3px;background:#DFD5E5"></span>
+</div>
+</div>
+<div style="margin-top:26px;font:700 32px/1.05 'Fraunces',serif;color:#241A2B;letter-spacing:-.015em">When should we nudge you?</div>
+<div style="margin-top:10px;font:400 13.5px/1.55 'Work Sans';color:#7E6C88">One card, once a day. Nothing else.</div>
+<div style="margin-top:26px;display:flex;flex-direction:column;gap:10px">
+<div style="padding:18px;border-radius:18px;background:#6B2F8C;color:#fff;display:flex;align-items:center;justify-content:space-between">
+<div><div style="font:600 15px 'Work Sans'">Morning</div><div style="margin-top:3px;font:400 12px 'Work Sans';color:rgba(255,255,255,.68)">08:00 — plan the day</div></div>
+<span style="width:22px;height:22px;border-radius:50%;background:#F0C97A;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1.2 4.6 4 7.4 9.6 1.4" stroke="#6B2F8C" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</div>
+<div style="padding:18px;border-radius:18px;background:#fff;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<div><div style="font:600 15px 'Work Sans';color:#241A2B">Evening</div><div style="margin-top:3px;font:400 12px 'Work Sans';color:#9B8AA5">19:00 — clear the deck</div></div>
+<span style="width:22px;height:22px;border-radius:50%;border:1.8px solid #D6C7DE;box-sizing:border-box"></span>
+</div>
+<div style="padding:18px;border-radius:18px;background:#fff;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<div><div style="font:600 15px 'Work Sans';color:#241A2B">Never</div><div style="margin-top:3px;font:400 12px 'Work Sans';color:#9B8AA5">I will open it myself</div></div>
+<span style="width:22px;height:22px;border-radius:50%;border:1.8px solid #D6C7DE;box-sizing:border-box"></span>
+</div>
+</div>
+<div style="flex:1"></div>
+<a href="#1c" style="height:56px;border-radius:16px;background:#241A2B;color:#fff;display:flex;align-items:center;justify-content:center;font:600 15px 'Work Sans';text-decoration:none">Start planning</a>
+</div>
+</x-import>
+
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "carry <a class="dv-oid" href="#2b">2b</a> forward and build all 11 screens" · "add a forgot-password and reset flow" · "show <a class="dv-oid" href="#2a">2a</a> signed out and first-run empty"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Three directions for the planner</span></div>
+<p class="dv-sub">Same day, same six tasks, three different ideas about what a day <em>is</em>. Each column pairs an iOS Today screen with the Android week view. The phones are live: tap tasks, tabs, days, and the add button.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a><b>Ledger</b> — the day as a written list</div>
+<div class="dv-spec"><span>List</span><span>Bottom tabs</span><span>Inline add</span><span>Paper &amp; serif</span></div>
+<div class="dv-card" style="padding:30px;background:#EDEAE2;display:flex;flex-direction:column;gap:26px">
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 822 }}" hint-size="380px,822px">
+<div style="position:relative;height:100%;background:#F2EFE8;font-family:'Archivo',system-ui,sans-serif;display:flex;flex-direction:column">
+
+<sc-if value="{{ aToday }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;overflow:auto;padding:62px 22px 108px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+<div>
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Tuesday</div>
+<div style="font:400 38px/1.05 'Libre Caslon Text',serif;color:#14130F;margin-top:9px">26 August</div>
+</div>
+<div style="width:36px;height:36px;border-radius:50%;background:#1F5C4A;color:#F2EFE8;display:flex;align-items:center;justify-content:center;font:600 13px 'Archivo';flex:none;margin-top:4px">JM</div>
+</div>
+
+<div style="margin-top:20px;display:flex;align-items:center;gap:10px">
+<div style="flex:1;height:3px;background:rgba(20,19,15,.10);border-radius:2px;overflow:hidden"><div style="width:37%;height:100%;background:#1F5C4A"></div></div>
+<div style="font:500 11px 'Archivo';color:#6E6A60;white-space:nowrap">3 of 8</div>
+</div>
+
+<div style="margin-top:30px;font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Morning</div>
+<div style="margin-top:12px;display:flex;flex-direction:column">
+
+<div onClick="{{ aOpenDetail }}" style="display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(20,19,15,.10);cursor:pointer">
+<span style="width:19px;height:19px;border-radius:50%;background:#1F5C4A;flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4.2 3.6 6.8 9 1.4" stroke="#F2EFE8" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+<div style="flex:1;min-width:0">
+<div style="font:400 15.5px/1.35 'Archivo';color:#A9A398;text-decoration:line-through">Standup — Operon</div>
+</div>
+<div style="font:500 12px/1.4 'Archivo';color:#A9A398;flex:none">9:30</div>
+</div>
+
+<div onClick="{{ aOpenDetail }}" style="display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(20,19,15,.10);cursor:pointer">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none;margin-top:1px"></span>
+<div style="flex:1;min-width:0">
+<div style="font:400 15.5px/1.35 'Archivo';color:#14130F">Rewrite the onboarding copy</div>
+<div style="margin-top:5px;display:flex;align-items:center;gap:7px"><span style="width:5px;height:5px;border-radius:50%;background:#1F5C4A"></span><span style="font:400 12px/1.4 'Archivo';color:#6E6A60">Operon · 2h block</span></div>
+</div>
+</div>
+
+<div onClick="{{ aOpenDetail }}" style="display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(20,19,15,.10);cursor:pointer">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none;margin-top:1px"></span>
+<div style="flex:1;min-width:0">
+<div style="font:400 15.5px/1.35 'Archivo';color:#14130F">Reply to Marta re: contract</div>
+</div>
+<div style="font:500 12px/1.4 'Archivo';color:#B0483A;flex:none">Overdue</div>
+</div>
+</div>
+
+<div style="margin-top:26px;font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Afternoon</div>
+<div style="margin-top:12px;display:flex;flex-direction:column">
+<div onClick="{{ aOpenDetail }}" style="display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(20,19,15,.10);cursor:pointer">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none;margin-top:1px"></span>
+<div style="flex:1;min-width:0"><div style="font:400 15.5px/1.35 'Archivo';color:#14130F">Dentist</div>
+<div style="margin-top:5px;font:400 12px/1.4 'Archivo';color:#6E6A60">Kensington Dental</div></div>
+<div style="font:500 12px/1.4 'Archivo';color:#6E6A60;flex:none">14:00</div>
+</div>
+<div onClick="{{ aOpenDetail }}" style="display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(20,19,15,.10);cursor:pointer">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none;margin-top:1px"></span>
+<div style="flex:1;min-width:0"><div style="font:400 15.5px/1.35 'Archivo';color:#14130F">Draft Q4 roadmap</div>
+<div style="margin-top:5px;display:flex;align-items:center;gap:7px"><span style="width:5px;height:5px;border-radius:50%;background:#1F5C4A"></span><span style="font:400 12px/1.4 'Archivo';color:#6E6A60">Operon · due Friday</span></div></div>
+</div>
+<div onClick="{{ aOpenDetail }}" style="display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10);cursor:pointer">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none;margin-top:1px"></span>
+<div style="flex:1;min-width:0"><div style="font:400 15.5px/1.35 'Archivo';color:#14130F">Groceries</div></div>
+<div style="font:400 12px/1.4 'Archivo';color:#8C8577;flex:none">Personal</div>
+</div>
+</div>
+
+<div onClick="{{ aOpenCapture }}" style="margin-top:16px;display:flex;align-items:center;gap:11px;cursor:pointer;padding:4px 0">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px dashed rgba(20,19,15,.28);box-sizing:border-box;flex:none"></span>
+<span style="font:400 15px 'Archivo';color:#8C8577">Add a task…</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ aProjects }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;padding:62px 22px 108px">
+<div style="font:600 10.5px/1 'Archivo';letter-spacing:.16em;text-transform:uppercase;color:#8C8577">Three active</div>
+<div style="font:400 38px/1.05 'Libre Caslon Text',serif;color:#14130F;margin-top:9px">Projects</div>
+<div style="margin-top:28px;display:flex;flex-direction:column">
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:13px;align-items:center">
+<span style="width:9px;height:9px;border-radius:50%;background:#1F5C4A;flex:none"></span>
+<div style="flex:1"><div style="font:400 17px/1.3 'Libre Caslon Text',serif;color:#14130F">Operon</div><div style="margin-top:4px;font:400 12px 'Archivo';color:#6E6A60">4 open · 12 done</div></div>
+<div style="width:52px;height:3px;background:rgba(20,19,15,.10);border-radius:2px;overflow:hidden"><div style="width:75%;height:100%;background:#1F5C4A"></div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);display:flex;gap:13px;align-items:center">
+<span style="width:9px;height:9px;border-radius:50%;background:#B0483A;flex:none"></span>
+<div style="flex:1"><div style="font:400 17px/1.3 'Libre Caslon Text',serif;color:#14130F">Personal</div><div style="margin-top:4px;font:400 12px 'Archivo';color:#6E6A60">2 open · 5 done</div></div>
+<div style="width:52px;height:3px;background:rgba(20,19,15,.10);border-radius:2px;overflow:hidden"><div style="width:71%;height:100%;background:#B0483A"></div></div>
+</div>
+<div style="padding:18px 0;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10);display:flex;gap:13px;align-items:center">
+<span style="width:9px;height:9px;border-radius:50%;background:#8C8577;flex:none"></span>
+<div style="flex:1"><div style="font:400 17px/1.3 'Libre Caslon Text',serif;color:#14130F">Reading</div><div style="margin-top:4px;font:400 12px 'Archivo';color:#6E6A60">6 open · 1 done</div></div>
+<div style="width:52px;height:3px;background:rgba(20,19,15,.10);border-radius:2px;overflow:hidden"><div style="width:14%;height:100%;background:#8C8577"></div></div>
+</div>
+</div>
+<div style="margin-top:34px;padding:22px;border:1px dashed rgba(20,19,15,.18);border-radius:6px;text-align:center">
+<div style="font:400 16px/1.3 'Libre Caslon Text',serif;color:#14130F">No archive yet</div>
+<div style="margin-top:6px;font:400 12.5px/1.5 'Archivo';color:#8C8577">Finished projects move here so the list stays short.</div>
+</div>
+</div>
+</sc-if>
+
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:40;background:rgba(242,239,232,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(20,19,15,.10);padding:11px 14px 30px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px">
+<div onClick="{{ aGoToday }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:4px 0">
+<svg width="19" height="19" viewBox="0 0 19 19" fill="none"><rect x="2.5" y="3.5" width="14" height="13" rx="2.5" stroke="{{ aTodayInk }}" stroke-width="1.5"/><path d="M6 1.8v3.4M13 1.8v3.4M2.5 8h14" stroke="{{ aTodayInk }}" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span style="font:500 10px 'Archivo';color: {{ aTodayInk }}">Today</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:4px 0;opacity:.45">
+<svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M3 4.5h13M3 9.5h13M3 14.5h13" stroke="#14130F" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span style="font:500 10px 'Archivo';color:#14130F">Week</span></div>
+<div onClick="{{ aGoProjects }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:4px 0">
+<svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M2.5 6.2c0-1.1.9-2 2-2h3.1l1.6 2h5.3c1.1 0 2 .9 2 2v6.1c0 1.1-.9 2-2 2H4.5c-1.1 0-2-.9-2-2V6.2Z" stroke="{{ aProjInk }}" stroke-width="1.5"/></svg>
+<span style="font:500 10px 'Archivo';color: {{ aProjInk }}">Projects</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:4px 0;opacity:.45">
+<svg width="19" height="19" viewBox="0 0 19 19" fill="none"><circle cx="9.5" cy="6.5" r="3.2" stroke="#14130F" stroke-width="1.5"/><path d="M3.6 16c.8-2.8 3.1-4.4 5.9-4.4s5.1 1.6 5.9 4.4" stroke="#14130F" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span style="font:500 10px 'Archivo';color:#14130F">Me</span></div>
+</div>
+
+<sc-if value="{{ aDetail }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ aClose }}" style="position:absolute;inset:0;z-index:60;background:rgba(20,19,15,.32)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#F7F5EF;border-radius:22px 22px 0 0;padding:14px 24px 40px;box-shadow:0 -12px 40px rgba(20,19,15,.18)">
+<div style="width:38px;height:4px;border-radius:2px;background:rgba(20,19,15,.16);margin:0 auto 22px"></div>
+<div style="display:flex;align-items:center;gap:7px"><span style="width:6px;height:6px;border-radius:50%;background:#1F5C4A"></span><span style="font:600 10.5px 'Archivo';letter-spacing:.14em;text-transform:uppercase;color:#1F5C4A">Operon</span></div>
+<div style="margin-top:11px;font:400 27px/1.2 'Libre Caslon Text',serif;color:#14130F">Rewrite the onboarding copy</div>
+<div style="margin-top:22px;display:flex;flex-direction:column">
+<div style="display:flex;justify-content:space-between;padding:13px 0;border-top:1px solid rgba(20,19,15,.10)"><span style="font:400 13.5px 'Archivo';color:#6E6A60">When</span><span style="font:500 13.5px 'Archivo';color:#14130F">Today, 10:00 — 12:00</span></div>
+<div style="display:flex;justify-content:space-between;padding:13px 0;border-top:1px solid rgba(20,19,15,.10)"><span style="font:400 13.5px 'Archivo';color:#6E6A60">Repeat</span><span style="font:500 13.5px 'Archivo';color:#14130F">Never</span></div>
+<div style="display:flex;justify-content:space-between;padding:13px 0;border-top:1px solid rgba(20,19,15,.10);border-bottom:1px solid rgba(20,19,15,.10)"><span style="font:400 13.5px 'Archivo';color:#6E6A60">Remind</span><span style="font:500 13.5px 'Archivo';color:#14130F">15 min before</span></div>
+</div>
+<div style="margin-top:18px;font:400 13.5px/1.6 'Archivo';color:#6E6A60">Cut the second screen entirely. Lead with the calendar sync — that is the thing people say sold them.</div>
+<div style="margin-top:24px;display:flex;gap:10px">
+<div onClick="{{ aClose }}" style="flex:1;height:46px;border-radius:8px;background:#1F5C4A;color:#F2EFE8;display:flex;align-items:center;justify-content:center;font:600 14px 'Archivo';cursor:pointer">Mark done</div>
+<div onClick="{{ aClose }}" style="width:46px;height:46px;border-radius:8px;border:1px solid rgba(20,19,15,.16);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M4 4l9 9M13 4l-9 9" stroke="#14130F" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ aCapture }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ aClose }}" style="position:absolute;inset:0;z-index:60;background:rgba(20,19,15,.32)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#F7F5EF;border-radius:22px 22px 0 0;padding:20px 22px 26px;box-shadow:0 -12px 40px rgba(20,19,15,.18)">
+<div style="display:flex;gap:12px;align-items:flex-start">
+<span style="width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(20,19,15,.28);box-sizing:border-box;flex:none;margin-top:3px"></span>
+<div style="flex:1"><span style="font:400 17px 'Archivo';color:#14130F">Call the framer about</span><span style="display:inline-block;width:1.5px;height:19px;background:#1F5C4A;vertical-align:-3px;margin-left:2px"></span></div>
+</div>
+<div style="margin-top:18px;display:flex;gap:7px;flex-wrap:wrap">
+<div style="padding:8px 12px;border-radius:20px;background:#1F5C4A;color:#F2EFE8;font:500 12.5px 'Archivo'">Today</div>
+<div style="padding:8px 12px;border-radius:20px;border:1px solid rgba(20,19,15,.16);color:#14130F;font:500 12.5px 'Archivo'">Tomorrow</div>
+<div style="padding:8px 12px;border-radius:20px;border:1px solid rgba(20,19,15,.16);color:#14130F;font:500 12.5px 'Archivo'">Personal</div>
+<div style="padding:8px 12px;border-radius:20px;border:1px solid rgba(20,19,15,.16);color:#14130F;font:500 12.5px 'Archivo'">+ Time</div>
+</div>
+<div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(20,19,15,.10);padding-top:16px">
+<div onClick="{{ aClose }}" style="font:500 13.5px 'Archivo';color:#8C8577;cursor:pointer">Cancel</div>
+<div onClick="{{ aClose }}" style="padding:11px 20px;border-radius:8px;background:#1F5C4A;color:#F2EFE8;font:600 13.5px 'Archivo';cursor:pointer">Save</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-import>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 760 }}" surface="#F2EFE8" hint-size="380px,760px">
+<div style="position:relative;min-height:100%;background:#F2EFE8;font-family:'Archivo',system-ui,sans-serif;display:flex;flex-direction:column">
+<div style="padding:14px 20px 12px;display:flex;align-items:center;justify-content:space-between">
+<div style="font:400 25px/1.1 'Libre Caslon Text',serif;color:#14130F">August</div>
+<div style="display:flex;gap:14px;align-items:center">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#14130F" stroke-width="1.5"/><path d="M12.2 12.2 16 16" stroke="#14130F" stroke-width="1.5" stroke-linecap="round"/></svg>
+<div onClick="{{ aOpenCapture }}" style="width:30px;height:30px;border-radius:50%;background:#1F5C4A;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 2v10M2 7h10" stroke="#F2EFE8" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:34px repeat(7,1fr);border-top:1px solid rgba(20,19,15,.10)">
+<div></div>
+<div onClick="{{ aDays.mon }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.mon }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#8C8577">M</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#14130F">25</div></div>
+<div onClick="{{ aDays.tue }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.tue }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#8C8577">T</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#14130F">26</div></div>
+<div onClick="{{ aDays.wed }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.wed }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#8C8577">W</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#14130F">27</div></div>
+<div onClick="{{ aDays.thu }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.thu }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#8C8577">T</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#14130F">28</div></div>
+<div onClick="{{ aDays.fri }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.fri }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#8C8577">F</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#14130F">29</div></div>
+<div onClick="{{ aDays.sat }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.sat }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#C4BEB2">S</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#A9A398">30</div></div>
+<div onClick="{{ aDays.sun }}" style="padding:9px 0 8px;text-align:center;cursor:pointer;background: {{ aDayBg.sun }}"><div style="font:500 9.5px 'Archivo';letter-spacing:.1em;color:#C4BEB2">S</div><div style="margin-top:3px;font:400 14px 'Libre Caslon Text',serif;color:#A9A398">31</div></div>
+</div>
+<div style="flex:1;position:relative;border-top:1px solid rgba(20,19,15,.10);display:grid;grid-template-columns:34px repeat(7,1fr)">
+<div style="border-right:1px solid rgba(20,19,15,.07);padding-top:2px">
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">09</div>
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">10</div>
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">11</div>
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">12</div>
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">13</div>
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">14</div>
+<div style="height:66px;font:500 9.5px 'Archivo';color:#A9A398;text-align:right;padding-right:6px">15</div>
+</div>
+<div style="border-right:1px solid rgba(20,19,15,.07);padding:2px 2px 0">
+<div style="margin-top:66px;height:66px;background:#E4E7DF;border-left:2px solid #1F5C4A;border-radius:0 3px 3px 0;padding:5px 4px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Archivo';color:#1F5C4A">Review</div><div style="margin-top:2px;font:400 7.5px/1.15 'Archivo';color:#7E8877">10:00</div></div>
+</div>
+<div onClick="{{ aOpenDetail }}" style="border-right:1px solid rgba(20,19,15,.07);padding:2px 2px 0;cursor:pointer;position:relative">
+<div style="position:absolute;left:2px;right:2px;top:2px;height:33px;background:#E4E7DF;border-left:2px solid #1F5C4A;border-radius:0 3px 3px 0;padding:4px 4px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.1 'Archivo';color:#1F5C4A">Standup</div></div>
+<div style="position:absolute;left:2px;right:2px;top:68px;height:132px;background:#1F5C4A;border-radius:3px;padding:6px 4px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Archivo';color:#F2EFE8">Copy</div><div style="margin-top:2px;font:400 7.5px/1.15 'Archivo';color:rgba(242,239,232,.65)">10—12</div></div>
+<div style="position:absolute;left:2px;right:2px;top:332px;height:66px;background:#EFE2DE;border-left:2px solid #B0483A;border-radius:0 3px 3px 0;padding:5px 4px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Archivo';color:#B0483A">Dentist</div><div style="margin-top:2px;font:400 7.5px/1.15 'Archivo';color:#B0483A;opacity:.7">14:00</div></div>
+<div style="position:absolute;left:0;right:0;top:178px;height:1.5px;background:#B0483A"><span style="position:absolute;left:-3px;top:-2.5px;width:6px;height:6px;border-radius:50%;background:#B0483A"></span></div>
+</div>
+<div style="border-right:1px solid rgba(20,19,15,.07);padding:2px 2px 0">
+<div style="margin-top:132px;height:66px;background:#E4E7DF;border-left:2px solid #1F5C4A;border-radius:0 3px 3px 0;padding:5px 4px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Archivo';color:#1F5C4A">1:1</div></div>
+</div>
+<div style="border-right:1px solid rgba(20,19,15,.07);padding:2px 2px 0"></div>
+<div style="border-right:1px solid rgba(20,19,15,.07);padding:2px 2px 0">
+<div style="margin-top:66px;height:132px;background:#E4E7DF;border-left:2px solid #1F5C4A;border-radius:0 3px 3px 0;padding:5px 4px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Archivo';color:#1F5C4A">Q4 plan</div><div style="margin-top:2px;font:400 7.5px/1.15 'Archivo';color:#7E8877">Due</div></div>
+</div>
+<div style="border-right:1px solid rgba(20,19,15,.07);background:rgba(20,19,15,.02)"></div>
+<div style="background:rgba(20,19,15,.02)"></div>
+</div>
+</div>
+</x-import>
+
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a><b>Rail</b> — the day as a length of time</div>
+<div class="dv-spec"><span>Timeline</span><span>Gesture + segment</span><span>Pull-up capture</span><span>Dark &amp; technical</span></div>
+<div class="dv-card" style="padding:30px;background:#1A1917;display:flex;flex-direction:column;gap:26px">
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 822 }}" dark="{{ true }}" hint-size="380px,822px">
+<div style="position:relative;height:100%;background:#121110;font-family:'Inter Tight',system-ui,sans-serif;display:flex;flex-direction:column">
+
+<sc-if value="{{ bToday }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;overflow:auto;padding:60px 0 96px">
+<div style="padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between">
+<div>
+<div style="font:800 30px/1 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.02em">Tue 26</div>
+<div style="margin-top:7px;font:500 11px/1 'Inter Tight';letter-spacing:.1em;text-transform:uppercase;color:#E4622F">6h 20m planned</div>
+</div>
+<div style="font:500 11px 'Inter Tight';color:#7E7870;text-align:right;line-height:1.5">3/8 done<br/>2 slipped</div>
+</div>
+
+<div style="margin:18px 20px 0;display:flex;background:#1C1A18;border-radius:9px;padding:3px">
+<div style="flex:1;text-align:center;padding:8px 0;border-radius:6px;background:#2C2926;font:600 12px 'Inter Tight';color:#EDE9E3">Day</div>
+<div style="flex:1;text-align:center;padding:8px 0;font:500 12px 'Inter Tight';color:#7E7870">Week</div>
+<div style="flex:1;text-align:center;padding:8px 0;font:500 12px 'Inter Tight';color:#7E7870">Backlog</div>
+</div>
+
+<div style="margin-top:22px;padding:0 20px;display:flex;gap:14px">
+<div style="width:34px;flex:none;display:flex;flex-direction:column;font:500 10px/1 'Inter Tight';color:#5E5952">
+<div style="height:52px">09:00</div><div style="height:104px">10:00</div><div style="height:52px">12:00</div><div style="height:78px">13:00</div><div style="height:52px">14:00</div><div style="height:52px">15:00</div>
+</div>
+<div style="flex:1;position:relative;border-left:1px solid rgba(255,255,255,.09);padding-left:14px">
+<div onClick="{{ bOpenDetail }}" style="height:44px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:8px 11px;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:9px">
+<svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.2" fill="#3D8B6E"/><path d="M3.6 6.2 5.3 7.9 8.6 4.2" stroke="#121110" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+<span style="font:500 13px 'Inter Tight';color:#6B655E;text-decoration:line-through">Standup — Operon</span></div>
+
+<div onClick="{{ bOpenDetail }}" style="margin-top:8px;height:148px;border-radius:7px;background:#E4622F;padding:12px 13px;box-sizing:border-box;cursor:pointer;position:relative;overflow:hidden">
+<div style="font:600 15px/1.25 'Inter Tight';color:#1A0D06">Rewrite the onboarding copy</div>
+<div style="margin-top:5px;font:500 11px 'Inter Tight';color:rgba(26,13,6,.62)">10:00 — 12:00 · Operon</div>
+<div style="position:absolute;left:13px;right:13px;bottom:12px;display:flex;align-items:center;gap:8px">
+<div style="flex:1;height:3px;background:rgba(26,13,6,.22);border-radius:2px;overflow:hidden"><div style="width:48%;height:100%;background:#1A0D06"></div></div>
+<span style="font:600 10px 'Inter Tight';color:rgba(26,13,6,.7)">58m left</span></div>
+</div>
+
+<div style="margin-top:8px;height:34px;border-radius:7px;border:1px dashed rgba(255,255,255,.14);display:flex;align-items:center;padding:0 11px">
+<span style="font:500 11.5px 'Inter Tight';color:#5E5952">Free · 12:00 — 13:00</span></div>
+
+<div onClick="{{ bOpenDetail }}" style="margin-top:8px;height:62px;border-radius:7px;background:rgba(255,255,255,.055);border-left:2px solid #C9A227;padding:9px 11px;box-sizing:border-box;cursor:pointer">
+<div style="font:500 13px/1.25 'Inter Tight';color:#EDE9E3">Dentist</div>
+<div style="margin-top:4px;font:500 10.5px 'Inter Tight';color:#7E7870">14:00 · Kensington</div></div>
+
+<div style="position:absolute;left:-4px;right:0;top:196px;height:1px;background:#E4622F"><span style="position:absolute;left:0;top:-3px;width:7px;height:7px;border-radius:50%;background:#E4622F"></span></div>
+</div>
+</div>
+
+<div style="margin:26px 20px 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.09)">
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<span style="font:600 10.5px 'Inter Tight';letter-spacing:.14em;text-transform:uppercase;color:#7E7870">Unscheduled</span>
+<span style="font:500 10.5px 'Inter Tight';color:#5E5952">drag onto the rail</span></div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:7px">
+<div onClick="{{ bOpenDetail }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:7px;background:#1C1A18;cursor:pointer">
+<span style="width:6px;height:6px;border-radius:50%;background:#B0483A;flex:none"></span>
+<span style="flex:1;font:500 13px 'Inter Tight';color:#EDE9E3">Reply to Marta re: contract</span>
+<span style="font:500 10.5px 'Inter Tight';color:#B0483A">2d late</span></div>
+<div onClick="{{ bOpenDetail }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:7px;background:#1C1A18;cursor:pointer">
+<span style="width:6px;height:6px;border-radius:50%;background:#7E7870;flex:none"></span>
+<span style="flex:1;font:500 13px 'Inter Tight';color:#EDE9E3">Groceries</span>
+<span style="font:500 10.5px 'Inter Tight';color:#5E5952">Personal</span></div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ bProjects }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;padding:60px 20px 96px">
+<div style="font:800 30px/1 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.02em">Backlog</div>
+<div style="margin-top:7px;font:500 11px/1 'Inter Tight';letter-spacing:.1em;text-transform:uppercase;color:#7E7870">12 unscheduled · 3 projects</div>
+<div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+<div style="padding:15px;border-radius:9px;background:#1C1A18;border-left:2px solid #E4622F">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 15px 'Inter Tight';color:#EDE9E3">Operon</span><span style="font:500 11px 'Inter Tight';color:#E4622F">4 open</span></div>
+<div style="margin-top:11px;display:flex;gap:3px">
+<div style="flex:3;height:4px;background:#E4622F;border-radius:2px"></div><div style="flex:1;height:4px;background:rgba(255,255,255,.10);border-radius:2px"></div></div>
+</div>
+<div style="padding:15px;border-radius:9px;background:#1C1A18;border-left:2px solid #C9A227">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 15px 'Inter Tight';color:#EDE9E3">Personal</span><span style="font:500 11px 'Inter Tight';color:#C9A227">2 open</span></div>
+<div style="margin-top:11px;display:flex;gap:3px">
+<div style="flex:5;height:4px;background:#C9A227;border-radius:2px"></div><div style="flex:2;height:4px;background:rgba(255,255,255,.10);border-radius:2px"></div></div>
+</div>
+<div style="padding:15px;border-radius:9px;background:#1C1A18;border-left:2px solid #5E5952">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 15px 'Inter Tight';color:#EDE9E3">Reading</span><span style="font:500 11px 'Inter Tight';color:#7E7870">6 open</span></div>
+<div style="margin-top:11px;display:flex;gap:3px">
+<div style="flex:1;height:4px;background:#5E5952;border-radius:2px"></div><div style="flex:6;height:4px;background:rgba(255,255,255,.10);border-radius:2px"></div></div>
+</div>
+</div>
+<div style="margin-top:28px;padding:26px 18px;border-radius:9px;border:1px dashed rgba(255,255,255,.14);text-align:center">
+<div style="font:600 14px 'Inter Tight';color:#EDE9E3">Nothing overdue</div>
+<div style="margin-top:6px;font:500 12px/1.5 'Inter Tight';color:#7E7870">Anything you skip lands here instead of vanishing.</div>
+</div>
+</div>
+</sc-if>
+
+<div onClick="{{ bOpenCapture }}" style="position:absolute;left:0;right:0;bottom:0;z-index:40;padding:14px 20px 34px;background:linear-gradient(180deg,rgba(18,17,16,0) 0%,#121110 38%);cursor:pointer">
+<div style="height:50px;border-radius:25px;background:#1C1A18;border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;padding:0 6px 0 18px;gap:12px">
+<span style="flex:1;font:500 13.5px 'Inter Tight';color:#6B655E">Pull up to capture…</span>
+<div onClick="{{ bGoProjects }}" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 4h10M2.5 7.5h10M2.5 11h6" stroke="#8B857B" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+<div style="width:38px;height:38px;border-radius:50%;background:#E4622F;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 15 15"><path d="M7.5 2.5v10M2.5 7.5h10" stroke="#1A0D06" stroke-width="2" stroke-linecap="round"/></svg></div>
+</div>
+</div>
+
+<sc-if value="{{ bDetail }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ bClose }}" style="position:absolute;inset:0;z-index:60;background:rgba(0,0,0,.55)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#1C1A18;border-radius:20px 20px 0 0;padding:14px 22px 40px;border-top:1px solid rgba(255,255,255,.10)">
+<div style="width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.16);margin:0 auto 22px"></div>
+<div style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:#E4622F"></span><span style="font:600 10.5px 'Inter Tight';letter-spacing:.14em;text-transform:uppercase;color:#E4622F">Operon</span></div>
+<div style="margin-top:10px;font:800 24px/1.2 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.02em">Rewrite the onboarding copy</div>
+<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div style="padding:13px;border-radius:8px;background:rgba(255,255,255,.05)"><div style="font:500 10px 'Inter Tight';letter-spacing:.1em;text-transform:uppercase;color:#7E7870">Block</div><div style="margin-top:5px;font:600 14px 'Inter Tight';color:#EDE9E3">10:00 — 12:00</div></div>
+<div style="padding:13px;border-radius:8px;background:rgba(255,255,255,.05)"><div style="font:500 10px 'Inter Tight';letter-spacing:.1em;text-transform:uppercase;color:#7E7870">Elapsed</div><div style="margin-top:5px;font:600 14px 'Inter Tight';color:#E4622F">1h 02m</div></div>
+</div>
+<div style="margin-top:16px;font:400 13px/1.65 'Inter Tight';color:#8B857B">Cut the second screen entirely. Lead with the calendar sync — that is the thing people say sold them.</div>
+<div style="margin-top:22px;display:flex;gap:9px">
+<div onClick="{{ bClose }}" style="flex:1;height:46px;border-radius:9px;background:#E4622F;color:#1A0D06;display:flex;align-items:center;justify-content:center;font:600 14px 'Inter Tight';cursor:pointer">Start timer</div>
+<div onClick="{{ bClose }}" style="height:46px;padding:0 18px;border-radius:9px;background:rgba(255,255,255,.06);color:#EDE9E3;display:flex;align-items:center;justify-content:center;font:600 14px 'Inter Tight';cursor:pointer">Done</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ bCapture }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ bClose }}" style="position:absolute;inset:0;z-index:60;background:rgba(0,0,0,.55)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#1C1A18;border-radius:20px 20px 0 0;padding:22px 20px 26px;border-top:1px solid rgba(255,255,255,.10)">
+<div style="font:500 10.5px 'Inter Tight';letter-spacing:.14em;text-transform:uppercase;color:#7E7870">Capture</div>
+<div style="margin-top:12px;font:600 19px 'Inter Tight';color:#EDE9E3">Call the framer<span style="display:inline-block;width:1.5px;height:20px;background:#E4622F;vertical-align:-3px;margin-left:3px"></span></div>
+<div style="margin-top:18px;display:flex;gap:6px;flex-wrap:wrap">
+<div style="padding:8px 12px;border-radius:7px;background:#E4622F;color:#1A0D06;font:600 12px 'Inter Tight'">Today 16:00</div>
+<div style="padding:8px 12px;border-radius:7px;background:rgba(255,255,255,.06);color:#EDE9E3;font:500 12px 'Inter Tight'">Backlog</div>
+<div style="padding:8px 12px;border-radius:7px;background:rgba(255,255,255,.06);color:#EDE9E3;font:500 12px 'Inter Tight'">30m</div>
+<div style="padding:8px 12px;border-radius:7px;background:rgba(255,255,255,.06);color:#EDE9E3;font:500 12px 'Inter Tight'">Personal</div>
+</div>
+<div style="margin-top:20px;display:flex;gap:9px">
+<div onClick="{{ bClose }}" style="flex:1;height:44px;border-radius:9px;background:rgba(255,255,255,.06);color:#8B857B;display:flex;align-items:center;justify-content:center;font:600 13.5px 'Inter Tight';cursor:pointer">Cancel</div>
+<div onClick="{{ bClose }}" style="flex:2;height:44px;border-radius:9px;background:#E4622F;color:#1A0D06;display:flex;align-items:center;justify-content:center;font:600 13.5px 'Inter Tight';cursor:pointer">Drop on rail</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-import>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 760 }}" dark="{{ true }}" surface="#121110" hint-size="380px,760px">
+<div style="position:relative;min-height:100%;background:#121110;font-family:'Inter Tight',system-ui,sans-serif;display:flex;flex-direction:column">
+<div style="padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between">
+<div style="font:800 22px/1 'Bricolage Grotesque',sans-serif;color:#EDE9E3;letter-spacing:-.02em">Week 35</div>
+<div onClick="{{ bOpenCapture }}" style="padding:7px 13px;border-radius:7px;background:#E4622F;color:#1A0D06;font:600 12px 'Inter Tight';cursor:pointer">Capture</div>
+</div>
+<div style="padding:0 18px 12px;display:flex;gap:5px">
+<div onClick="{{ bDays.mon }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.mon }}"><div style="font:500 9.5px 'Inter Tight';color:#7E7870">MON</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#EDE9E3">25</div></div>
+<div onClick="{{ bDays.tue }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.tue }}"><div style="font:500 9.5px 'Inter Tight';color:#7E7870">TUE</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#EDE9E3">26</div></div>
+<div onClick="{{ bDays.wed }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.wed }}"><div style="font:500 9.5px 'Inter Tight';color:#7E7870">WED</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#EDE9E3">27</div></div>
+<div onClick="{{ bDays.thu }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.thu }}"><div style="font:500 9.5px 'Inter Tight';color:#7E7870">THU</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#EDE9E3">28</div></div>
+<div onClick="{{ bDays.fri }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.fri }}"><div style="font:500 9.5px 'Inter Tight';color:#7E7870">FRI</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#EDE9E3">29</div></div>
+<div onClick="{{ bDays.sat }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.sat }}"><div style="font:500 9.5px 'Inter Tight';color:#4F4A44">SAT</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#6B655E">30</div></div>
+<div onClick="{{ bDays.sun }}" style="flex:1;padding:9px 0;border-radius:7px;text-align:center;cursor:pointer;background: {{ bDayBg.sun }}"><div style="font:500 9.5px 'Inter Tight';color:#4F4A44">SUN</div><div style="margin-top:3px;font:600 14px 'Inter Tight';color:#6B655E">31</div></div>
+</div>
+<div style="flex:1;display:grid;grid-template-columns:30px repeat(7,1fr);border-top:1px solid rgba(255,255,255,.08);padding:0 18px 0 0">
+<div style="padding-top:3px">
+<div style="height:72px;font:500 9px 'Inter Tight';color:#4F4A44;text-align:right;padding-right:5px">09</div>
+<div style="height:72px;font:500 9px 'Inter Tight';color:#4F4A44;text-align:right;padding-right:5px">11</div>
+<div style="height:72px;font:500 9px 'Inter Tight';color:#4F4A44;text-align:right;padding-right:5px">13</div>
+<div style="height:72px;font:500 9px 'Inter Tight';color:#4F4A44;text-align:right;padding-right:5px">15</div>
+<div style="height:72px;font:500 9px 'Inter Tight';color:#4F4A44;text-align:right;padding-right:5px">17</div>
+</div>
+<div style="padding:3px 1.5px 0"><div style="margin-top:36px;height:44px;background:rgba(228,98,47,.16);border-radius:4px;padding:4px 3px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Inter Tight';color:#E4622F">Review</div></div></div>
+<div onClick="{{ bOpenDetail }}" style="padding:3px 1.5px 0;cursor:pointer;position:relative">
+<div style="height:16px;background:rgba(255,255,255,.07);border-radius:4px"></div>
+<div style="margin-top:20px;height:72px;background:#E4622F;border-radius:4px;padding:5px 3px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Inter Tight';color:#1A0D06">Copy</div></div>
+<div style="margin-top:72px;height:36px;background:rgba(201,162,39,.2);border-radius:4px;padding:4px 3px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Inter Tight';color:#C9A227">Dentist</div></div>
+<div style="position:absolute;left:-30px;right:0;top:130px;height:1px;background:#E4622F"><span style="position:absolute;left:30px;top:-2.5px;width:6px;height:6px;border-radius:50%;background:#E4622F"></span></div>
+</div>
+<div style="padding:3px 1.5px 0"><div style="margin-top:108px;height:44px;background:rgba(228,98,47,.16);border-radius:4px;padding:4px 3px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Inter Tight';color:#E4622F">1:1</div></div></div>
+<div style="padding:3px 1.5px 0"></div>
+<div style="padding:3px 1.5px 0"><div style="margin-top:54px;height:80px;background:rgba(228,98,47,.16);border-radius:4px;padding:4px 3px;box-sizing:border-box;overflow:hidden"><div style="font:600 8px/1.15 'Inter Tight';color:#E4622F">Q4 plan</div></div></div>
+<div style="padding:3px 1.5px 0;background:rgba(255,255,255,.02)"></div>
+<div style="padding:3px 1.5px 0;background:rgba(255,255,255,.02)"></div>
+</div>
+<div style="padding:14px 18px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between">
+<div><div style="font:500 9.5px 'Inter Tight';letter-spacing:.12em;text-transform:uppercase;color:#7E7870">Committed this week</div><div style="margin-top:4px;font:600 15px 'Inter Tight';color:#EDE9E3">21h 40m <span style="color:#5E5952;font-weight:500">of 32h</span></div></div>
+<div style="width:74px;height:6px;border-radius:3px;background:rgba(255,255,255,.09);overflow:hidden"><div style="width:68%;height:100%;background:#E4622F"></div></div>
+</div>
+</div>
+</x-import>
+
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a><b>Deck</b> — the day as a stack of cards</div>
+<div class="dv-spec"><span>Cards</span><span>Drawer + FAB</span><span>One-card focus</span><span>Bold &amp; warm</span></div>
+<div class="dv-card" style="padding:30px;background:#EBE3EF;display:flex;flex-direction:column;gap:26px">
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 822 }}" hint-size="380px,822px">
+<div style="position:relative;height:100%;background:#F6F2F8;font-family:'Work Sans',system-ui,sans-serif;display:flex;flex-direction:column">
+
+<sc-if value="{{ cToday }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;overflow:auto;padding:58px 0 104px">
+<div style="padding:0 22px;display:flex;align-items:center;justify-content:space-between">
+<div onClick="{{ cGoProjects }}" style="width:34px;height:34px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 3px rgba(36,26,43,.10)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h7" stroke="#6B2F8C" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+<div style="font:500 12px 'Work Sans';color:#7E6C88">Tue, 26 Aug</div>
+<div style="width:34px;height:34px;border-radius:50%;background:#6B2F8C;color:#fff;display:flex;align-items:center;justify-content:center;font:600 12px 'Work Sans'">JM</div>
+</div>
+
+<div style="padding:0 22px;margin-top:26px">
+<div style="font:700 40px/1 'Fraunces',serif;color:#241A2B;letter-spacing:-.015em">Five left</div>
+<div style="margin-top:9px;font:400 14px/1.5 'Work Sans';color:#7E6C88">Two hours of it is one task. Start there.</div>
+</div>
+
+<div onClick="{{ cOpenDetail }}" style="margin:24px 22px 0;border-radius:20px;background:#6B2F8C;padding:22px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 12px 28px rgba(107,47,140,.28)">
+<div style="position:absolute;right:-38px;top:-38px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)"></div>
+<div style="display:flex;align-items:center;gap:7px;position:relative"><span style="width:6px;height:6px;border-radius:50%;background:#F0C97A"></span><span style="font:600 10.5px 'Work Sans';letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.72)">Now · Operon</span></div>
+<div style="margin-top:13px;font:700 26px/1.15 'Fraunces',serif;color:#fff;position:relative">Rewrite the onboarding copy</div>
+<div style="margin-top:20px;display:flex;align-items:center;gap:12px;position:relative">
+<div style="flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.22);overflow:hidden"><div style="width:48%;height:100%;background:#F0C97A"></div></div>
+<span style="font:600 11.5px 'Work Sans';color:rgba(255,255,255,.85)">58m left</span></div>
+<div style="margin-top:18px;display:flex;gap:8px;position:relative">
+<div style="flex:1;height:40px;border-radius:11px;background:#fff;color:#6B2F8C;display:flex;align-items:center;justify-content:center;font:600 13px 'Work Sans'">Done</div>
+<div style="flex:1;height:40px;border-radius:11px;background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;justify-content:center;font:600 13px 'Work Sans'">Later</div>
+</div>
+</div>
+
+<div style="margin:26px 22px 0;font:600 10.5px 'Work Sans';letter-spacing:.16em;text-transform:uppercase;color:#9B8AA5">Up next</div>
+<div style="margin:12px 22px 0;display:flex;flex-direction:column;gap:9px">
+<div onClick="{{ cOpenDetail }}" style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-radius:15px;background:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<span style="width:21px;height:21px;border-radius:7px;border:1.8px solid #D6C7DE;box-sizing:border-box;flex:none"></span>
+<div style="flex:1"><div style="font:500 14.5px/1.3 'Work Sans';color:#241A2B">Dentist</div><div style="margin-top:3px;font:400 11.5px 'Work Sans';color:#9B8AA5">Kensington Dental</div></div>
+<span style="padding:5px 9px;border-radius:7px;background:#F3E9DA;color:#9A6A28;font:600 11px 'Work Sans'">14:00</span>
+</div>
+<div onClick="{{ cOpenDetail }}" style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-radius:15px;background:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<span style="width:21px;height:21px;border-radius:7px;border:1.8px solid #D6C7DE;box-sizing:border-box;flex:none"></span>
+<div style="flex:1"><div style="font:500 14.5px/1.3 'Work Sans';color:#241A2B">Reply to Marta re: contract</div></div>
+<span style="padding:5px 9px;border-radius:7px;background:#F6DDD9;color:#A8402F;font:600 11px 'Work Sans'">2d late</span>
+</div>
+<div onClick="{{ cOpenDetail }}" style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-radius:15px;background:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<span style="width:21px;height:21px;border-radius:7px;border:1.8px solid #D6C7DE;box-sizing:border-box;flex:none"></span>
+<div style="flex:1"><div style="font:500 14.5px/1.3 'Work Sans';color:#241A2B">Draft Q4 roadmap</div><div style="margin-top:3px;font:400 11.5px 'Work Sans';color:#9B8AA5">Operon</div></div>
+<span style="padding:5px 9px;border-radius:7px;background:#E7DEEC;color:#6B2F8C;font:600 11px 'Work Sans'">Fri</span>
+</div>
+<div onClick="{{ cOpenDetail }}" style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-radius:15px;background:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(36,26,43,.07)">
+<span style="width:21px;height:21px;border-radius:7px;border:1.8px solid #D6C7DE;box-sizing:border-box;flex:none"></span>
+<div style="flex:1"><div style="font:500 14.5px/1.3 'Work Sans';color:#241A2B">Groceries</div></div>
+<span style="padding:5px 9px;border-radius:7px;background:#E3EDE6;color:#3B6B4E;font:600 11px 'Work Sans'">Personal</span>
+</div>
+</div>
+
+<div style="margin:22px 22px 0;padding:16px 18px;border-radius:15px;background:#EFE7DA;display:flex;align-items:center;gap:13px">
+<div style="width:34px;height:34px;border-radius:11px;background:#F0C97A;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v6l4 2" stroke="#7A5312" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="6.2" stroke="#7A5312" stroke-width="1.5"/></svg></div>
+<div style="flex:1"><div style="font:600 13px 'Work Sans';color:#5C4212">Three done before noon</div><div style="margin-top:2px;font:400 11.5px 'Work Sans';color:#8A6B33">Best morning this week.</div></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ cProjects }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;padding:58px 22px 104px">
+<div onClick="{{ cGoToday }}" style="width:34px;height:34px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 3px rgba(36,26,43,.10)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3.5 5.5 8l4.5 4.5" stroke="#6B2F8C" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div style="margin-top:22px;font:700 36px/1 'Fraunces',serif;color:#241A2B;letter-spacing:-.015em">Projects</div>
+<div style="margin-top:8px;font:400 13.5px 'Work Sans';color:#7E6C88">Three running, one paused.</div>
+<div style="margin-top:24px;display:flex;flex-direction:column;gap:12px">
+<div style="padding:20px;border-radius:18px;background:#6B2F8C;color:#fff;box-shadow:0 8px 22px rgba(107,47,140,.22)">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:700 21px 'Fraunces',serif">Operon</span><span style="font:600 12px 'Work Sans';color:rgba(255,255,255,.7)">4 open</span></div>
+<div style="margin-top:16px;height:5px;border-radius:3px;background:rgba(255,255,255,.22);overflow:hidden"><div style="width:75%;height:100%;background:#F0C97A"></div></div>
+<div style="margin-top:9px;font:400 11.5px 'Work Sans';color:rgba(255,255,255,.7)">12 of 16 done · ships 12 Sep</div>
+</div>
+<div style="padding:20px;border-radius:18px;background:#F3E9DA">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:700 21px 'Fraunces',serif;color:#5C4212">Personal</span><span style="font:600 12px 'Work Sans';color:#8A6B33">2 open</span></div>
+<div style="margin-top:16px;height:5px;border-radius:3px;background:rgba(92,66,18,.15);overflow:hidden"><div style="width:71%;height:100%;background:#C08A2A"></div></div>
+<div style="margin-top:9px;font:400 11.5px 'Work Sans';color:#8A6B33">5 of 7 done</div>
+</div>
+<div style="padding:20px;border-radius:18px;background:#E3EDE6">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:700 21px 'Fraunces',serif;color:#26452F">Reading</span><span style="font:600 12px 'Work Sans';color:#3B6B4E">6 open</span></div>
+<div style="margin-top:16px;height:5px;border-radius:3px;background:rgba(38,69,47,.15);overflow:hidden"><div style="width:14%;height:100%;background:#3B6B4E"></div></div>
+<div style="margin-top:9px;font:400 11.5px 'Work Sans';color:#3B6B4E">1 of 7 done</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<div onClick="{{ cOpenCapture }}" style="position:absolute;right:22px;bottom:44px;z-index:40;width:60px;height:60px;border-radius:20px;background:#241A2B;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 26px rgba(36,26,43,.32)"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 4v14M4 11h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+
+<sc-if value="{{ cDetail }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ cClose }}" style="position:absolute;inset:0;z-index:60;background:rgba(36,26,43,.4)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#F6F2F8;border-radius:26px 26px 0 0;padding:14px 22px 40px">
+<div style="width:38px;height:4px;border-radius:2px;background:#D6C7DE;margin:0 auto 22px"></div>
+<div style="display:flex;align-items:center;gap:7px"><span style="width:6px;height:6px;border-radius:50%;background:#6B2F8C"></span><span style="font:600 10.5px 'Work Sans';letter-spacing:.14em;text-transform:uppercase;color:#6B2F8C">Operon</span></div>
+<div style="margin-top:11px;font:700 27px/1.15 'Fraunces',serif;color:#241A2B">Rewrite the onboarding copy</div>
+<div style="margin-top:20px;display:flex;gap:9px">
+<div style="flex:1;padding:14px;border-radius:14px;background:#fff"><div style="font:600 10px 'Work Sans';letter-spacing:.1em;text-transform:uppercase;color:#9B8AA5">When</div><div style="margin-top:5px;font:600 14px 'Work Sans';color:#241A2B">10:00 — 12:00</div></div>
+<div style="flex:1;padding:14px;border-radius:14px;background:#fff"><div style="font:600 10px 'Work Sans';letter-spacing:.1em;text-transform:uppercase;color:#9B8AA5">Remind</div><div style="margin-top:5px;font:600 14px 'Work Sans';color:#241A2B">15 min before</div></div>
+</div>
+<div style="margin-top:14px;padding:16px;border-radius:14px;background:#fff;font:400 13.5px/1.6 'Work Sans';color:#5E5068">Cut the second screen entirely. Lead with the calendar sync — that is the thing people say sold them.</div>
+<div style="margin-top:20px;display:flex;gap:9px">
+<div onClick="{{ cClose }}" style="flex:1;height:48px;border-radius:14px;background:#6B2F8C;color:#fff;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans';cursor:pointer">Mark done</div>
+<div onClick="{{ cClose }}" style="height:48px;padding:0 18px;border-radius:14px;background:#E7DEEC;color:#6B2F8C;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans';cursor:pointer">Snooze</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ cCapture }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ cClose }}" style="position:absolute;inset:0;z-index:60;background:rgba(36,26,43,.4)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:61;background:#F6F2F8;border-radius:26px 26px 0 0;padding:24px 22px 26px">
+<div style="font:700 22px/1.2 'Fraunces',serif;color:#241A2B">Call the framer<span style="display:inline-block;width:2px;height:22px;background:#6B2F8C;vertical-align:-4px;margin-left:3px"></span></div>
+<div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div style="padding:14px;border-radius:14px;background:#6B2F8C;color:#fff;font:600 13px 'Work Sans'">Today</div>
+<div style="padding:14px;border-radius:14px;background:#fff;color:#5E5068;font:500 13px 'Work Sans'">Pick a time</div>
+<div style="padding:14px;border-radius:14px;background:#fff;color:#5E5068;font:500 13px 'Work Sans'">Personal</div>
+<div style="padding:14px;border-radius:14px;background:#fff;color:#5E5068;font:500 13px 'Work Sans'">Add a note</div>
+</div>
+<div style="margin-top:18px;display:flex;gap:9px">
+<div onClick="{{ cClose }}" style="flex:1;height:48px;border-radius:14px;background:#E7DEEC;color:#6B2F8C;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans';cursor:pointer">Cancel</div>
+<div onClick="{{ cClose }}" style="flex:2;height:48px;border-radius:14px;background:#241A2B;color:#fff;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans';cursor:pointer">Add to deck</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-import>
+
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 760 }}" surface="#F6F2F8" hint-size="380px,760px">
+<div style="position:relative;min-height:100%;background:#F6F2F8;font-family:'Work Sans',system-ui,sans-serif;display:flex;flex-direction:column">
+<div style="padding:14px 20px 14px;display:flex;align-items:center;justify-content:space-between">
+<div style="font:700 24px/1 'Fraunces',serif;color:#241A2B">This week</div>
+<div style="display:flex;gap:8px">
+<div style="padding:7px 12px;border-radius:10px;background:#241A2B;color:#fff;font:600 11.5px 'Work Sans'">Week</div>
+<div style="padding:7px 12px;border-radius:10px;background:#fff;color:#7E6C88;font:600 11.5px 'Work Sans'">Month</div>
+</div>
+</div>
+<div style="flex:1;padding:0 20px;display:flex;flex-direction:column;gap:9px">
+
+<div onClick="{{ cDays.mon }}" style="border-radius:16px;padding:13px 15px;display:flex;gap:14px;align-items:center;background: {{ cDayBg.mon }}">
+<div style="width:38px;flex:none;text-align:center"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#9B8AA5">MON</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#241A2B">25</div></div>
+<div style="flex:1;display:flex;gap:5px;flex-wrap:wrap"><span style="padding:5px 9px;border-radius:8px;background:#E7DEEC;color:#6B2F8C;font:600 10.5px 'Work Sans'">Design review</span><span style="padding:5px 9px;border-radius:8px;background:#EEE9F1;color:#7E6C88;font:600 10.5px 'Work Sans'">+2</span></div>
+</div>
+
+<div onClick="{{ cDays.tue }}" style="border-radius:16px;padding:15px;background: {{ cDayBg.tue }};box-shadow:0 6px 18px rgba(36,26,43,.07)">
+<div style="display:flex;gap:14px;align-items:center">
+<div style="width:38px;flex:none;text-align:center"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#6B2F8C">TUE</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#6B2F8C">26</div></div>
+<div style="flex:1;font:600 12px 'Work Sans';color:#241A2B">Today · 5 left</div>
+<span style="width:7px;height:7px;border-radius:50%;background:#6B2F8C"></span>
+</div>
+<div onClick="{{ cOpenDetail }}" style="margin-top:11px;padding:12px 14px;border-radius:12px;background:#6B2F8C;cursor:pointer">
+<div style="font:600 13px/1.25 'Work Sans';color:#fff">Rewrite the onboarding copy</div>
+<div style="margin-top:3px;font:400 10.5px 'Work Sans';color:rgba(255,255,255,.7)">10:00 — 12:00</div>
+</div>
+<div style="margin-top:7px;display:flex;gap:6px">
+<span style="flex:1;padding:9px 11px;border-radius:11px;background:#F3E9DA;color:#8A6B33;font:600 11px 'Work Sans'">Dentist · 14:00</span>
+<span style="padding:9px 11px;border-radius:11px;background:#F6DDD9;color:#A8402F;font:600 11px 'Work Sans'">1 late</span>
+</div>
+</div>
+
+<div onClick="{{ cDays.wed }}" style="border-radius:16px;padding:13px 15px;display:flex;gap:14px;align-items:center;background: {{ cDayBg.wed }}">
+<div style="width:38px;flex:none;text-align:center"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#9B8AA5">WED</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#241A2B">27</div></div>
+<div style="flex:1;display:flex;gap:5px"><span style="padding:5px 9px;border-radius:8px;background:#E7DEEC;color:#6B2F8C;font:600 10.5px 'Work Sans'">1:1 Priya</span></div>
+</div>
+
+<div onClick="{{ cDays.thu }}" style="border-radius:16px;padding:13px 15px;display:flex;gap:14px;align-items:center;background: {{ cDayBg.thu }}">
+<div style="width:38px;flex:none;text-align:center"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#9B8AA5">THU</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#241A2B">28</div></div>
+<div style="flex:1;font:400 11.5px 'Work Sans';color:#B5A8BC">Nothing yet — a clear day</div>
+</div>
+
+<div onClick="{{ cDays.fri }}" style="border-radius:16px;padding:13px 15px;display:flex;gap:14px;align-items:center;background: {{ cDayBg.fri }}">
+<div style="width:38px;flex:none;text-align:center"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#9B8AA5">FRI</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#241A2B">29</div></div>
+<div style="flex:1;display:flex;gap:5px"><span style="padding:5px 9px;border-radius:8px;background:#F6DDD9;color:#A8402F;font:600 10.5px 'Work Sans'">Q4 roadmap due</span></div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div onClick="{{ cDays.sat }}" style="flex:1;border-radius:16px;padding:13px 15px;background: {{ cDayBg.sat }}"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#B5A8BC">SAT</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#9B8AA5">30</div></div>
+<div onClick="{{ cDays.sun }}" style="flex:1;border-radius:16px;padding:13px 15px;background: {{ cDayBg.sun }}"><div style="font:600 9.5px 'Work Sans';letter-spacing:.1em;color:#B5A8BC">SUN</div><div style="margin-top:2px;font:700 19px 'Fraunces',serif;color:#9B8AA5">31</div></div>
+</div>
+</div>
+<div style="padding:16px 20px 18px;display:flex;align-items:center;justify-content:space-between">
+<div style="font:400 12px 'Work Sans';color:#9B8AA5">14 tasks this week</div>
+<div onClick="{{ cOpenCapture }}" style="height:44px;padding:0 20px;border-radius:14px;background:#241A2B;color:#fff;display:flex;align-items:center;gap:8px;font:600 13px 'Work Sans';cursor:pointer"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 2v10M2 7h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>New</div>
+</div>
+</div>
+</x-import>
+
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "build out all 11 screens in <a class="dv-oid" href="#1b">1b</a>" · "give <a class="dv-oid" href="#1a">1a</a> the card metaphor from <a class="dv-oid" href="#1c">1c</a>" · "show onboarding and stats for all three"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1520,&quot;height&quot;:1100}}">
+const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
+
+class Component extends DCLogic {
+  state = {
+    aScreen: 'today', aOverlay: null, aDay: 'tue',
+    bScreen: 'today', bOverlay: null, bDay: 'tue',
+    cScreen: 'today', cOverlay: null, cDay: 'tue',
+    aAuth: 'signin', bAuth: 'signin', cAuth: 'signin',
+  };
+
+  set(patch) { this.setState(patch); }
+
+  dayPack(prefix, sel, onBg, offBg) {
+    const handlers = {}, bg = {};
+    DAYS.forEach(d => {
+      handlers[d] = () => this.set({ [prefix + 'Day']: d });
+      bg[d] = sel === d ? onBg : offBg;
+    });
+    return { handlers, bg };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const a = this.dayPack('a', s.aDay, 'rgba(31,92,74,.10)', 'transparent');
+    const b = this.dayPack('b', s.bDay, 'rgba(228,98,47,.16)', 'rgba(255,255,255,.035)');
+    const c = this.dayPack('c', s.cDay, '#FFFFFF', 'rgba(255,255,255,.55)');
+
+    return {
+      aToday: s.aScreen === 'today', aProjects: s.aScreen === 'projects',
+      aDetail: s.aOverlay === 'detail', aCapture: s.aOverlay === 'capture',
+      aTodayInk: s.aScreen === 'today' ? '#1F5C4A' : 'rgba(20,19,15,.45)',
+      aProjInk: s.aScreen === 'projects' ? '#1F5C4A' : 'rgba(20,19,15,.45)',
+      aGoToday: () => this.set({ aScreen: 'today', aOverlay: null }),
+      aGoProjects: () => this.set({ aScreen: 'projects', aOverlay: null }),
+      aOpenDetail: () => this.set({ aOverlay: 'detail' }),
+      aOpenCapture: () => this.set({ aOverlay: 'capture' }),
+      aClose: () => this.set({ aOverlay: null }),
+      aDays: a.handlers, aDayBg: a.bg,
+      aSignin: s.aAuth === 'signin', aSignup: s.aAuth === 'signup',
+      aToSignup: () => this.set({ aAuth: 'signup' }),
+      aToSignin: () => this.set({ aAuth: 'signin' }),
+      bSignin: s.bAuth === 'signin', bSignup: s.bAuth === 'signup',
+      bToSignup: () => this.set({ bAuth: 'signup' }),
+      bToSignin: () => this.set({ bAuth: 'signin' }),
+      cSignin: s.cAuth === 'signin', cSignup: s.cAuth === 'signup',
+      cToSignup: () => this.set({ cAuth: 'signup' }),
+      cToSignin: () => this.set({ cAuth: 'signin' }),
+
+      bToday: s.bScreen === 'today', bProjects: s.bScreen === 'projects',
+      bDetail: s.bOverlay === 'detail', bCapture: s.bOverlay === 'capture',
+      bGoToday: () => this.set({ bScreen: 'today', bOverlay: null }),
+      bGoProjects: () => this.set({ bScreen: s.bScreen === 'projects' ? 'today' : 'projects', bOverlay: null }),
+      bOpenDetail: () => this.set({ bOverlay: 'detail' }),
+      bOpenCapture: () => this.set({ bOverlay: 'capture' }),
+      bClose: () => this.set({ bOverlay: null }),
+      bDays: b.handlers, bDayBg: b.bg,
+
+      cToday: s.cScreen === 'today', cProjects: s.cScreen === 'projects',
+      cDetail: s.cOverlay === 'detail', cCapture: s.cOverlay === 'capture',
+      cGoToday: () => this.set({ cScreen: 'today', cOverlay: null }),
+      cGoProjects: () => this.set({ cScreen: 'projects', cOverlay: null }),
+      cOpenDetail: () => this.set({ cOverlay: 'detail' }),
+      cOpenCapture: () => this.set({ cOverlay: 'capture' }),
+      cClose: () => this.set({ cOverlay: null }),
+      cDays: c.handlers, cDayBg: c.bg,
+    };
+  }
+}
+</script>
+</body>
+</html>

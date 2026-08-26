@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E7E4DE;font-family:"Archivo",system-ui,sans-serif}
+a{color:#24443C}a:hover{color:#14201C}
+.sb-lab{font:600 9.5px/1 "Archivo";letter-spacing:.17em;text-transform:uppercase;color:#A48C7C}
+.sb-t{font:400 13px/1.6 "Archivo";color:#4A5651}
+.sb-lane{margin-top:26px;padding:22px 24px 24px;background:#FBFAF8;border:1px solid rgba(30,43,38,.11);border-radius:12px}
+.sb-ln{font:400 22px/1.15 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.sb-lt{font:400 11.5px/1.5 "Archivo";color:rgba(30,43,38,.55);margin-top:5px;max-width:62ch}
+.sb-flow{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin-top:18px}
+.sb-n{width:146px;flex:none;border-radius:10px;padding:12px 13px 13px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px}
+.sb-nn{font:600 12.5px/1.3 "Archivo"}
+.sb-np{font:500 9.5px/1 ui-monospace,Menlo,monospace;opacity:.62}
+.sb-nd{font:400 10.5px/1.45 "Archivo";opacity:.72}
+.sb-out{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+.sb-chip{font:500 9px/1 ui-monospace,Menlo,monospace;padding:4px 5px;border-radius:4px;white-space:nowrap}
+.sb-arr{width:26px;flex:none;display:flex;align-items:center;justify-content:center}
+.sb-key{display:flex;flex-wrap:wrap;gap:22px;margin-top:16px}
+</style></helmet>
+
+<div style="padding:40px 44px 70px">
+
+<div style="display:flex;align-items:flex-start;gap:20px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:52px;height:auto;display:block;margin-top:3px"/>
+<div>
+<div class="sb-lab">Storyboard</div>
+<h1 style="margin:12px 0 0;font:400 34px/1.1 'Cormorant Garamond',Georgia,serif;color:#1E2B26">How the screens connect</h1>
+<p class="sb-t" style="margin:12px 0 0;max-width:58ch">Every screen in the build, in the order a person meets it. Solid arrows are the path forward. The chips on each card are its other exits — that is the whole navigation graph, and there is nothing in the app that is not on this page.</p>
+</div>
+</div>
+
+<div class="sb-key">
+<div style="display:flex;align-items:center;gap:9px"><svg width="26" height="10" viewBox="0 0 26 10"><path d="M0 5h20M16 1.5 20 5l-4 3.5" stroke="#97A09B" stroke-width="1.4" fill="none"/></svg><span class="sb-t" style="font-size:11.5px">next step</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span class="sb-chip" style="background:#E4EAE6;color:#24443C">→ day</span><span class="sb-t" style="font-size:11.5px">jumps elsewhere</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:13px;height:13px;border-radius:4px;background:#FFFDFA;border:1px solid rgba(30,43,38,.14)"></span><span class="sb-t" style="font-size:11.5px">free</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:13px;height:13px;border-radius:4px;background:#24443C"></span><span class="sb-t" style="font-size:11.5px">paid</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:13px;height:13px;border-radius:4px;background:#F7E9E5;border:1px solid #A8402F"></span><span class="sb-t" style="font-size:11.5px">a limit was hit</span></div>
+</div>
+
+<sc-for list="{{ lanes }}" as="lane" hint-placeholder-count="8">
+<div class="sb-lane">
+<div class="sb-ln">{{ lane.name }}</div>
+<div class="sb-lt">{{ lane.note }}</div>
+<div class="sb-flow">
+<sc-for list="{{ lane.nodes }}" as="nd" hint-placeholder-count="5">
+<div style="display:flex;align-items:stretch;flex:none">
+<sc-if value="{{ nd.inbound }}" hint-placeholder-val="{{ true }}">
+<div class="sb-arr"><svg width="20" height="10" viewBox="0 0 20 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#B4BDB8" stroke-width="1.4" fill="none"/></svg></div>
+</sc-if>
+<div class="sb-n" style="background: {{ nd.bg }};border:1px solid {{ nd.bd }}">
+<div>
+<div class="sb-nn" style="color: {{ nd.ink }}">{{ nd.n }}</div>
+<div class="sb-np" style="color: {{ nd.ink }}">{{ nd.prop }}</div>
+</div>
+<div class="sb-nd" style="color: {{ nd.ink }}">{{ nd.d }}</div>
+<div class="sb-out">
+<sc-for list="{{ nd.out }}" as="o" hint-placeholder-count="2">
+<span class="sb-chip" style="background: {{ o.bg }};color: {{ o.ink }}">{{ o.t }}</span>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+
+<div style="margin-top:34px;padding:24px 26px;background:#24443C;border-radius:12px;max-width:820px">
+<div class="sb-lab" style="color:rgba(245,242,237,.55)">The three loops that matter</div>
+<div style="margin-top:14px;font:400 22px/1.35 'Cormorant Garamond',Georgia,serif;color:#F5F2ED;max-width:44ch">Capture → gate → day. Day → close → shut → day. Sync → autolog → day.</div>
+<p class="sb-t" style="margin:12px 0 0;color:rgba(245,242,237,.78);max-width:60ch">Everything else is a branch off one of these. If you build only the first two, you have a product; the third is what the subscription is for.</p>
+</div>
+
+<div style="margin-top:18px;padding:22px 24px;border:1px dashed rgba(30,43,38,.22);border-radius:12px;max-width:820px">
+<div class="sb-lab">Not yet drawn</div>
+<p class="sb-t" style="margin:10px 0 0;max-width:60ch">First-run onboarding past the splash, the tray, the templates library, offline and sync-failure states, and project sharing. All are wireframed in <a href="wireframes.dc.html">wireframes.dc.html</a> but have no mockup, so they have no card here.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:1080}}">
+const FREE = { bg: '#FFFDFA', bd: 'rgba(30,43,38,.14)', ink: '#1E2B26' };
+const PAID = { bg: '#24443C', bd: '#24443C', ink: '#F5F2ED' };
+const LIMIT = { bg: '#F7E9E5', bd: '#A8402F', ink: '#7E3122' };
+const CHIP_F = { bg: '#E4EAE6', ink: '#24443C' };
+const CHIP_P = { bg: 'rgba(245,242,237,.14)', ink: '#EAF3EF' };
+
+const LANES = [
+  ['Getting in', 'Two providers, no password. An account is only needed for sync, so the skip is a first-class exit.', [
+    ['Splash', 'splash', 'Mark, then the day it is restoring', []],
+    ['Sign in', 'signin', 'Apple, Google, or skip', ['day']],
+  ]],
+  ['The day, and the three zooms', 'Day is home. Week and month sit behind the Calendar tab. The same capacity bar renders on all three.', [
+    ['Day', 'day', 'Capacity bar, records by part of day', ['capture', 'detail', 'week']],
+    ['Day is full', 'full', 'Over the limit. Two concrete moves offered', ['detail'], 'limit'],
+    ['Week', 'week', 'Seven columns, real block heights', ['day', 'month']],
+    ['Month', 'month', 'One load bar a day, red where over', ['day', 'week']],
+  ]],
+  ['Making something', 'Typing a line makes a Task. The type picker is only reached deliberately — from a template or “make this a…”.', [
+    ['Capture', 'capture', 'One line, one sheet', ['types', 'gate']],
+    ['Type picker', 'types', 'Seven kinds, never on the default path', ['task', 'routine', 'bill']],
+    ['The seven forms', 'task · routine · session · errand · appt · bill · spend', 'Only the fields that kind needs', ['repeat', 'gate']],
+    ['Repeats', 'repeat', 'Frequency, interval, ends, plain-language summary', ['routine']],
+    ['Over the limit', 'gate', 'Fires on save. “Add it anyway” always stays', ['day', 'full'], 'limit'],
+    ['Landed', 'day', 'New row highlighted, one undo', []],
+  ]],
+  ['Living with a record', 'Read first, then act. Moving carries the record’s length, reminder and project with it.', [
+    ['Detail', 'detail', 'Three actions, rest behind overflow', ['timer', 'task']],
+    ['Timer', 'timer', 'Running session, full bleed', ['day']],
+  ]],
+  ['Shutting the day', 'The end of the loop, and the only scheduled notification in the product.', [
+    ['Evening close', 'close', 'Three buttons per leftover', ['shut']],
+    ['Day shut', 'shut', 'What happened, what carried, tomorrow', ['day']],
+  ]],
+  ['Projects and money', 'Both free, both capped — three projects, five bills. The caps are the upsell, not a nag.', [
+    ['Projects', 'projects', 'Three active, then the cap', ['project', 'search', 'paywall']],
+    ['Project', 'project', 'Hours left, this week, slipped', ['detail', 'capture']],
+    ['Money', 'money', 'Weekly limit, bills due, logged', ['bills', 'spend']],
+    ['Bills', 'bills', 'Five free, then paid', ['bill', 'paywall']],
+    ['Search', 'search', '30 days free, history paid', ['detail', 'paywall']],
+    ['Settings', 'settings', 'Flat list. Plan state at the top', ['money', 'diet', 'connect', 'trial']],
+  ]],
+  ['Diet plan · paid', 'A second product inside the first. Calories are a week-level budget with daily guidance, drawn with the same bar.', [
+    ['Set intake', 'dietsetup', 'Body, activity, computed allowance', ['dietgoal'], 'paid'],
+    ['Target weight', 'dietgoal', 'Pace, and what it costs a day', ['dietplan'], 'paid'],
+    ['Suggested plan', 'dietplan', 'Food and workouts, from your own week', ['workout', 'diet'], 'paid'],
+    ['Food today', 'diet', 'Bar with estimate range, macros, water', ['logfood', 'deficit', 'dietreview'], 'paid'],
+    ['Log food', 'logfood', 'Range that tightens on portion', ['photolog', 'dietgate'], 'paid'],
+    ['Photo estimate', 'photolog', 'Per-item ranges and confidence', ['dietgate'], 'paid'],
+    ['Over the limit', 'dietgate', 'Same gate, calories instead of hours', ['diet'], 'limit'],
+  ]],
+  ['Diet, over time · paid', 'None of this says anything useful without history, which is why the trial has to backfill.', [
+    ['Diet week', 'dietreview', 'Seven bars, average against target', ['dietplan', 'meal'], 'paid'],
+    ['Progress', 'deficit', 'Weight trend, deficit by week', ['dietgoal'], 'paid'],
+    ['Recalibrated', 'recal', 'Three weeks moved your allowance', ['diet'], 'paid'],
+    ['Workouts', 'workout', 'The week as Sessions, costing hours', ['week'], 'paid'],
+    ['Meal plan', 'meal', 'Five dinners as routines, plus one errand', ['shoplist', 'diet'], 'paid'],
+    ['Shopping', 'shoplist', 'One trip: 40m, £62, 12,400 kcal', ['errand'], 'paid'],
+  ]],
+  ['Activity and health · paid', 'A phone-side read of Health Connect or HealthKit. No watch build, and no watch needed. Nothing is ever logged silently.', [
+    ['Connect', 'connect', 'Health Connect or Apple Health. No watch required', ['permissions', 'noregion'], 'paid'],
+    ['What it reads', 'permissions', 'Three scopes asked for, three not', ['found', 'autolog'], 'paid'],
+    ['Backfill proof', 'found', 'Last Tuesday, from history, on day one', ['sleepday'], 'paid'],
+    ['Slept badly', 'sleepday', 'The day’s hour limit shortens', ['day'], 'paid'],
+    ['Watch closed it', 'autolog', 'A Session ticked, shown once', ['day'], 'paid'],
+    ['No source', 'noregion', 'Nothing is writing sleep to this phone', ['diet'], 'limit'],
+  ]],
+  ['Paying, or not', 'Two clocks, each started by first use. One reminder, on day thirteen. Day fifteen goes quiet rather than locking.', [
+    ['Paywall', 'paywall', 'Every line names its cost driver', ['trial']],
+    ['Trial', 'trial', 'Nine of fourteen left, what is on', ['handover']],
+    ['Day seven', 'handover', 'What you did with the week', ['readonly', 'settings']],
+    ['Day eight', 'readonly', 'Diet read-only. The day reverts to 9h 30m', ['trial'], 'limit'],
+  ]],
+];
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      lanes: LANES.map(([name, note, nodes]) => ({
+        name, note,
+        nodes: nodes.map(([n, prop, d, out, kind], i) => {
+          const skin = kind === 'paid' ? PAID : (kind === 'limit' ? LIMIT : FREE);
+          const chip = kind === 'paid' ? CHIP_P : CHIP_F;
+          return {
+            n, prop, d, ...skin,
+            inbound: i > 0,
+            out: out.map(t => ({ t: '→ ' + t, ...chip }))
+          };
+        })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

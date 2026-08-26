@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E7E4DE;font-family:"Archivo",system-ui,sans-serif}
+a{color:#24443C}a:hover{color:#14201C}
+.p-lab{font:600 9.5px/1 "Archivo";letter-spacing:.17em;text-transform:uppercase;color:#A48C7C}
+.p-h1{font:400 42px/1.1 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.p-h2{font:400 27px/1.16 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.p-t{font:400 14.5px/1.65 "Archivo";color:#4A5651}
+.p-t b{color:#1E2B26;font-weight:600}
+.p-col{flex:1;min-width:330px;border-radius:14px;padding:26px 26px 28px;box-sizing:border-box}
+.p-grp{font:600 9px/1 "Archivo";letter-spacing:.15em;text-transform:uppercase;margin:22px 0 2px}
+.p-i{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(30,43,38,.09)}
+.p-in{font:400 13.5px/1.45 "Archivo";flex:1}
+.p-why{font:400 11px/1.4 "Archivo";white-space:nowrap;padding-top:2px}
+.p-card{background:#FBFAF8;border:1px solid rgba(30,43,38,.11);border-radius:12px;padding:20px 21px}
+.p-num{font:400 30px/1 "Cormorant Garamond",Georgia,serif;color:#24443C}
+.p-day{flex:1;border-radius:9px;padding:11px 8px;text-align:center;box-sizing:border-box}
+</style></helmet>
+
+<div style="max-width:940px;margin:0 auto;padding:60px 52px 100px;background:#F5F2ED;box-sizing:border-box">
+
+<div style="display:flex;align-items:flex-start;gap:20px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:56px;height:auto;display:block;margin-top:4px"/>
+<div>
+<div class="p-lab">Free and paid · revised</div>
+<h1 class="p-h1" style="margin:14px 0 0;max-width:22ch">Free is the planner. Paid is your body.</h1>
+<p class="p-t" style="margin:16px 0 0;max-width:52ch">Hours and money stay free — that is the planner people came for, and it works forever without paying. Food, calories, workouts and the watch are a second product living inside the first, and that is the subscription. Seven days of it, free, so nobody has to take it on trust.</p>
+</div>
+</div>
+
+<div style="margin-top:38px;display:flex;flex-wrap:wrap;gap:18px">
+
+<div style="flex:1;min-width:300px;padding:26px 28px;background:#24443C;border-radius:12px">
+<div class="p-lab" style="color:rgba(245,242,237,.55)">Rule one · unchanged</div>
+<div class="p-h2" style="margin-top:12px;color:#F5F2ED;max-width:30ch">If it costs us money every month, it is paid.</div>
+<p class="p-t" style="margin:12px 0 0;color:rgba(245,242,237,.78)">Servers, AI calls, map lookups, stored history. This decided sync, voice, estimates and routes.</p>
+</div>
+
+<div style="flex:1;min-width:300px;padding:26px 28px;background:#EFE8E2;border-radius:12px;border:1px solid #A48C7C">
+<div class="p-lab" style="color:#8A6F5E">Rule two · new</div>
+<div class="p-h2" style="margin-top:12px;max-width:30ch">A second product is paid, even when it is cheap to run.</div>
+<p class="p-t" style="margin:12px 0 0">Diet is a whole other app's worth of work. Some of it costs nothing to serve — that is now beside the point.</p>
+</div>
+
+</div>
+
+<div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:18px">
+
+<div class="p-col" style="background:#FBFAF8;border:1px solid rgba(30,43,38,.11)">
+<div class="p-lab" style="color:#24443C">Free forever</div>
+<div class="p-h2" style="margin-top:9px">The planner, whole and unlimited</div>
+
+<div class="p-grp" style="color:#A48C7C">Planning</div>
+<div class="p-i"><div class="p-in">The day limit and every capacity bar</div></div>
+<div class="p-i"><div class="p-in">Day, week and month views</div></div>
+<div class="p-i"><div class="p-in">The slippage tray</div></div>
+<div class="p-i"><div class="p-in">The two-minute evening close</div></div>
+<div class="p-i"><div class="p-in">The over-limit gate and its suggestions</div></div>
+<div class="p-i"><div class="p-in">Drag to reschedule · the running timer</div></div>
+<div class="p-i"><div class="p-in">Search, last 30 days</div></div>
+
+<div class="p-grp" style="color:#A48C7C">Records</div>
+<div class="p-i"><div class="p-in">Tasks, routines, sessions, errands, appointments — unlimited</div></div>
+<div class="p-i"><div class="p-in">The recurrence editor, in full</div></div>
+<div class="p-i"><div class="p-in">Three projects · eight templates</div></div>
+<div class="p-i"><div class="p-in">One calendar, read and write</div></div>
+
+<div class="p-grp" style="color:#A48C7C">Money</div>
+<div class="p-i"><div class="p-in">The weekly limit and the spending log</div></div>
+<div class="p-i"><div class="p-in">Five bills, with alerts</div></div>
+
+<div class="p-grp" style="color:#A48C7C">Everywhere</div>
+<div class="p-i"><div class="p-in">Notifications, Live Activity and widgets — for the planner</div></div>
+<div class="p-i"><div class="p-in">Full offline use</div></div>
+<div class="p-i" style="border-bottom:1px solid rgba(30,43,38,.09)"><div class="p-in">Export, always</div></div>
+
+<div style="margin-top:24px;padding:16px 17px;background:#F2F0EB;border-radius:10px">
+<p class="p-t" style="margin:0;font-size:13px">Nothing here expires, counts down, or turns into a nag. A free user who never touches food or activity has a complete, unlimited planner.</p>
+</div>
+</div>
+
+<div class="p-col" style="background:#24443C">
+<div class="p-lab" style="color:rgba(245,242,237,.55)">$4.99 a month · $39.99 a year · 14 days free</div>
+<div class="p-h2" style="margin-top:9px;color:#F5F2ED">Your body, your devices, and the AI</div>
+
+<div class="p-grp" style="color:#B79F8E">Food and diet · all of it</div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">The meal plan and the shopping list</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Calorie target, allowance and the deficit</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Target weight, progress and recalibration</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Logging food, by text or photo</div><div class="p-why" style="color:rgba(245,242,237,.45)">AI</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Macros, water, eating window, per-meal targets</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">The suggested diet and workout plan</div><div class="p-why" style="color:rgba(245,242,237,.45)">AI</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">The weekly diet review</div></div>
+
+<div class="p-grp" style="color:#B79F8E">Activity and health · all of it</div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Sleep, workouts and weight, read on the phone</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Health Connect and Apple Health sync</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Backfill: weeks of history on the first read</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Sessions closed automatically by whatever you wear</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Sleep shortening the day's limit</div></div>
+
+<div class="p-grp" style="color:#B79F8E">Servers, AI and maps</div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Sync across your devices</div><div class="p-why" style="color:rgba(245,242,237,.45)">servers</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Share one project with one person</div><div class="p-why" style="color:rgba(245,242,237,.45)">servers</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Talk instead of typing</div><div class="p-why" style="color:rgba(245,242,237,.45)">AI</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">How long this usually takes you</div><div class="p-why" style="color:rgba(245,242,237,.45)">AI</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Break it down · explain the slippage</div><div class="p-why" style="color:rgba(245,242,237,.45)">AI</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Travel time and errand routes</div><div class="p-why" style="color:rgba(245,242,237,.45)">maps</div></div>
+
+<div class="p-grp" style="color:#B79F8E">Limits lifted</div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">Unlimited projects, calendars and bills</div><div class="p-why" style="color:rgba(245,242,237,.45)">storage</div></div>
+<div class="p-i" style="border-color:rgba(245,242,237,.16);border-bottom:1px solid rgba(245,242,237,.16)"><div class="p-in" style="color:#F5F2ED">History past 30 days · your own templates</div><div class="p-why" style="color:rgba(245,242,237,.45)">storage</div></div>
+</div>
+
+</div>
+
+<div style="margin-top:44px;height:1px;background:rgba(30,43,38,.14)"></div>
+<div class="p-h2" style="margin-top:30px;font-size:30px">The fourteen days</div>
+<p class="p-t" style="margin:12px 0 0;max-width:56ch">Moving diet and activity behind the wall creates one problem: the best thing about them — a day that shortens itself because you slept badly — is impossible to explain in a screenshot. The trial exists to solve exactly that, so it should be spent on it.</p>
+
+<div style="margin-top:24px;padding:24px 26px;background:#FBFAF8;border:1px solid rgba(30,43,38,.11);border-radius:12px">
+<div class="p-lab">What the week should do</div>
+<div style="margin-top:16px;display:flex;gap:7px">
+<div class="p-day" style="background:#24443C"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:rgba(245,242,237,.6)">DAY 1</div><div style="font:500 11px/1.35 'Archivo';color:#F5F2ED;margin-top:7px">Connect a sleep source</div></div>
+<div class="p-day" style="background:#2E5449"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:rgba(245,242,237,.6)">DAY 2</div><div style="font:500 11px/1.35 'Archivo';color:#F5F2ED;margin-top:7px">Set the target</div></div>
+<div class="p-day" style="background:#3A6154"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:rgba(245,242,237,.6)">DAY 3</div><div style="font:500 11px/1.35 'Archivo';color:#F5F2ED;margin-top:7px">Photograph a meal</div></div>
+<div class="p-day" style="background:#EFE8E2;border:1px solid #A48C7C"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:#8A6F5E">DAY 4</div><div style="font:500 11px/1.35 'Archivo';color:#1E2B26;margin-top:7px">A Session closes itself</div></div>
+<div class="p-day" style="background:#EFE8E2;border:1px solid #A48C7C"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:#8A6F5E">DAY 5</div><div style="font:500 11px/1.35 'Archivo';color:#1E2B26;margin-top:7px">A bad night shortens the day</div></div>
+<div class="p-day" style="background:#F2F0EB;border:1px solid rgba(30,43,38,.12)"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:#97A09B">DAY 6</div><div style="font:500 11px/1.35 'Archivo';color:#1E2B26;margin-top:7px">One reminder, honest</div></div>
+<div class="p-day" style="background:#F2F0EB;border:1px solid rgba(30,43,38,.12)"><div style="font:600 9px/1 'Archivo';letter-spacing:.1em;color:#97A09B">DAY 7</div><div style="font:500 11px/1.35 'Archivo';color:#1E2B26;margin-top:7px">Ends quietly</div></div>
+</div>
+<p class="p-t" style="margin:18px 0 0;max-width:60ch;font-size:13.5px">Day five is the whole pitch, and it only lands if the trial covers a week with a bad night in it. Seven days is the right length for that reason and no other.</p>
+</div>
+
+<div style="margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+<div class="p-card">
+<div class="p-num">1</div>
+<div style="margin-top:12px;font:600 15.5px/1.4 'Archivo';color:#1E2B26">No card up front</div>
+<p class="p-t" style="margin:8px 0 0;font-size:13.5px">Asking for payment details to start a free fortnight is how a trial becomes a trap, and this category is already resented for it. Take the card on day seven, from someone who has decided.</p>
+</div>
+
+<div class="p-card">
+<div class="p-num">2</div>
+<div style="margin-top:12px;font:600 15.5px/1.4 'Archivo';color:#1E2B26">One reminder, on day thirteen</div>
+<p class="p-t" style="margin:8px 0 0;font-size:13.5px">Saying "your trial ends tomorrow" once is honest. Saying it on days three, five, six and seven is harassment. It also breaks the notification rule the rest of the app follows.</p>
+</div>
+
+<div class="p-card">
+<div class="p-num">3</div>
+<div style="margin-top:12px;font:600 15.5px/1.4 'Archivo';color:#1E2B26">It ends by going quiet, not by locking</div>
+<p class="p-t" style="margin:8px 0 0;font-size:13.5px">On day fifteen the diet screens go read-only. Your weight history, your logged food and your meal plan are all still there to look at and export — they just stop taking new entries.</p>
+</div>
+
+<div class="p-card">
+<div class="p-num">4</div>
+<div style="margin-top:12px;font:600 15.5px/1.4 'Archivo';color:#1E2B26">The planner never enters the trial</div>
+<p class="p-t" style="margin:8px 0 0;font-size:13.5px">Nothing free should feel borrowed. The trial adds screens; it never touches the day view, so day fifteen cannot feel like something was taken away.</p>
+</div>
+
+</div>
+
+<div style="margin-top:22px;padding:24px 26px;background:#EFE8E2;border-left:3px solid #A48C7C;border-radius:0 12px 12px 0">
+<div class="p-lab" style="color:#8A6F5E">Never behind the paywall</div>
+<p class="p-t" style="margin:12px 0 0;max-width:58ch">Your own data and getting it out — including every gram and calorie you logged during the trial. Reading everything you have already written. The whole planning loop. If a subscription lapses, the app keeps working on that device: you lose sync, the AI and new food entries, not your history and not your plan.</p>
+</div>
+
+<div style="margin-top:22px;padding:24px 26px;border:1px dashed rgba(30,43,38,.22);border-radius:12px">
+<div class="p-lab">Worth watching</div>
+<p class="p-t" style="margin:12px 0 0;max-width:58ch">This split makes the subscription carry more weight, which is good for revenue and bad for word of mouth — the two features people would have told their friends about are now inside the wall. If conversion is fine but growth is slow, the first thing I would test is putting sleep-shortens-your-day back on the free side as the hook.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:1200}}"></script>
+</body>
+</html>

@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--wf-a:#1F5C4A;--wf-nd:block;--wf-w:250px}
+body{margin:0;background:#E8E6E1;font-family:"Archivo",system-ui,sans-serif}
+a{color:#1F5C4A}a:hover{color:#14130F}
+.dv-turn{padding:44px 48px 40px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#2A2824;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 "Archivo",system-ui,sans-serif;color:#2A2824}
+.dv-sub{margin:0 0 4px;font:400 12px/1.6 "Archivo",system-ui,sans-serif;color:rgba(42,40,36,.6);max-width:680px}
+.dv-next{margin:24px 0 0;font:12px/1.6 "Archivo",system-ui,sans-serif;color:rgba(42,40,36,.5)}
+.wf-band{margin-top:20px;padding:24px 26px 8px;background:#FBFAF8;border:1px solid #E2DFD8;border-radius:10px;scroll-margin-top:16px}
+.wf-bh{display:flex;align-items:baseline;gap:10px;margin:0 0 5px}
+.wf-bn{font:600 9.5px ui-monospace,Menlo,monospace;padding:3px 7px;border-radius:4px;background:rgba(42,40,36,.08);color:#2A2824;text-decoration:none}
+.wf-band:target .wf-bn{background:var(--wf-a);color:#fff}
+.wf-bt{font:600 13.5px/1.2 "Archivo";color:#2A2824}
+.wf-bs{margin:0 0 20px;font:400 11px/1.55 "Archivo";color:#8E8A82;max-width:620px}
+.wf-flow{display:flex;align-items:flex-start;gap:13px;margin-bottom:22px}
+.wf-cell{width:var(--wf-w);flex:none;display:flex;flex-direction:column;gap:9px}
+.wf-cap{display:var(--wf-nd);font:400 10.5px/1.5 "Archivo";color:#6E6A63}
+.wf-cap b{color:#2A2824;font-weight:600}
+.wf-num{display:inline-block;font:600 8.5px/1 ui-monospace,Menlo,monospace;padding:3px 5px;border-radius:3px;background:#2A2824;color:#fff;margin-right:5px;vertical-align:1px}
+.wf-arr{width:24px;height:500px;flex:none;display:flex;align-items:center;justify-content:center}
+.wf-phone{width:var(--wf-w);height:500px;border:1.5px solid #C9C6BE;border-radius:20px;background:#fff;overflow:hidden;display:flex;flex-direction:column;flex:none}
+.wf-sb{height:20px;flex:none;border-bottom:1px solid #F0EEE9;display:flex;align-items:center;justify-content:space-between;padding:0 11px;font:600 7.5px/1 "Archivo";letter-spacing:.1em;color:#BEBAB2}
+.wf-scr{flex:1;padding:13px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.wf-nav{height:36px;flex:none;border-top:1px solid #F0EEE9;display:grid;grid-template-columns:repeat(4,1fr)}
+.wf-navi{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:500 7.5px "Archivo";color:#BEBAB2}
+.wf-navb{width:13px;height:13px;border-radius:3px;border:1.2px solid #D6D2CA}
+.wf-h{font:600 14px/1.25 "Archivo";color:#2A2824}
+.wf-sh{font:600 8px/1 "Archivo";letter-spacing:.14em;text-transform:uppercase;color:#A8A49C}
+.wf-t{font:400 10px/1.5 "Archivo";color:#8E8A82}
+.wl{height:6px;border-radius:3px;background:#E4E1DA}
+.wf-btn{height:31px;border-radius:6px;background:var(--wf-a);display:flex;align-items:center;justify-content:center;font:600 10px "Archivo";color:#fff;flex:none}
+.wf-btn2{height:31px;border-radius:6px;border:1px solid #D6D2CA;display:flex;align-items:center;justify-content:center;font:600 10px "Archivo";color:#4A463F;flex:none}
+.wf-inp{height:27px;border:1px solid #DEDBD4;border-radius:5px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;font:400 9.5px "Archivo";color:#8E8A82;flex:none}
+.wf-fl{font:600 7.5px/1 "Archivo";letter-spacing:.1em;text-transform:uppercase;color:#A8A49C;margin-bottom:5px}
+.wf-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #F0EEE9;font:400 10px "Archivo";color:#3A3833}
+.wf-chk{width:12px;height:12px;border-radius:50%;border:1.3px solid #CFCBC3;flex:none}
+.wf-chip{padding:4px 7px;border-radius:11px;border:1px solid #DEDBD4;font:500 9px/1 "Archivo";color:#6E6A63;white-space:nowrap}
+.wf-lock{padding:3px 5px;border-radius:3px;background:#EFEDE8;font:600 7px/1 "Archivo";letter-spacing:.08em;text-transform:uppercase;color:#8E8A82;white-space:nowrap}
+.wf-blk{background:#EFEDE8;border-left:2px solid #C1BDB4;border-radius:0 3px 3px 0;padding:4px 5px;font:600 7.5px/1.2 "Archivo";color:#6E6A63;overflow:hidden;box-sizing:border-box}
+.wf-al{padding:8px 9px;border-radius:5px;background:#F7EEEC;border:1px solid #E8CFC9;font:500 9px/1.45 "Archivo";color:#A8402F}
+.wf-ok{padding:8px 9px;border-radius:5px;background:#EDF1EF;border:1px solid #D5E0DB;font:500 9px/1.45 "Archivo";color:#1F5C4A}
+.wf-sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1.5px solid #C9C6BE;border-radius:14px 14px 0 0;padding:12px 13px 14px;display:flex;flex-direction:column;gap:9px}
+.wf-tab{display:flex;background:#F3F2EF;border-radius:6px;padding:2px;flex:none}
+.wf-tab>div{flex:1;text-align:center;padding:6px 0;border-radius:4px;font:600 9px "Archivo";color:#8E8A82}
+.wf-tab>div.on{background:#fff;color:#2A2824}
+.wf-grid8{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.wf-ty{border:1px solid #DEDBD4;border-radius:5px;padding:7px;display:flex;flex-direction:column;gap:4px}
+.wf-tyn{font:600 9.5px/1 "Archivo";color:#2A2824}
+.wf-tyd{font:400 8px/1.35 "Archivo";color:#A8A49C}
+.wf-vid{position:absolute;inset:0;background:#EFEDE8;overflow:hidden}
+.wf-vid:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(42,40,36,.05) 0 1px,transparent 1px 9px)}
+.wf-vdrift{position:absolute;left:-40%;top:0;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent);animation:wfdrift 9s linear infinite}
+.wf-vmark{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);text-align:center}
+.wf-vtag{position:absolute;left:9px;top:9px;padding:3px 6px;border-radius:3px;background:rgba(42,40,36,.72);color:#fff;font:600 7px/1 "Archivo";letter-spacing:.1em;text-transform:uppercase}
+.wf-scrim{position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.94) 46%)}
+@keyframes wfdrift{0%{transform:translateX(0)}100%{transform:translateX(230%)}}
+</style></helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">End-to-end wireframe — loading to close</span></div>
+<p class="dv-sub">Structure only: no direction committed, one generic phone, arrows for the path through. Eight bands, 46 screens, numbered notes under each. Bands: <a class="wf-bn" href="#1a">1a</a> cold start · <a class="wf-bn" href="#1b">1b</a> account · <a class="wf-bn" href="#1c">1c</a> day, week, month · <a class="wf-bn" href="#1d">1d</a> creating a record · <a class="wf-bn" href="#1e">1e</a> detail and edit · <a class="wf-bn" href="#1f">1f</a> evening close · <a class="wf-bn" href="#1g">1g</a> settings and states · <a class="wf-bn" href="#1h">1h</a> free and paid.</p>
+
+<div class="wf-band" id="1a">
+<div class="wf-bh"><a class="wf-bn" href="#1a">1a</a><span class="wf-bt">Cold start and first run</span></div>
+<p class="wf-bs">Launch to a usable day. The free/paid lists appear before the account is made, not after.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="align-items:center;justify-content:center;gap:16px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:52px;height:auto;display:block"/>
+<img src="assets/moed-wordmark.png" alt="Moed — plan with purpose" style="width:118px;height:auto;display:block"/>
+</div>
+</div><div class="wf-cap"><span class="wf-num">01</span><b>Splash.</b> Mark only. No spinner — if the phone has the data this is under 400ms.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wl" style="width:70px;height:9px"></div>
+<div class="wl" style="width:140px;height:16px"></div>
+<div style="margin-top:6px;height:3px;border-radius:2px;background:#EFEDE8;overflow:hidden"><div style="width:62%;height:100%;background:var(--wf-a)"></div></div>
+<div class="wf-t">Restoring today</div>
+<div style="margin-top:6px;display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div>
+<div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div>
+<div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">02</span><b>Loading.</b> Skeleton of today's rows, not a blank screen. Returning users land straight on 12.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">First run</div>
+<div class="wf-h">A planner that tells you when your day is full</div>
+<div style="display:flex;flex-direction:column;gap:9px;margin-top:4px">
+<div style="display:flex;gap:8px;align-items:flex-start"><span style="width:14px;height:14px;border:1.2px solid #D6D2CA;border-radius:3px;flex:none"></span><span class="wf-t">We count hours, not tasks</span></div>
+<div style="display:flex;gap:8px;align-items:flex-start"><span style="width:14px;height:14px;border:1.2px solid #D6D2CA;border-radius:3px;flex:none"></span><span class="wf-t">Nothing slides quietly into tomorrow</span></div>
+<div style="display:flex;gap:8px;align-items:flex-start"><span style="width:14px;height:14px;border:1.2px solid #D6D2CA;border-radius:3px;flex:none"></span><span class="wf-t">Two minutes to shut the day</span></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Get started</div>
+<div class="wf-btn2">I have an account</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">03</span><b>What it does.</b> Three lines, no carousel. Second button jumps to 08.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Before you sign up</div>
+<div class="wf-h">What is free, what is paid</div>
+<div style="display:flex;gap:8px;margin-top:2px">
+<div style="flex:1;border:1px solid #DEDBD4;border-radius:5px;padding:8px">
+<div class="wf-fl">Free forever</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div class="wl" style="width:100%"></div><div class="wl" style="width:82%"></div><div class="wl" style="width:92%"></div><div class="wl" style="width:74%"></div><div class="wl" style="width:88%"></div><div class="wl" style="width:66%"></div>
+</div>
+</div>
+<div style="flex:1;border:1px solid #DEDBD4;border-radius:5px;padding:8px;background:#F6F5F2">
+<div class="wf-fl">Subscribed</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div class="wl" style="width:90%"></div><div class="wl" style="width:70%"></div><div class="wl" style="width:84%"></div><div class="wl" style="width:60%"></div>
+</div>
+</div>
+</div>
+<div class="wf-ok">Everything that made you want it is on the left. Servers, AI and maps are on the right.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Continue</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">04</span><b>The paywall, disclosed up front.</b> Full detail in <a class="wf-bn" href="#1h">1h</a>. Nothing here is locked yet.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Step 1 of 2</div>
+<div class="wf-h">Where do your days come from?</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk" style="background:var(--wf-a);border-color:var(--wf-a)"></span><span style="flex:1">Google Calendar</span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Outlook</span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Apple Calendar</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span class="wf-chk"></span><span style="flex:1">Nothing — start empty</span></div>
+</div>
+<div class="wf-t">One calendar is free. More than one is paid.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Continue</div>
+<div style="text-align:center" class="wf-t">Skip for now</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">05</span><b>Calendar connect.</b> Skippable. Appointments in 24 come from whatever is picked here.</div></div>
+
+</div>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Step 2 of 2</div>
+<div class="wf-h">How long is your working day?</div>
+<div><div class="wf-fl">Starts</div><div class="wf-inp"><span>08:30</span><span>▾</span></div></div>
+<div><div class="wf-fl">Ends</div><div class="wf-inp"><span>18:00</span><span>▾</span></div></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 10px 'Archivo';color:#2A2824">Protect a deep-work block</div><div class="wf-t">Two hours nothing can be booked into</div></div>
+<div style="width:26px;height:15px;border-radius:8px;background:var(--wf-a);display:flex;justify-content:flex-end;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#fff"></div></div>
+</div>
+<div class="wf-ok">This sets the day limit: 9h 30m. Every capacity bar in the app measures against it.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Open my day</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">06</span><b>Day length.</b> The one number the whole product depends on. Editable later in 37.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div><div class="wf-sh">Tuesday</div><div class="wf-h" style="margin-top:5px">26 August</div></div>
+<div style="height:3px;border-radius:2px;background:#EFEDE8"></div>
+<div class="wf-t">0 of 9h 30m planned</div>
+<div style="flex:1;border:1px dashed #DEDBD4;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px">
+<div style="width:34px;height:34px;border:1.2px dashed #D6D2CA;border-radius:6px"></div>
+<div style="font:600 11px 'Archivo';color:#2A2824;text-align:center">An empty day</div>
+<div class="wf-t" style="text-align:center">Write one line. You can give it a length after.</div>
+</div>
+<div style="display:flex;gap:5px;flex-wrap:wrap"><span class="wf-chip">Start from a template</span><span class="wf-chip">Import a list</span></div>
+<div style="height:30px;border:1px solid #DEDBD4;border-radius:15px;display:flex;align-items:center;padding:0 4px 0 11px;gap:8px;flex:none">
+<span class="wf-t" style="flex:1">Add anything…</span>
+<span style="width:22px;height:22px;border-radius:50%;background:var(--wf-a);color:#fff;display:flex;align-items:center;justify-content:center;font:600 11px 'Archivo'">+</span>
+</div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi"><span class="wf-navb"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">07</span><b>First-run empty day.</b> The only screen with prompts in it. Once one record exists it becomes 12.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1b">
+<div class="wf-bh"><a class="wf-bn" href="#1b">1b</a><span class="wf-bt">Account — Apple and Google only</span></div>
+<p class="wf-bs">No email, no password, nothing to forget or reset. Two buttons over a looping video. An account is only needed for sync, so the whole band is skippable — the planner works signed out.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="padding:0;gap:0">
+<div class="wf-vid">
+<div class="wf-vdrift"></div>
+<div class="wf-vtag">Video loop</div>
+<div class="wf-vmark" style="width:82%">
+<img src="assets/moed-mark.png" alt="Moed" style="width:40px;height:auto;display:block;margin:0 auto"/>
+<img src="assets/moed-wordmark.png" alt="Moed — plan with purpose" style="width:112px;height:auto;display:block;margin:11px auto 0"/>
+<div class="wf-t" style="margin-top:9px">Muted, 12s, loops. Placeholder — supply the file.</div>
+</div>
+</div>
+<div class="wf-scrim"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:13px;display:flex;flex-direction:column;gap:7px">
+<div class="wf-btn2" style="background:#2A2824;border-color:#2A2824;color:#fff;gap:6px">Continue with Apple</div>
+<div class="wf-btn2" style="background:#fff;gap:6px">Continue with Google</div>
+<div class="wf-btn2" style="border:0;color:#8E8A82">Continue without an account</div>
+<div class="wf-t" style="text-align:center;font-size:8.5px">Terms · Privacy</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">08</span><b>Sign in.</b> Two providers, one skip. Same screen serves new and returning users — there is nothing to distinguish. Video sits behind a white scrim so the buttons keep contrast.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="padding:0;gap:0">
+<div class="wf-vid" style="opacity:.5"><div class="wf-vdrift"></div><div class="wf-vtag">Video loop · dimmed</div></div>
+<div style="position:absolute;inset:0;background:rgba(42,40,36,.25)"></div>
+<div class="wf-sheet" style="gap:10px">
+<div style="width:30px;height:3px;border-radius:2px;background:#E4E1DA;margin:0 auto"></div>
+<div class="wf-sh">System sheet</div>
+<div style="font:600 11.5px/1.3 'Archivo';color:#2A2824">Moed would like to use your Apple account</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row" style="justify-content:space-between"><span class="wf-t">Name</span><span>Jo Mensah</span></div>
+<div class="wf-row" style="justify-content:space-between;border-bottom:1px solid #F0EEE9"><span class="wf-t">Email</span><span>Hide my email ▾</span></div>
+</div>
+<div class="wf-t">Owned by the OS. We get a token and a display name, nothing else.</div>
+<div style="display:flex;gap:6px"><div class="wf-btn2" style="flex:1">Cancel</div><div class="wf-btn" style="flex:1">Continue</div></div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">09</span><b>Provider sheet.</b> Not our UI — drawn so the flow is complete. Hide-my-email is the default we should honour.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Signed in</div>
+<div class="wf-h">Two planners found</div>
+<div class="wf-t">You planned on this phone before signing in. Keep both, or pick one.</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="border:1.5px solid var(--wf-a);border-radius:6px;padding:9px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 10px 'Archivo';color:#2A2824">Merge them</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">Default</span></div>
+<div class="wf-t" style="margin-top:3px">14 records on this phone + 62 in the account</div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px"><div style="font:500 10px 'Archivo';color:#2A2824">Keep the account only</div><div class="wf-t" style="margin-top:3px">Discards the 14 local records</div></div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px"><div style="font:500 10px 'Archivo';color:#2A2824">Keep this phone only</div><div class="wf-t" style="margin-top:3px">Overwrites the account</div></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Continue</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">10</span><b>Merge.</b> The screen social sign-in makes unavoidable: local data exists before the account does. Never silent.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="padding:0;gap:0">
+<div class="wf-vid" style="opacity:.35"><div class="wf-vdrift"></div><div class="wf-vtag">Video loop</div></div>
+<div class="wf-scrim" style="height:70%"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:13px;display:flex;flex-direction:column;gap:8px">
+<div class="wf-al">Apple sign-in did not complete. Nothing was created.</div>
+<div class="wf-btn2" style="background:#2A2824;border-color:#2A2824;color:#fff">Try Apple again</div>
+<div class="wf-btn2" style="background:#fff">Continue with Google instead</div>
+<div class="wf-btn2" style="border:0;color:#8E8A82">Skip — plan without an account</div>
+<div class="wf-t" style="text-align:center;font-size:8.5px">You lose sync, not the planner.</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">11</span><b>Failure.</b> Cancelled or unreachable. Offers the other provider and the skip, so nobody is trapped at the door.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1c">
+<div class="wf-bh"><a class="wf-bn" href="#1c">1c</a><span class="wf-bt">Day, week, month</span></div>
+<p class="wf-bs">Same data at three zoom levels. Day is the home screen; week and month sit behind the Calendar tab with a segmented switch. Every level shows load against a limit, not a count of tasks.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:flex-start">
+<div><div class="wf-sh">Tuesday</div><div class="wf-h" style="margin-top:5px">26 August</div></div>
+<div style="width:26px;height:26px;border-radius:50%;border:1.2px solid #D6D2CA;flex:none"></div>
+</div>
+<div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA">
+<div style="flex:53;background:#C1BDB4"></div><div style="flex:25;background:#DEDBD4"></div><div style="flex:22;background:#fff"></div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:5px"><span class="wf-t">5h 20m work · 2h 30m fixed</span><span class="wf-t">1h 40m left</span></div>
+</div>
+<div class="wf-sh">Morning</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk" style="background:#DEDBD4;border-color:#DEDBD4"></span><span style="flex:1;color:#A8A49C;text-decoration:line-through">Standup</span><span class="wf-t">9:30</span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Rewrite onboarding copy<div class="wf-t">Operon · 2h block</div></span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Reply to Marta</span><span style="color:#A8402F;font:500 9px 'Archivo'">Overdue</span></div>
+</div>
+<div class="wf-sh">Afternoon</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Dentist<div class="wf-t">Fixed · travel 25m</div></span><span class="wf-t">14:00</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span class="wf-chk"></span><span style="flex:1">Draft Q4 roadmap</span><span class="wf-t">1h</span></div>
+</div>
+<div style="flex:1"></div>
+<div style="height:30px;border:1px solid #DEDBD4;border-radius:15px;display:flex;align-items:center;padding:0 4px 0 11px;gap:8px;flex:none">
+<span class="wf-t" style="flex:1">Add anything…</span>
+<span style="width:22px;height:22px;border-radius:50%;background:var(--wf-a);color:#fff;display:flex;align-items:center;justify-content:center;font:600 11px 'Archivo'">+</span>
+</div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi"><span class="wf-navb"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">12</span><b>Day view — home.</b> Capacity bar directly under the date, grouped by part of day. Rows carry their length, not a priority flag.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div><div class="wf-sh">Tuesday</div><div class="wf-h" style="margin-top:5px">26 August</div></div>
+<div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #D89A8E">
+<div style="flex:60;background:#C1BDB4"></div><div style="flex:28;background:#DEDBD4"></div><div style="flex:15;background:#E8CFC9"></div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:5px"><span class="wf-t">10h 50m planned</span><span style="font:500 9px 'Archivo';color:#A8402F">1h 20m over</span></div>
+</div>
+<div class="wf-al">The day is full. Something here will not happen.</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px;display:flex;flex-direction:column;gap:7px">
+<div class="wf-fl">Suggested moves</div>
+<div style="display:flex;align-items:center;gap:7px"><span class="wl" style="flex:1"></span><span class="wf-chip">→ Thu</span></div>
+<div style="display:flex;align-items:center;gap:7px"><span class="wl" style="flex:1;width:70%"></span><span class="wf-chip">→ Tray</span></div>
+<div class="wf-t">Thursday is empty. Nothing moves unless you tap.</div>
+</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Rewrite onboarding copy</span><span class="wf-t">2h</span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Draft Q4 roadmap</span><span class="wf-t">1h</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9;background:#FBF6F5"><span class="wf-chk"></span><span style="flex:1;color:#A8402F">Groceries · 40m</span><span style="font:500 9px 'Archivo';color:#A8402F">Over</span></div>
+</div>
+<div style="flex:1"></div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi"><span class="wf-navb"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">13</span><b>Over-committed day.</b> The state the whole product exists for. Rows past the limit are marked in place; the app proposes, never moves.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="padding:13px 8px 0;gap:8px">
+<div style="padding:0 5px"><div class="wf-h">Week 35</div></div>
+<div class="wf-tab" style="margin:0 5px"><div>Day</div><div class="on">Week</div><div>Month</div></div>
+<div style="display:grid;grid-template-columns:16px repeat(7,1fr);gap:2px;padding:0 5px">
+<div></div>
+<div style="text-align:center"><div class="wf-t" style="font-size:7px">M</div><div style="font:600 9px 'Archivo';color:#2A2824">25</div></div>
+<div style="text-align:center;background:#F3F2EF;border-radius:3px"><div class="wf-t" style="font-size:7px">T</div><div style="font:600 9px 'Archivo';color:var(--wf-a)">26</div></div>
+<div style="text-align:center"><div class="wf-t" style="font-size:7px">W</div><div style="font:600 9px 'Archivo';color:#2A2824">27</div></div>
+<div style="text-align:center"><div class="wf-t" style="font-size:7px">T</div><div style="font:600 9px 'Archivo';color:#2A2824">28</div></div>
+<div style="text-align:center"><div class="wf-t" style="font-size:7px">F</div><div style="font:600 9px 'Archivo';color:#2A2824">29</div></div>
+<div style="text-align:center"><div class="wf-t" style="font-size:7px">S</div><div style="font:600 9px 'Archivo';color:#BEBAB2">30</div></div>
+<div style="text-align:center"><div class="wf-t" style="font-size:7px">S</div><div style="font:600 9px 'Archivo';color:#BEBAB2">31</div></div>
+</div>
+<div style="flex:1;display:grid;grid-template-columns:16px repeat(7,1fr);gap:2px;padding:0 5px;border-top:1px solid #F0EEE9">
+<div style="display:flex;flex-direction:column;padding-top:2px">
+<div style="height:46px;font:500 7px 'Archivo';color:#C9C6BE">09</div>
+<div style="height:46px;font:500 7px 'Archivo';color:#C9C6BE">11</div>
+<div style="height:46px;font:500 7px 'Archivo';color:#C9C6BE">13</div>
+<div style="height:46px;font:500 7px 'Archivo';color:#C9C6BE">15</div>
+<div style="height:46px;font:500 7px 'Archivo';color:#C9C6BE">17</div>
+</div>
+<div style="border-left:1px solid #F6F5F2"><div class="wf-blk" style="margin-top:24px;height:34px">Review</div></div>
+<div style="border-left:1px solid #F6F5F2;background:#FBFAF8"><div class="wf-blk" style="margin-top:10px;height:14px">Std</div><div class="wf-blk" style="margin-top:4px;height:46px;background:#C1BDB4;border-color:#8E8A82;color:#fff">Copy</div><div class="wf-blk" style="margin-top:26px;height:22px">Dent</div></div>
+<div style="border-left:1px solid #F6F5F2"><div class="wf-blk" style="margin-top:70px;height:24px">1:1</div></div>
+<div style="border-left:1px solid #F6F5F2"></div>
+<div style="border-left:1px solid #F6F5F2"><div class="wf-blk" style="margin-top:36px;height:46px">Q4</div></div>
+<div style="border-left:1px solid #F6F5F2;background:#FBFAF8"></div>
+<div style="border-left:1px solid #F6F5F2;background:#FBFAF8"></div>
+</div>
+<div style="border-top:1px solid #F0EEE9;padding:9px 5px;display:flex;align-items:center;justify-content:space-between;flex:none">
+<div><div class="wf-fl" style="margin:0">Committed this week</div><div style="font:600 10px 'Archivo';color:#2A2824;margin-top:3px">21h 40m · 1 day over</div></div>
+<div style="width:56px;height:5px;border-radius:3px;background:#EFEDE8;overflow:hidden"><div style="width:68%;height:100%;background:var(--wf-a)"></div></div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">14</span><b>Week view.</b> Seven columns, real block heights, week total in the footer. Tap a column header to drop to 12.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="gap:8px">
+<div class="wf-h">August</div>
+<div class="wf-tab"><div>Day</div><div>Week</div><div class="on">Month</div></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+<div class="wf-t" style="text-align:center;font-size:7px">M</div><div class="wf-t" style="text-align:center;font-size:7px">T</div><div class="wf-t" style="text-align:center;font-size:7px">W</div><div class="wf-t" style="text-align:center;font-size:7px">T</div><div class="wf-t" style="text-align:center;font-size:7px">F</div><div class="wf-t" style="text-align:center;font-size:7px">S</div><div class="wf-t" style="text-align:center;font-size:7px">S</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#C9C6BE">28</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#C9C6BE">29</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#C9C6BE">30</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#C9C6BE">31</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">1</div><div class="wl" style="margin-top:3px;height:3px;width:60%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">2</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">3</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">4</div><div class="wl" style="margin-top:3px;height:3px;width:90%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">5</div><div class="wl" style="margin-top:3px;height:3px;width:40%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">6</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">7</div><div style="margin-top:3px;height:3px;width:100%;border-radius:2px;background:#E8CFC9"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">8</div><div class="wl" style="margin-top:3px;height:3px;width:70%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">9</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">10</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">11</div><div class="wl" style="margin-top:3px;height:3px;width:80%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">12</div><div class="wl" style="margin-top:3px;height:3px;width:50%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">13</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">14</div><div class="wl" style="margin-top:3px;height:3px;width:65%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">15</div><div style="margin-top:3px;height:3px;width:100%;border-radius:2px;background:#E8CFC9"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">16</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">17</div></div>
+<div style="height:30px;border:1.5px solid var(--wf-a);border-radius:3px;padding:2px"><div style="font:600 7px 'Archivo';color:var(--wf-a)">26</div><div style="margin-top:3px;height:3px;width:85%;border-radius:2px;background:var(--wf-a)"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">27</div><div class="wl" style="margin-top:3px;height:3px;width:35%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">28</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">29</div><div class="wl" style="margin-top:3px;height:3px;width:75%"></div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px"><div style="font:500 7px 'Archivo';color:#2A2824">30</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">31</div></div>
+<div style="height:30px;border:1px solid #F0EEE9;border-radius:3px;padding:2px;background:#FBFAF8"><div style="font:500 7px 'Archivo';color:#BEBAB2">1</div></div>
+</div>
+<div style="display:flex;gap:10px;align-items:center">
+<span style="display:flex;align-items:center;gap:4px"><span class="wl" style="width:12px;height:3px"></span><span class="wf-t" style="font-size:8px">load</span></span>
+<span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:3px;border-radius:2px;background:#E8CFC9"></span><span class="wf-t" style="font-size:8px">over limit</span></span>
+</div>
+<div style="border-top:1px solid #F0EEE9;padding-top:9px;display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between"><span class="wf-fl" style="margin:0">Tue 26 · 8h 40m</span><span class="wf-t">3 left</span></div>
+<div class="wf-row" style="border:0;padding:2px 0"><span class="wf-chk"></span><span style="flex:1">Rewrite onboarding copy</span></div>
+<div class="wf-row" style="border:0;padding:2px 0"><span class="wf-chk"></span><span style="flex:1">Dentist · 14:00</span></div>
+</div>
+<div style="flex:1"></div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">15</span><b>Month view.</b> No text in cells — one load bar per day, and red where the day is over its limit. Tapping a cell peeks the day at the bottom.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div><div class="wf-sh">Thursday</div><div class="wf-h" style="margin-top:5px">28 August</div></div>
+<div style="height:9px;border-radius:3px;border:1px dashed #DEDBD4"></div>
+<div class="wf-t">Nothing planned · 9h 30m free</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<div style="width:40px;height:40px;border:1.2px dashed #D6D2CA;border-radius:50%"></div>
+<div style="font:600 11px 'Archivo';color:#2A2824">A clear day</div>
+<div class="wf-t" style="text-align:center;max-width:170px">Two things are waiting in the tray. Move one here?</div>
+<div style="display:flex;flex-direction:column;gap:6px;width:100%">
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:7px"><span class="wl" style="flex:1"></span><span class="wf-chip">Move here</span></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:7px"><span class="wl" style="flex:1;width:70%"></span><span class="wf-chip">Move here</span></div>
+</div>
+</div>
+<div class="wf-btn2">Leave it empty</div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi"><span class="wf-navb"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">16</span><b>Empty day.</b> An empty day is a feature, so the copy does not scold. Offers the tray, then an explicit way to leave it alone.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1d">
+<div class="wf-bh"><a class="wf-bn" href="#1d">1d</a><span class="wf-bt">Creating a record — eight types</span></div>
+<p class="wf-bs">One entry point for everything. Typing a line makes a Task; the type picker is only reached by choosing a template or tapping "make this a…" on something already written. Each form below shows only the fields that type actually needs.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="justify-content:flex-end;padding-bottom:0">
+<div style="opacity:.35;display:flex;flex-direction:column;gap:7px">
+<div class="wl" style="width:60%;height:12px"></div>
+<div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div>
+<div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div>
+</div>
+<div class="wf-sheet">
+<div style="display:flex;gap:8px;align-items:flex-start"><span class="wf-chk" style="margin-top:2px"></span><div style="flex:1;font:400 11px 'Archivo';color:#2A2824">Call the framer about the print<span style="display:inline-block;width:1px;height:11px;background:var(--wf-a);vertical-align:-2px;margin-left:2px"></span></div></div>
+<div style="display:flex;gap:5px;flex-wrap:wrap">
+<span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">Today</span>
+<span class="wf-chip">Tomorrow</span><span class="wf-chip">+ Length</span><span class="wf-chip">+ Project</span><span class="wf-chip">+ Remind</span>
+</div>
+<div class="wf-t">Parsed "Thursday 40m" out of what you typed.</div>
+<div style="display:flex;gap:7px">
+<div class="wf-btn2" style="flex:1">Make this a…</div>
+<div class="wf-btn" style="flex:1">Save</div>
+</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">17</span><b>Capture.</b> One line, one sheet, saves as a Task. This is how 90% of records get made. "Make this a…" opens 18.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Make this a…</div>
+<div class="wf-h">Seven kinds of record</div>
+<div class="wf-t">Each behaves differently. That is the only reason kinds exist.</div>
+<div class="wf-grid8">
+<div class="wf-ty" style="border-color:var(--wf-a)"><div class="wf-tyn">Task</div><div class="wf-tyd">One thing, one length</div></div>
+<div class="wf-ty"><div class="wf-tyn">Routine</div><div class="wf-tyd">Checklist in one block</div></div>
+<div class="wf-ty"><div class="wf-tyn">Session</div><div class="wf-tyd">Time, not a tick box</div></div>
+<div class="wf-ty"><div class="wf-tyn">Errand</div><div class="wf-tyd">A place, not a time</div></div>
+<div class="wf-ty"><div class="wf-tyn">Appointment</div><div class="wf-tyd">Fixed, from calendar</div></div>
+<div class="wf-ty"><div class="wf-tyn">Bill</div><div class="wf-tyd">Spends money, dated</div></div>
+<div class="wf-ty"><div class="wf-tyn">Spending</div><div class="wf-tyd">Against a weekly cap</div></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-t">Hours or money. If it spends neither, it is not a record.</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">18</span><b>Type picker.</b> Never shown on the default path. Meal is the only paid type — it leans on routes.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">New task</span><span class="wf-t">Cancel</span></div>
+<div class="wf-inp" style="height:34px;border-color:var(--wf-a)"><span style="color:#2A2824;font-weight:500">Rewrite the onboarding copy</span></div>
+<div><div class="wf-fl">Length</div><div style="display:flex;gap:5px"><span class="wf-chip">30m</span><span class="wf-chip">1h</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">2h</span><span class="wf-chip">Half day</span></div></div>
+<div><div class="wf-fl">When</div><div class="wf-inp"><span>Today · 10:00</span><span>▾</span></div></div>
+<div><div class="wf-fl">Project</div><div class="wf-inp"><span>Operon</span><span>▾</span></div></div>
+<div><div class="wf-fl">Remind</div><div class="wf-inp"><span>15 min before</span><span>▾</span></div></div>
+<div><div class="wf-fl">Repeat</div><div class="wf-inp"><span>Never</span><span>▾</span></div></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px;background:#F6F5F2">
+<div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">Usually takes you 2h 40m</div><div class="wf-t">From your last four of these</div></div>
+<span class="wf-lock">Paid</span>
+</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Add to today</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">19</span><b>Task.</b> Length is a chip row, not a picker — it is the field that matters most. The estimate line is the first paid feature met in flow.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">New routine</span><span class="wf-t">Cancel</span></div>
+<div class="wf-inp" style="height:34px;border-color:var(--wf-a)"><span style="color:#2A2824;font-weight:500">Morning routine</span></div>
+<div><div class="wf-fl">Block length</div><div style="display:flex;gap:5px"><span class="wf-chip">20m</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">40m</span><span class="wf-chip">1h</span></div></div>
+<div>
+<div class="wf-fl">Steps · 6</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:4px 8px">
+<div class="wf-row" style="border:0;padding:5px 0"><span style="width:9px;height:9px;border:1.2px solid #CFCBC3;border-radius:2px;flex:none"></span><span class="wl" style="flex:1"></span></div>
+<div class="wf-row" style="padding:5px 0"><span style="width:9px;height:9px;border:1.2px solid #CFCBC3;border-radius:2px;flex:none"></span><span class="wl" style="flex:1;width:80%"></span></div>
+<div class="wf-row" style="padding:5px 0"><span style="width:9px;height:9px;border:1.2px solid #CFCBC3;border-radius:2px;flex:none"></span><span class="wl" style="flex:1;width:65%"></span></div>
+<div class="wf-row" style="padding:5px 0"><span style="width:9px;height:9px;border:1.2px dashed #CFCBC3;border-radius:2px;flex:none"></span><span class="wf-t" style="flex:1">Add a step</span></div>
+</div>
+</div>
+<div><div class="wf-fl">Repeats</div><div style="display:flex;gap:4px"><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">M</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">T</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">W</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">T</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">F</span><span class="wf-chip">S</span><span class="wf-chip">S</span></div></div>
+<div class="wf-ok">Costs the day 40 minutes once — not six separate entries.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Save routine</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">20</span><b>Routine.</b> Six ticks inside one block. The green note is the rule that stops routines inflating the day.</div></div>
+
+</div>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">New session</span><span class="wf-t">Cancel</span></div>
+<div class="wf-inp" style="height:34px;border-color:var(--wf-a)"><span style="color:#2A2824;font-weight:500">Reading</span></div>
+<div><div class="wf-fl">Give it</div><div style="display:flex;gap:5px"><span class="wf-chip">30m</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">1h</span><span class="wf-chip">90m</span></div></div>
+<div><div class="wf-fl">When</div><div class="wf-inp"><span>Today · evening</span><span>▾</span></div></div>
+<div><div class="wf-fl">Target this week</div><div class="wf-inp"><span>5 hours</span><span>▾</span></div></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px">
+<div class="wf-fl">This week so far</div>
+<div style="display:flex;height:7px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:3;background:#C1BDB4"></div><div style="flex:2;background:#fff"></div></div>
+<div class="wf-t" style="margin-top:5px">3h of 5h given</div>
+</div>
+<div class="wf-ok">No checkbox. A session cannot be finished, only fed. The timer in 29 is how it gets logged.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Save session</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">21</span><b>Session.</b> Progress is hours given against a weekly target, so it never turns red for being unfinished.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">New errand</span><span class="wf-t">Cancel</span></div>
+<div class="wf-inp" style="height:34px;border-color:var(--wf-a)"><span style="color:#2A2824;font-weight:500">Saturday run</span></div>
+<div>
+<div class="wf-fl">Stops · 3</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div class="wf-inp"><span>Groceries — Market St</span><span>✕</span></div>
+<div class="wf-inp"><span>Post office</span><span>✕</span></div>
+<div class="wf-inp"><span>Pharmacy</span><span>✕</span></div>
+<div class="wf-inp" style="border-style:dashed"><span>Add a stop</span><span>+</span></div>
+</div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;background:#F6F5F2;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">Best order · 40m round trip</div><div class="wf-t">Pharmacy first, it shuts at 13:00</div></div>
+<span class="wf-lock">Paid</span>
+</div>
+<div><div class="wf-fl">When</div><div class="wf-inp"><span>Saturday · 10:00</span><span>▾</span></div></div>
+<div class="wf-ok">One 40 minute trip on the day, not three loose tasks.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Save errand</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">22</span><b>Errand.</b> Stops collapse into one block. Ordering and travel time are paid — every address is a map lookup.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">Appointment</span><span class="wf-t">Close</span></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;background:#F6F5F2">
+<div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 11px 'Archivo';color:#2A2824">Dentist</span><span class="wf-lock">From calendar</span></div>
+<div class="wf-t" style="margin-top:4px">Tue 26 Aug · 14:00 — 15:00 · Kensington Dental</div>
+</div>
+<div class="wf-t">Fixed. Time and title are read-only here — edit them in the calendar they came from.</div>
+<div class="wf-sh">You can add</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">Travel there and back</div><div class="wf-t">25m each way</div></div>
+<div style="width:26px;height:15px;border-radius:8px;background:var(--wf-a);display:flex;justify-content:flex-end;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#fff"></div></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">Prep block before</div><div class="wf-t">30m</div></div>
+<div style="width:26px;height:15px;border-radius:8px;border:1px solid #D6D2CA;display:flex;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#DEDBD4"></div></div>
+</div>
+</div>
+<div class="wf-al">Adding travel takes 50m off today's 1h 40m free.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Save changes</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">23</span><b>Appointment.</b> The only type you cannot move. All you can do is buy time around it — and it says what that costs.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">New bill</span><span class="wf-t">Cancel</span></div>
+<div class="wf-inp" style="height:34px;border-color:var(--wf-a)"><span style="color:#2A2824;font-weight:500">Rent</span></div>
+<div style="display:flex;gap:6px">
+<div style="flex:1"><div class="wf-fl">Amount</div><div class="wf-inp"><span style="color:#2A2824;font-weight:600">£980.00</span></div></div>
+<div style="flex:1"><div class="wf-fl">Pay by</div><div class="wf-inp"><span>1 Sep</span><span>▾</span></div></div>
+</div>
+<div><div class="wf-fl">Repeats</div><div class="wf-inp"><span>Every month</span><span>▾</span></div></div>
+<div><div class="wf-fl">Alert</div><div class="wf-inp"><span>3 days before</span><span>▾</span></div></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px">
+<div class="wf-fl">Week of 1 Sep after this</div>
+<div style="display:flex;height:7px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:78;background:#C1BDB4"></div><div style="flex:22;background:#fff"></div></div>
+<div class="wf-t" style="margin-top:5px">£279 of £600 committed</div>
+</div>
+<div class="wf-ok">A bill is to money what an appointment is to time: dated, fixed, lowers the limit the moment you add it.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Save bill</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">24</span><b>Bill.</b> Same shape as an appointment, different unit. Five bills are free; more is paid.</div></div>
+
+</div>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">Log spending</span><span class="wf-t">Cancel</span></div>
+<div class="wf-inp" style="height:44px;border-color:var(--wf-a);justify-content:center"><span style="color:#2A2824;font:600 18px 'Archivo'">£24.60</span></div>
+<div><div class="wf-fl">What for</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">Food</span><span class="wf-chip">Transport</span><span class="wf-chip">Home</span><span class="wf-chip">Other</span></div></div>
+<div><div class="wf-fl">Note</div><div class="wf-inp"><span>Optional</span></div></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px">
+<div class="wf-fl">This week</div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:64;background:#C1BDB4"></div><div style="flex:12;background:#DEDBD4"></div><div style="flex:24;background:#fff"></div></div>
+<div style="display:flex;justify-content:space-between;margin-top:5px"><span class="wf-t">£431 committed · £24.60 pending</span><span class="wf-t">£144 left</span></div>
+</div>
+<div class="wf-t">A cap and a bar, not a ledger. No bank sync, no receipt scanning.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Log it</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">25</span><b>Spending.</b> Amount first, one tap for category, done. The week bar is the same component as the day bar in 12.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">Plan meals</span><span class="wf-lock">Paid</span></div>
+<div class="wf-h">Week of 1 Sep</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div class="wf-inp"><span style="color:#2A2824">Mon · Pasta e fagioli</span><span>▾</span></div>
+<div class="wf-inp"><span style="color:#2A2824">Tue · Sheet-pan chicken</span><span>▾</span></div>
+<div class="wf-inp"><span>Wed · nothing yet</span><span>▾</span></div>
+<div class="wf-inp"><span>Thu · nothing yet</span><span>▾</span></div>
+<div class="wf-inp"><span style="color:#2A2824">Fri · Leftovers</span><span>▾</span></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px">
+<div class="wf-fl">What this puts on the week</div>
+<div class="wf-t" style="line-height:1.6">Five 40m cook blocks (Routine)<br/>One shopping run, 11 items (Errand)</div>
+</div>
+<div class="wf-t">No recipe database. A meal is a routine with a list attached.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Add to the week</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">26</span><b>Meal.</b> The only paid record type. It generates other records rather than being a new mechanic.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="justify-content:flex-end;padding-bottom:0">
+<div style="opacity:.3;display:flex;flex-direction:column;gap:7px">
+<div class="wl" style="width:55%;height:12px"></div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #D89A8E"><div style="flex:88;background:#C1BDB4"></div><div style="flex:12;background:#E8CFC9"></div></div>
+<div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div>
+</div>
+<div class="wf-sheet" style="border-top-color:#D89A8E">
+<div class="wf-sh" style="color:#A8402F">Before you add this</div>
+<div style="font:600 12px/1.3 'Archivo';color:#2A2824">This puts you 40 minutes over.</div>
+<div class="wf-t">Two hours are already waiting today.</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px"><div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">Move "Q4 roadmap" to Thursday</div><div class="wf-t">Thursday is empty</div></div><span class="wf-chip">Do it</span></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px"><div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">Shorten this to 1h 20m</div></div><span class="wf-chip">Do it</span></div>
+</div>
+<div style="display:flex;gap:7px">
+<div class="wf-btn2" style="flex:1">Add anyway</div>
+<div class="wf-btn" style="flex:1">Move it</div>
+</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">27</span><b>Over-limit gate.</b> Fires on save from any type in 19–26. Two concrete options, and "add anyway" always stays available.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div><div class="wf-sh">Tuesday</div><div class="wf-h" style="margin-top:5px">26 August</div></div>
+<div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:53;background:#C1BDB4"></div><div style="flex:25;background:#DEDBD4"></div><div style="flex:8;background:var(--wf-a)"></div><div style="flex:14;background:#fff"></div></div>
+<div class="wf-t" style="margin-top:5px">1h 00m left of 9h 30m</div>
+</div>
+<div class="wf-sh">Afternoon</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Dentist</span><span class="wf-t">14:00</span></div>
+<div class="wf-row" style="border-color:var(--wf-a);background:#F4F7F5"><span class="wf-chk" style="border-color:var(--wf-a)"></span><span style="flex:1;color:#2A2824;font-weight:500">Call the framer<div class="wf-t">Personal · 40m</div></span><span class="wf-t">16:00</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span class="wf-chk"></span><span style="flex:1">Draft Q4 roadmap</span><span class="wf-t">1h</span></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-ok" style="display:flex;align-items:center;gap:8px"><span style="flex:1">Added at 16:00.</span><span class="wf-chip" style="border-color:#C6D6CE">Undo</span></div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi"><span class="wf-navb"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">28</span><b>Landed.</b> Back to the day with the new row highlighted, the bar redrawn, and one undo. No success screen.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1e">
+<div class="wf-bh"><a class="wf-bn" href="#1e">1e</a><span class="wf-bt">Detail, edit, move, drop</span></div>
+<p class="wf-bs">Reached by tapping any row in 12, any block in 14, or any cell peek in 15. Moving a record carries its length, reminder and project with it.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="justify-content:flex-end;padding-bottom:0">
+<div style="opacity:.3;display:flex;flex-direction:column;gap:7px"><div class="wl" style="width:55%;height:12px"></div><div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div></div>
+<div class="wf-sheet" style="gap:10px">
+<div style="width:30px;height:3px;border-radius:2px;background:#E4E1DA;margin:0 auto"></div>
+<div style="display:flex;align-items:center;gap:6px"><span style="width:5px;height:5px;border-radius:50%;background:var(--wf-a)"></span><span class="wf-sh">Operon · Task</span></div>
+<div style="font:600 13px/1.3 'Archivo';color:#2A2824">Rewrite the onboarding copy</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row" style="justify-content:space-between"><span class="wf-t">When</span><span>Today · 10:00 — 12:00</span></div>
+<div class="wf-row" style="justify-content:space-between"><span class="wf-t">Elapsed</span><span>1h 02m of 2h</span></div>
+<div class="wf-row" style="justify-content:space-between;border-bottom:1px solid #F0EEE9"><span class="wf-t">Remind</span><span>15 min before</span></div>
+</div>
+<div class="wf-t">Cut the second screen entirely. Lead with the calendar sync.</div>
+<div style="display:flex;gap:6px">
+<div class="wf-btn" style="flex:1">Done</div>
+<div class="wf-btn2" style="flex:1">Start timer</div>
+<div class="wf-btn2" style="width:34px">···</div>
+</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">29</span><b>Detail sheet.</b> Read-first. Three actions; everything else is behind the overflow.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-t">Cancel</span><span class="wf-sh">Edit task</span><span style="font:600 10px 'Archivo';color:var(--wf-a)">Save</span></div>
+<div class="wf-inp" style="height:34px;border-color:var(--wf-a)"><span style="color:#2A2824;font-weight:500">Rewrite the onboarding copy</span></div>
+<div><div class="wf-fl">Length</div><div style="display:flex;gap:5px"><span class="wf-chip">1h</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">2h</span><span class="wf-chip">3h</span></div></div>
+<div><div class="wf-fl">When</div><div class="wf-inp"><span>Today · 10:00</span><span>▾</span></div></div>
+<div><div class="wf-fl">Project</div><div class="wf-inp"><span>Operon</span><span>▾</span></div></div>
+<div><div class="wf-fl">Notes</div><div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;flex-direction:column;gap:5px"><div class="wl" style="width:100%"></div><div class="wl" style="width:88%"></div><div class="wl" style="width:52%"></div></div></div>
+<div><div class="wf-fl">Change kind</div><div class="wf-inp"><span>Task</span><span>▾</span></div></div>
+<div style="flex:1"></div>
+<div class="wf-btn2" style="border-color:#E8CFC9;color:#A8402F">Delete</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">30</span><b>Edit.</b> Same form as 19, prefilled. "Change kind" is where a Task becomes a Routine after the fact.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="gap:8px">
+<div class="wf-sh">Drag to move</div>
+<div style="display:flex;gap:9px;flex:1">
+<div style="width:20px;display:flex;flex-direction:column;padding-top:2px">
+<div style="height:44px" class="wf-t">10</div><div style="height:44px" class="wf-t">11</div><div style="height:44px" class="wf-t">12</div><div style="height:44px" class="wf-t">13</div><div style="height:44px" class="wf-t">14</div><div style="height:44px" class="wf-t">15</div>
+</div>
+<div style="flex:1;border-left:1px solid #F0EEE9;padding-left:8px;position:relative">
+<div style="height:80px;border:1.5px dashed #C1BDB4;border-radius:4px;background:#F6F5F2;display:flex;align-items:center;justify-content:center" class="wf-t">was here</div>
+<div style="margin-top:52px;height:80px;border-radius:4px;background:#C1BDB4;color:#fff;padding:6px;font:600 9px 'Archivo';box-shadow:0 3px 10px rgba(0,0,0,.12)">Rewrite copy<div style="font-weight:400;margin-top:2px;opacity:.85">13:00 — 15:00 · 2h</div></div>
+<div style="position:absolute;left:8px;right:0;top:132px;height:1px;background:var(--wf-a)"></div>
+</div>
+</div>
+<div class="wf-ok">Its reminder, project and length moved with it. Nothing else on the day shifted.</div>
+<div style="display:flex;gap:6px"><div class="wf-btn2" style="flex:1">Undo</div><div class="wf-btn" style="flex:1">Keep</div></div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">31</span><b>Move.</b> Drag on the day, or "→ Thursday" from 13 and 27. One gesture, no cleanup after.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="justify-content:flex-end;padding-bottom:0">
+<div style="opacity:.3;display:flex;flex-direction:column;gap:7px"><div class="wl" style="width:55%;height:12px"></div><div class="wf-row"><span class="wf-chk"></span><span class="wl" style="flex:1"></span></div></div>
+<div class="wf-sheet">
+<div class="wf-sh">Not doing this today</div>
+<div style="font:600 12px/1.3 'Archivo';color:#2A2824">Rewrite the onboarding copy</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div class="wf-btn2" style="justify-content:flex-start;padding:0 10px">Move to tomorrow</div>
+<div class="wf-btn2" style="justify-content:flex-start;padding:0 10px">Send to the tray</div>
+<div class="wf-btn2" style="justify-content:flex-start;padding:0 10px;border-color:#E8CFC9;color:#A8402F">Drop it for good</div>
+</div>
+<div class="wf-t">The tray is visible. Nothing slides into tomorrow on its own.</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">32</span><b>Skip or drop.</b> Three destinations, all explicit. Dropping is the only destructive one and it is worded as a choice.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1f">
+<div class="wf-bh"><a class="wf-bn" href="#1f">1f</a><span class="wf-bt">The evening close — the end of the flow</span></div>
+<p class="wf-bs">One notification at the time set in 38. Two minutes, three buttons per leftover, then the day is shut and cannot silently reopen.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>19:00</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="justify-content:flex-start;gap:10px">
+<div style="border:1px solid #DEDBD4;border-radius:8px;padding:10px;display:flex;gap:9px;align-items:flex-start;background:#FBFAF8">
+<div style="width:22px;height:22px;border-radius:5px;border:1.2px solid #D6D2CA;flex:none"></div>
+<div style="flex:1"><div style="font:600 10px 'Archivo';color:#2A2824">Moed · now</div><div class="wf-t" style="margin-top:3px">Three things left. Shut the day?</div></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;opacity:.4">
+<div class="wl" style="width:60%;height:11px"></div><div class="wl" style="width:80%"></div><div class="wl" style="width:70%"></div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">33</span><b>The nudge.</b> Once a day, at a time you chose. Opting out in 38 is one tap and does not degrade anything.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>19:01</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div><div class="wf-sh">Closing Tuesday</div><div class="wf-h" style="margin-top:5px">Three left</div></div>
+<div class="wf-t">Done, move, or drop. Then it is shut.</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px">
+<div style="font:500 10px 'Archivo';color:#2A2824">Reply to Marta</div>
+<div class="wf-t" style="margin-top:2px">Slipped twice</div>
+<div style="display:flex;gap:5px;margin-top:7px"><span class="wf-chip" style="flex:1;text-align:center;background:var(--wf-a);border-color:var(--wf-a);color:#fff">Done</span><span class="wf-chip" style="flex:1;text-align:center">Move</span><span class="wf-chip" style="flex:1;text-align:center">Drop</span></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px">
+<div style="font:500 10px 'Archivo';color:#2A2824">Draft Q4 roadmap</div>
+<div class="wf-t" style="margin-top:2px">1h · due Friday</div>
+<div style="display:flex;gap:5px;margin-top:7px"><span class="wf-chip" style="flex:1;text-align:center">Done</span><span class="wf-chip" style="flex:1;text-align:center">Move</span><span class="wf-chip" style="flex:1;text-align:center">Drop</span></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px">
+<div style="font:500 10px 'Archivo';color:#2A2824">Groceries</div>
+<div style="display:flex;gap:5px;margin-top:7px"><span class="wf-chip" style="flex:1;text-align:center">Done</span><span class="wf-chip" style="flex:1;text-align:center">Move</span><span class="wf-chip" style="flex:1;text-align:center">Drop</span></div>
+</div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Shut the day</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">34</span><b>Triage.</b> Three buttons per leftover, no free text. "Move" defaults to the next day with room, shown before it commits.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>19:03</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div><div class="wf-sh">Tuesday, shut</div><div class="wf-h" style="margin-top:5px">7h 10m used of 9h 30m</div></div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:75;background:#C1BDB4"></div><div style="flex:25;background:#fff"></div></div>
+<div style="display:flex;gap:6px">
+<div style="flex:1;border:1px solid #DEDBD4;border-radius:5px;padding:8px"><div class="wf-fl" style="margin:0">Done</div><div style="font:600 14px 'Archivo';color:#2A2824;margin-top:3px">6</div></div>
+<div style="flex:1;border:1px solid #DEDBD4;border-radius:5px;padding:8px"><div class="wf-fl" style="margin:0">Moved</div><div style="font:600 14px 'Archivo';color:#2A2824;margin-top:3px">2</div></div>
+<div style="flex:1;border:1px solid #DEDBD4;border-radius:5px;padding:8px"><div class="wf-fl" style="margin:0">Dropped</div><div style="font:600 14px 'Archivo';color:#2A2824;margin-top:3px">1</div></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;background:#F6F5F2;display:flex;gap:8px;align-items:center">
+<div style="flex:1"><div style="font:500 9.5px 'Archivo';color:#2A2824">The roadmap task has slipped three times</div><div class="wf-t">Usually because mornings run long</div></div>
+<span class="wf-lock">Paid</span>
+</div>
+<div class="wf-sh">Tomorrow</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Reply to Marta</span><span class="wf-t">moved</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span class="wf-chk"></span><span style="flex:1">1:1 with Priya</span><span class="wf-t">11:00</span></div>
+</div>
+<div class="wf-t">6h 15m planned. Room for one more thing.</div>
+<div style="flex:1"></div>
+<div class="wf-btn2">Close</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">35</span><b>Shut.</b> The end of the loop: what happened, what carried, what tomorrow looks like. The explanation line is paid.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1g">
+<div class="wf-bh"><a class="wf-bn" href="#1g">1g</a><span class="wf-bt">Settings, tray and edge states</span></div>
+<p class="wf-bs">Behind the Me tab. Also the two states that decide whether the app is trusted: offline, and a sync failure.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-h">Me</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px;display:flex;gap:9px;align-items:center">
+<div style="width:28px;height:28px;border-radius:50%;background:#EFEDE8;flex:none"></div>
+<div style="flex:1"><div style="font:500 10px 'Archivo';color:#2A2824">Jo Mensah</div><div class="wf-t">Free plan · Apple account</div></div>
+<span class="wf-chip">Upgrade</span>
+</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row" style="justify-content:space-between"><span>Day length</span><span class="wf-t">08:30 — 18:00 ›</span></div>
+<div class="wf-row" style="justify-content:space-between"><span>Calendars</span><span class="wf-t">1 of 1 ›</span></div>
+<div class="wf-row" style="justify-content:space-between"><span>Notifications</span><span class="wf-t">2 on ›</span></div>
+<div class="wf-row" style="justify-content:space-between"><span>Money limits</span><span class="wf-t">£1,600 / wk ›</span></div>
+<div class="wf-row" style="justify-content:space-between"><span>Templates</span><span class="wf-t">8 ›</span></div>
+<div class="wf-row" style="justify-content:space-between"><span>The tray</span><span class="wf-t">2 waiting ›</span></div>
+<div class="wf-row" style="justify-content:space-between"><span>Export my data</span><span class="wf-t">›</span></div>
+<div class="wf-row" style="justify-content:space-between;border-bottom:1px solid #F0EEE9"><span>Subscription</span><span class="wf-t">›</span></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-t">Export is never behind the paywall.</div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi"><span class="wf-navb"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">36</span><b>Settings.</b> Flat list, no nested categories. Plan state and Upgrade sit at the top, not hidden at the bottom.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;gap:8px;align-items:center"><span class="wf-t">‹ Me</span></div>
+<div class="wf-h">Day length</div>
+<div style="display:flex;gap:6px">
+<div style="flex:1"><div class="wf-fl">Starts</div><div class="wf-inp"><span style="color:#2A2824">08:30</span><span>▾</span></div></div>
+<div style="flex:1"><div class="wf-fl">Ends</div><div class="wf-inp"><span style="color:#2A2824">18:00</span><span>▾</span></div></div>
+</div>
+<div><div class="wf-fl">Days it applies to</div><div style="display:flex;gap:4px"><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">M</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">T</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">W</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">T</span><span class="wf-chip" style="background:var(--wf-a);border-color:var(--wf-a);color:#fff">F</span><span class="wf-chip">S</span><span class="wf-chip">S</span></div></div>
+<div class="wf-al">Six days already have more than 9h planned. Shortening the day will mark them over.</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px">
+<div class="wf-fl">Weekend limit</div>
+<div class="wf-inp"><span>4 hours</span><span>▾</span></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Save</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">37</span><b>Day length, later.</b> Changing the limit re-marks history, so it warns before saving rather than after.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-t">‹ Me</div>
+<div class="wf-h">Notifications</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 10px 'Archivo';color:#2A2824">Over the limit</div><div class="wf-t">When it happens</div></div>
+<div style="width:26px;height:15px;border-radius:8px;background:var(--wf-a);display:flex;justify-content:flex-end;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#fff"></div></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 10px 'Archivo';color:#2A2824">Evening close</div><div class="wf-t">19:00 · opens 34</div></div>
+<div style="width:26px;height:15px;border-radius:8px;background:var(--wf-a);display:flex;justify-content:flex-end;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#fff"></div></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 10px 'Archivo';color:#2A2824">Bill alerts</div><div class="wf-t">3 days before</div></div>
+<div style="width:26px;height:15px;border-radius:8px;background:var(--wf-a);display:flex;justify-content:flex-end;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#fff"></div></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1"><div style="font:500 10px 'Archivo';color:#2A2824">Per-record reminders</div><div class="wf-t">Set on the record</div></div>
+<div style="width:26px;height:15px;border-radius:8px;border:1px solid #D6D2CA;display:flex;align-items:center;padding:0 2px;flex:none"><div style="width:11px;height:11px;border-radius:50%;background:#DEDBD4"></div></div>
+</div>
+</div>
+<div class="wf-t">Four switches, no digest, no streaks.</div>
+<div style="flex:1"></div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">38</span><b>Notifications.</b> Everything the app can send, on one screen. All of it optional.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-al" style="display:flex;gap:8px;align-items:center"><span style="flex:1">No connection. Everything still works — 3 changes will sync later.</span></div>
+<div><div class="wf-sh">Tuesday</div><div class="wf-h" style="margin-top:5px">26 August</div></div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:53;background:#C1BDB4"></div><div style="flex:25;background:#DEDBD4"></div><div style="flex:22;background:#fff"></div></div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Rewrite onboarding copy</span><span class="wf-t">2h</span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Dentist</span><span class="wf-t">14:00</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span class="wf-chk"></span><span style="flex:1">Draft Q4 roadmap</span><span class="wf-t">1h</span></div>
+</div>
+<div class="wf-sh">Unavailable offline</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px;background:#F6F5F2"><span style="flex:1" class="wf-t">Travel times</span><span class="wf-lock">Offline</span></div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;display:flex;align-items:center;gap:8px;background:#F6F5F2"><span style="flex:1" class="wf-t">Voice capture</span><span class="wf-lock">Offline</span></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-t">The planning loop runs on the phone. Only the paid extras need the network.</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">39</span><b>Offline.</b> A banner, not a wall. Names the two things that stop working and keeps the rest.</div></div>
+
+</div>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-t">‹ Me</div>
+<div class="wf-h">The tray</div>
+<div class="wf-t">Everything you skipped. It stays here until you deal with it.</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px">
+<div style="display:flex;justify-content:space-between"><span style="font:500 10px 'Archivo';color:#2A2824">Reply to Marta</span><span class="wf-t">3 slips</span></div>
+<div style="display:flex;gap:5px;margin-top:7px"><span class="wf-chip" style="flex:1;text-align:center">Today</span><span class="wf-chip" style="flex:1;text-align:center">Pick a day</span><span class="wf-chip" style="flex:1;text-align:center">Drop</span></div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px">
+<div style="display:flex;justify-content:space-between"><span style="font:500 10px 'Archivo';color:#2A2824">Read the Figma changelog</span><span class="wf-t">1 slip</span></div>
+<div style="display:flex;gap:5px;margin-top:7px"><span class="wf-chip" style="flex:1;text-align:center">Today</span><span class="wf-chip" style="flex:1;text-align:center">Pick a day</span><span class="wf-chip" style="flex:1;text-align:center">Drop</span></div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px dashed #DEDBD4;border-radius:6px;padding:14px">
+<div style="font:600 10.5px 'Archivo';color:#2A2824">Nothing overdue</div>
+<div class="wf-t" style="text-align:center">Two items is a normal tray. Above ten, the day limit is wrong.</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">40</span><b>The tray.</b> Slip count is the honest number — it is what feeds the paid explanation line in 35.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-h">Something went wrong</div>
+<div class="wf-al">We could not reach sync. Your plan is safe on this phone.</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px;display:flex;flex-direction:column;gap:6px">
+<div class="wf-fl" style="margin:0">Waiting to sync</div>
+<div class="wf-row" style="border:0;padding:3px 0"><span style="flex:1">3 records edited</span><span class="wf-t">local</span></div>
+<div class="wf-row" style="padding:3px 0"><span style="flex:1">1 record added</span><span class="wf-t">local</span></div>
+</div>
+<div style="display:flex;gap:6px"><div class="wf-btn" style="flex:1">Try again</div><div class="wf-btn2" style="flex:1">Later</div></div>
+<div class="wf-t">Nothing is lost and nothing is blocked. You can keep planning while this sits here.</div>
+<div style="flex:1;border:1px dashed #DEDBD4;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px">
+<div style="font:600 10.5px 'Archivo';color:#2A2824">Report it</div>
+<div class="wf-t" style="text-align:center">One button, no form. Sends the last error, never your records.</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">41</span><b>Sync failure.</b> The one error screen. It states what is queued and refuses to be a dead end.</div></div>
+
+</div>
+</div>
+
+<div class="wf-band" id="1h">
+<div class="wf-bh"><a class="wf-bn" href="#1h">1h</a><span class="wf-bt">Free and paid</span></div>
+<p class="wf-bs">The rule: if it costs money every month, it is paid. Servers, AI and map lookups have a bill per user. The day limit, the tray and the evening close run on the phone, so they are free. Every locked thing in bands 1a–1g leads here.</p>
+
+<div class="wf-flow">
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Free plan</div>
+<div class="wf-h">What you already have</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span style="flex:1">The day limit and capacity bars</span></div>
+<div class="wf-row"><span style="flex:1">The slippage tray</span></div>
+<div class="wf-row"><span style="flex:1">The two-minute evening close</span></div>
+<div class="wf-row"><span style="flex:1">Drag to reschedule</span></div>
+<div class="wf-row"><span style="flex:1">Day, week and month views</span></div>
+<div class="wf-row"><span style="flex:1">Unlimited tasks, routines, sessions</span></div>
+<div class="wf-row"><span style="flex:1">One calendar, read and write</span></div>
+<div class="wf-row"><span style="flex:1">Three projects · eight templates</span></div>
+<div class="wf-row"><span style="flex:1">Five bills · the weekly money limit</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span style="flex:1">Widget, watch, full offline use</span></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-ok">No trial timer, no nag screen, no feature that stops working after 30 days.</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">42</span><b>The free plan.</b> A whole planner, not a demo. Worth stating in one screen so the paid list looks like an addition rather than a ransom.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="justify-content:flex-end;padding-bottom:0">
+<div style="opacity:.3;display:flex;flex-direction:column;gap:7px">
+<div class="wl" style="width:50%;height:12px"></div>
+<div class="wf-inp"><span>Rewrite the onboarding copy</span></div>
+<div style="display:flex;gap:5px"><span class="wf-chip">30m</span><span class="wf-chip">1h</span><span class="wf-chip">2h</span></div>
+</div>
+<div class="wf-sheet">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">Paid feature</span><span class="wf-t">✕</span></div>
+<div style="font:600 12px/1.35 'Archivo';color:#2A2824">Estimates come from your own history</div>
+<div class="wf-t">We look at your last four tasks like this one. That runs on our servers and costs us per request, so it sits behind the subscription.</div>
+<div style="border:1px solid #DEDBD4;border-radius:5px;padding:8px;background:#F6F5F2"><div class="wf-t">Also unlocks: sync, voice capture, travel times, meals, unlimited projects.</div></div>
+<div style="display:flex;gap:6px"><div class="wf-btn2" style="flex:1">Not now</div><div class="wf-btn" style="flex:1">See the plan</div></div>
+<div class="wf-t" style="text-align:center;font-size:8.5px">Dismissing this never blocks the task.</div>
+</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">43</span><b>Hitting a lock.</b> Fired by the Paid badges in 19, 22, 26 and 35. Says why it costs money, then gets out of the way.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr" style="gap:9px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="wf-sh">Subscription</span><span class="wf-t">✕</span></div>
+<div class="wf-h">Things with a bill attached</div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row" style="padding:7px 0"><span style="flex:1">Sync across your devices</span><span class="wf-t">servers</span></div>
+<div class="wf-row" style="padding:7px 0"><span style="flex:1">Voice capture and estimates</span><span class="wf-t">AI</span></div>
+<div class="wf-row" style="padding:7px 0"><span style="flex:1">Break it down · explain slippage</span><span class="wf-t">AI</span></div>
+<div class="wf-row" style="padding:7px 0"><span style="flex:1">Travel times, routes and meals</span><span class="wf-t">maps</span></div>
+<div class="wf-row" style="padding:7px 0"><span style="flex:1">Share a project with one person</span><span class="wf-t">servers</span></div>
+<div class="wf-row" style="padding:7px 0;border-bottom:1px solid #F0EEE9"><span style="flex:1">Unlimited projects and bills</span><span class="wf-t">storage</span></div>
+</div>
+<div style="display:flex;gap:6px">
+<div style="flex:1;border:1.5px solid var(--wf-a);border-radius:6px;padding:9px"><div class="wf-fl" style="margin:0">Yearly</div><div style="font:600 12px 'Archivo';color:#2A2824;margin-top:4px">price TBD</div><div class="wf-t">two months off</div></div>
+<div style="flex:1;border:1px solid #DEDBD4;border-radius:6px;padding:9px"><div class="wf-fl" style="margin:0">Monthly</div><div style="font:600 12px 'Archivo';color:#2A2824;margin-top:4px">price TBD</div><div class="wf-t">cancel anytime</div></div>
+</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Subscribe</div>
+<div class="wf-btn2" style="border:0;color:#8E8A82">Restore a purchase</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">44</span><b>The paywall.</b> Every line names its cost driver — that is the argument. Price is deliberately unset, and whether a one-time purchase exists at all is still open; both need deciding before this screen is designed for real.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div style="display:flex;justify-content:space-between;align-items:flex-start">
+<div><div class="wf-sh">Tuesday · subscribed</div><div class="wf-h" style="margin-top:5px">26 August</div></div>
+<div style="width:26px;height:26px;border-radius:50%;border:1.2px solid #D6D2CA;flex:none"></div>
+</div>
+<div style="display:flex;height:9px;border-radius:3px;overflow:hidden;border:1px solid #E4E1DA"><div style="flex:53;background:#C1BDB4"></div><div style="flex:25;background:#DEDBD4"></div><div style="flex:22;background:#fff"></div></div>
+<div style="display:flex;flex-direction:column">
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Rewrite onboarding copy<div class="wf-t">usually 2h 40m · you booked 2h</div></span></div>
+<div class="wf-row"><span class="wf-chk"></span><span style="flex:1">Dentist<div class="wf-t">leave 13:35 · 25m drive</div></span><span class="wf-t">14:00</span></div>
+<div class="wf-row" style="border-bottom:1px solid #F0EEE9"><span class="wf-chk"></span><span style="flex:1">Cook · sheet-pan chicken<div class="wf-t">from the meal plan</div></span><span class="wf-t">40m</span></div>
+</div>
+<div class="wf-ok">Same screen as 12. Four extra lines of detail, nothing rearranged.</div>
+<div style="flex:1"></div>
+<div style="height:30px;border:1px solid #DEDBD4;border-radius:15px;display:flex;align-items:center;padding:0 4px 0 11px;gap:8px;flex:none">
+<span class="wf-t" style="flex:1">Add anything…</span>
+<span class="wf-chip" style="border-color:var(--wf-a);color:var(--wf-a)">Voice</span>
+<span style="width:22px;height:22px;border-radius:50%;background:var(--wf-a);color:#fff;display:flex;align-items:center;justify-content:center;font:600 11px 'Archivo'">+</span>
+</div>
+</div>
+<div class="wf-nav">
+<div class="wf-navi" style="color:var(--wf-a)"><span class="wf-navb" style="border-color:var(--wf-a)"></span>Today</div>
+<div class="wf-navi"><span class="wf-navb"></span>Calendar</div>
+<div class="wf-navi"><span class="wf-navb"></span>Projects</div>
+<div class="wf-navi"><span class="wf-navb"></span>Me</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">45</span><b>Subscribed.</b> Paying adds information, not a different app. If this screen looked new, the free version would feel crippled.</div></div>
+
+<div class="wf-arr"><svg width="18" height="10" viewBox="0 0 18 10"><path d="M0 5h15M11 1.5 15 5l-4 3.5" stroke="#C1BDB4" stroke-width="1.3" fill="none"/></svg></div>
+
+<div class="wf-cell"><div class="wf-phone">
+<div class="wf-sb"><span>9:41</span><span>▪▪▪</span></div>
+<div class="wf-scr">
+<div class="wf-sh">Subscription ended</div>
+<div class="wf-h">Your plan is still here</div>
+<div class="wf-t">Nothing was deleted. This phone keeps working exactly as it did.</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px">
+<div class="wf-fl">You keep</div>
+<div class="wf-t" style="line-height:1.7">Every record you ever made<br/>The day limit, tray and evening close<br/>Day, week and month views<br/>Export, any time</div>
+</div>
+<div style="border:1px solid #DEDBD4;border-radius:6px;padding:9px;background:#F6F5F2">
+<div class="wf-fl">Paused</div>
+<div class="wf-t" style="line-height:1.7">Sync — this phone is now the only copy<br/>Voice, estimates, travel times, meals<br/>Projects above three are read-only</div>
+</div>
+<div class="wf-al">Read-only means you can still see and export them. Nothing is hidden behind the paywall.</div>
+<div style="flex:1"></div>
+<div class="wf-btn">Resubscribe</div>
+<div class="wf-btn2">Export everything</div>
+</div>
+</div><div class="wf-cap"><span class="wf-num">46</span><b>Lapsed.</b> The screen that decides whether people trust the product enough to subscribe in the first place.</div></div>
+
+</div>
+</div>
+
+<p class="dv-next">Try next: "build <a class="wf-bn" href="#1b">1b</a> and <a class="wf-bn" href="#1d">1d</a> at full fidelity in the Ledger style" · "add a tablet or desktop column to <a class="wf-bn" href="#1c">1c</a>" · "wireframe Projects and the templates library"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1420,&quot;height&quot;:1100},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#24443C&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#24443C&quot;,&quot;#A48C7C&quot;,&quot;#2A2824&quot;,&quot;#6B2F8C&quot;],&quot;section&quot;:&quot;Wireframe&quot;},&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Wireframe&quot;},&quot;screenWidth&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:250,&quot;min&quot;:200,&quot;max&quot;:320,&quot;step&quot;:10,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Wireframe&quot;}}">
+class Component extends DCLogic {
+  apply() {
+    const r = document.documentElement.style;
+    r.setProperty('--wf-a', this.props.accent ?? '#24443C');
+    r.setProperty('--wf-nd', (this.props.showNotes ?? true) ? 'block' : 'none');
+    r.setProperty('--wf-w', (this.props.screenWidth ?? 250) + 'px');
+  }
+  componentDidMount() { this.apply(); }
+  componentDidUpdate() { this.apply(); }
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

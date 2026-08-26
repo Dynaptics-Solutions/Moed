@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E7E4DE;font-family:"Archivo",system-ui,sans-serif}
+a{color:#24443C}a:hover{color:#14201C}
+.mb-rail{display:flex;flex-wrap:wrap;gap:6px;max-width:820px}
+.mb-c{padding:8px 12px;border-radius:8px;border:1px solid rgba(30,43,38,.14);background:#FBFAF8;font:500 11.5px/1 "Archivo";color:#5C6862;cursor:pointer;white-space:nowrap}
+.mb-c:hover{border-color:#24443C;color:#24443C}
+.mb-on{background:#24443C;border-color:#24443C;color:#F5F2ED}
+.mb-lab{font:600 9.5px/1 "Archivo";letter-spacing:.17em;text-transform:uppercase;color:#A48C7C}
+.mb-cap{font:400 11.5px/1.55 "Archivo";color:rgba(30,43,38,.55)}
+</style></helmet>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#24443C"/><g transform="translate(140 75)"><circle cx="60" cy="75" r="58" fill="none" stroke="#F5F2ED" stroke-width="7"/><path d="M28 118V52l32 34 32-34v66" fill="none" stroke="#F5F2ED" stroke-width="7" stroke-linejoin="round"/><path d="M60 6v26" stroke="#F5F2ED" stroke-width="7" stroke-linecap="round"/><circle cx="60" cy="44" r="6" fill="#F5F2ED"/></g></svg></template>
+<div style="padding:40px 44px 60px">
+
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap">
+<div style="display:flex;align-items:center;gap:18px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:52px;height:auto;display:block"/>
+<div>
+<div class="mb-lab">Mockups · first batch</div>
+<div style="font:400 30px/1.1 'Cormorant Garamond',Georgia,serif;color:#1E2B26;margin-top:6px">Fifty-one screens, both phones, live</div>
+<div class="mb-cap" style="margin-top:7px;max-width:520px">Tap anything inside the phones — rows open the detail sheet, the add bar opens capture, the tabs switch views. Both frames stay in step so you can compare the chrome.</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<div class="mb-lab">Theme</div>
+<div style="display:flex;gap:6px">
+<div onClick="{{ setLight }}" class="mb-c {{ lightCls }}">Light</div>
+<div onClick="{{ setDark }}" class="mb-c {{ darkCls }}">Dark</div>
+</div>
+</div>
+</div>
+
+<div style="margin-top:30px;display:flex;flex-direction:column;gap:11px">
+<div class="mb-lab">Screens</div>
+<div class="mb-rail">
+<sc-for list="{{ rail }}" as="r" hint-placeholder-count="14">
+<div onClick="{{ r.go }}" class="mb-c {{ r.cls }}">{{ r.label }}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="margin-top:36px;display:flex;flex-wrap:wrap;gap:46px;align-items:flex-start">
+
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:baseline;gap:10px"><span class="mb-lab">iOS</span><span class="mb-cap">Bottom tabs · 13px radii · sheet at 26</span></div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 380 }}" height="{{ 822 }}" dark="{{ isDark }}" hint-size="380px,822px">
+<dc-import name="screen" screen="{{ screen }}" platform="ios" go="{{ go }}" style="height:100%" hint-size="100%,100%"></dc-import>
+</x-import>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:baseline;gap:10px"><span class="mb-lab">Android</span><span class="mb-cap">Pill buttons · 26px radii · add is a FAB</span></div>
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 380 }}" height="{{ 760 }}" dark="{{ isDark }}" surface="{{ surface }}" hint-size="380px,760px">
+<dc-import name="screen" screen="{{ screen }}" platform="android" go="{{ go }}" style="height:100%" hint-size="100%,100%"></dc-import>
+</x-import>
+</div>
+
+<div style="width:280px;display:flex;flex-direction:column;gap:20px;padding-top:34px">
+<div>
+<div class="mb-lab">What carries the design</div>
+<div class="mb-cap" style="margin-top:9px">The capacity bar. It is the same component on the day, in the task form, in the over-limit sheet and on the week footer — only the unit changes. Everything else is quiet so that bar can be the loud thing.</div>
+</div>
+<div>
+<div class="mb-lab">Type</div>
+<div class="mb-cap" style="margin-top:9px">Cormorant Garamond for dates, counts and titles, echoing the wordmark. Archivo for everything you interact with. No third face.</div>
+</div>
+<div>
+<div class="mb-lab">Colour</div>
+<div style="margin-top:11px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;align-items:center;gap:9px"><span style="width:26px;height:26px;border-radius:7px;background:#24443C;flex:none"></span><span class="mb-cap">#24443C · load, primary, done</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:26px;height:26px;border-radius:7px;background:#A48C7C;flex:none"></span><span class="mb-cap">#A48C7C · fixed time, paid, labels</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:26px;height:26px;border-radius:7px;background:#A8402F;flex:none"></span><span class="mb-cap">#A8402F · over the limit, only ever this</span></div>
+</div>
+</div>
+<div style="padding:15px 16px;border:1px dashed rgba(30,43,38,.22);border-radius:9px">
+<div class="mb-lab">Still open</div>
+<div class="mb-cap" style="margin-top:8px">Still to come: first run, the tray, templates, offline, the plan screens, widget and watch.</div>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1500,&quot;height&quot;:1080}}">
+const RAIL = [
+  ['splash', '01 Splash'], ['signin', '08 Sign in'], ['day', '12 Day'], ['full', '13 Day is full'],
+  ['week', '14 Week'], ['month', '15 Month'], ['capture', '17 Capture'], ['task', '19 New task'],
+  ['gate', '27 Over the limit'], ['detail', '29 Detail'], ['close', '34 Evening close'],
+  ['shut', '35 Day shut'], ['settings', '36 Settings'], ['paywall', '44 Paywall'],
+  ['types', 'Type picker'], ['routine', 'Routine'], ['session', 'Session'], ['errand', 'Errand'],
+  ['appt', 'Appointment'], ['bill', 'Bill'], ['spend', 'Spending'], ['meal', 'Meal'],
+  ['repeat', 'Repeats'], ['projects', 'Projects'], ['project', 'Project detail'],
+  ['money', 'Money'], ['bills', 'Bills'], ['timer', 'Timer running'], ['search', 'Search'],
+  ['dietsetup', 'Set intake'], ['diet', 'Food today'], ['logfood', 'Log food'],
+  ['dietgate', 'Over the calorie limit'], ['dietreview', 'Diet week'], ['shoplist', 'Shopping list'],
+  ['dietgoal', 'Target weight'], ['dietplan', 'Suggested plan'], ['photolog', 'Photo estimate'],
+  ['deficit', 'Progress'], ['workout', 'Workouts'],
+  ['connect', 'Connect a watch'], ['permissions', 'What it reads'], ['autolog', 'Watch closed it'],
+  ['sleepday', 'Slept badly'], ['recal', 'Recalibrated'], ['trial', 'Trial'],
+  ['found', 'Backfill proof'], ['handover', 'Day seven'], ['readonly', 'Day eight'],
+  ['photolock', 'Photos not in trial'], ['noregion', 'Huawei unavailable']
+];
+
+class Component extends DCLogic {
+  state = { screen: 'day', theme: 'light' };
+  apply() { document.documentElement.setAttribute('data-moed', this.state.theme); }
+  componentDidMount() { this.apply(); }
+  componentDidUpdate() { this.apply(); }
+  renderVals() {
+    const { screen, theme } = this.state;
+    const dark = theme === 'dark';
+    return {
+      screen, isDark: dark,
+      surface: dark ? '#141F1B' : '#F5F2ED',
+      lightCls: dark ? '' : 'mb-on',
+      darkCls: dark ? 'mb-on' : '',
+      setLight: () => this.setState({ theme: 'light' }),
+      setDark: () => this.setState({ theme: 'dark' }),
+      go: s => this.setState({ screen: s }),
+      rail: RAIL.map(([id, label]) => ({
+        label, cls: screen === id ? 'mb-on' : '',
+        go: () => this.setState({ screen: id })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

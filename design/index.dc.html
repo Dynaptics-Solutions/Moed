@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E7E4DE;font-family:"Archivo",system-ui,sans-serif}
+a{color:#24443C;text-decoration:none}
+.ix-lab{font:600 9.5px/1 "Archivo";letter-spacing:.17em;text-transform:uppercase;color:#A48C7C}
+.ix-t{font:400 13.5px/1.6 "Archivo";color:#4A5651}
+.ix-card{display:block;background:#FBFAF8;border:1px solid rgba(30,43,38,.11);border-radius:12px;padding:20px 21px;transition:border-color .15s,transform .15s}
+.ix-card:hover{border-color:#24443C;transform:translateY(-1px)}
+.ix-n{font:400 22px/1.2 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.ix-f{font:500 10.5px/1 ui-monospace,Menlo,monospace;color:#97A09B;margin-top:9px}
+.ix-d{font:400 12.5px/1.55 "Archivo";color:#5C6862;margin-top:9px}
+.ix-tag{display:inline-block;font:600 8.5px/1 "Archivo";letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:5px;margin-top:12px}
+</style></helmet>
+
+<div style="max-width:1000px;margin:0 auto;padding:56px 48px 90px;background:#F5F2ED;min-height:100vh;box-sizing:border-box">
+
+<div style="display:flex;align-items:flex-start;gap:20px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:56px;height:auto;display:block;margin-top:3px"/>
+<div>
+<div class="ix-lab">Design package</div>
+<h1 style="margin:13px 0 0;font:400 40px/1.08 'Cormorant Garamond',Georgia,serif;color:#1E2B26">Moed</h1>
+<p class="ix-t" style="margin:13px 0 0;max-width:50ch">A planner that tells you when your day is full. Everything below is static HTML — no build step, nothing to install. Open any file in a browser.</p>
+</div>
+</div>
+
+<div class="ix-lab" style="margin-top:44px">Start here</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+<a class="ix-card" href="mockups.dc.html" style="border-color:#24443C;background:#FFFDFA">
+<div class="ix-n">The mockups</div>
+<div class="ix-f">mockups.dc.html</div>
+<div class="ix-d">Fifty-one screens, live in iOS and Android frames, light and dark. Tap the rail to jump, or tap inside the phones — rows open sheets, the add bar opens capture, tabs switch views.</div>
+<span class="ix-tag" style="background:#E4EAE6;color:#24443C">Hi-fi · interactive</span>
+</a>
+<a class="ix-card" href="storyboard.dc.html">
+<div class="ix-n">The storyboard</div>
+<div class="ix-f">storyboard.dc.html</div>
+<div class="ix-d">How the screens connect. Every screen in the build, in the order a person meets it, with each one's other exits. The whole navigation graph on one page.</div>
+<span class="ix-tag" style="background:#E4EAE6;color:#24443C">Flow map</span>
+</a>
+</div>
+
+<div class="ix-lab" style="margin-top:38px">Surfaces</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+<a class="ix-card" href="screen.dc.html">
+<div class="ix-n">Every screen</div>
+<div class="ix-f">screen.dc.html</div>
+<div class="ix-d">The component the board mounts twice. Switch the <b>screen</b> prop to see any one on its own; <b>platform</b> toggles the chrome.</div>
+</a>
+<a class="ix-card" href="watch.dc.html">
+<div class="ix-n">The watch</div>
+<div class="ix-f">watch.dc.html</div>
+<div class="ix-d">Nine screens, round and square. Parked — the wrist apps are deferred, and activity sync needs no watch build at all. Kept intact for whenever it is picked up.</div>
+<span class="ix-tag" style="background:#F0E9E3;color:#8A6F5E">Parked</span>
+</a>
+<a class="ix-card" href="notifications.dc.html">
+<div class="ix-n">Off-screen</div>
+<div class="ix-f">notifications.dc.html</div>
+<div class="ix-d">Lock screens, the Live Activity, Android's ongoing notification, and widgets. One uninvited notification a day, and every one carries its decision.</div>
+</a>
+</div>
+
+<div class="ix-lab" style="margin-top:38px">Decisions</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+<a class="ix-card" href="plans.dc.html">
+<div class="ix-n">Free and paid</div>
+<div class="ix-f">plans.dc.html</div>
+<div class="ix-d">The planner is free; food, diet and activity sync are $4.99 a month. The two rules behind the split, and what the fourteen-day trial has to prove.</div>
+</a>
+<a class="ix-card" href="logo.dc.html">
+<div class="ix-n">The logo</div>
+<div class="ix-f">logo.dc.html</div>
+<div class="ix-d">Lockups, both icon polarities, minimum size, clear space and the misuse cases. Note the assets are raster and want vectorising.</div>
+</a>
+</div>
+
+<div class="ix-lab" style="margin-top:38px">Working papers</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+<a class="ix-card" href="summary.dc.html">
+<div class="ix-n">The argument</div>
+<div class="ix-f">summary.dc.html</div>
+<div class="ix-d">Why the product exists, in one page. Written before the brand and before the diet product — it says five record kinds where there are seven, and puts the watch on the free side. Kept for the argument, not the detail.</div>
+<span class="ix-tag" style="background:#EFEDE8;color:#97A09B">Archive</span>
+</a>
+<a class="ix-card" href="wireframes.dc.html">
+<div class="ix-n">Wireframes</div>
+<div class="ix-f">wireframes.dc.html</div>
+<div class="ix-d">Grey-box map of all 46 flow screens, loading to close. Useful for the screens not yet mocked.</div>
+<span class="ix-tag" style="background:#EFEDE8;color:#5C6862">Lo-fi</span>
+</a>
+<a class="ix-card" href="research.dc.html">
+<div class="ix-n">Landscape</div>
+<div class="ix-f">research.dc.html</div>
+<div class="ix-d">Competitor research and the gap analysis the product argument was built from. Same vintage as the summary — the gaps still hold, the feature lists do not.</div>
+<span class="ix-tag" style="background:#EFEDE8;color:#97A09B">Archive</span>
+</a>
+<a class="ix-card" href="standalone/ui-boards.html">
+<div class="ix-n">Early directions</div>
+<div class="ix-f">standalone/ui-boards.html</div>
+<div class="ix-d">Three visual directions explored before the brand landed. Superseded — kept for the reasoning.</div>
+<span class="ix-tag" style="background:#EFEDE8;color:#97A09B">Archive</span>
+</a>
+</div>
+
+<div style="margin-top:38px;padding:26px 28px;background:#24443C;border-radius:12px">
+<div class="ix-lab" style="color:rgba(245,242,237,.55)">For whoever builds it</div>
+<div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px">
+<div><div style="font:400 21px/1.2 'Cormorant Garamond',Georgia,serif;color:#F5F2ED">README.md</div><div class="ix-f" style="color:rgba(245,242,237,.4)">design/</div><p class="ix-t" style="margin:9px 0 0;color:rgba(245,242,237,.78);font-size:12.5px">Tokens, the capacity bar spec, all 51 screens with their prop names, the sync routes, the state model.</p></div>
+<div><div style="font:400 21px/1.2 'Cormorant Garamond',Georgia,serif;color:#F5F2ED">BUILD-PLAN.md</div><div class="ix-f" style="color:rgba(245,242,237,.4)">design_planning/</div><p class="ix-t" style="margin:9px 0 0;color:rgba(245,242,237,.78);font-size:12.5px">Phases, in an order where each earns the next. Foundations, hours, money, subscription, then the body.</p></div>
+<div><div style="font:400 21px/1.2 'Cormorant Garamond',Georgia,serif;color:#F5F2ED">DECISIONS.md</div><div class="ix-f" style="color:rgba(245,242,237,.4)">design_planning/</div><p class="ix-t" style="margin:9px 0 0;color:rgba(245,242,237,.78);font-size:12.5px">What is settled and why, the entitlement table, what is still open, and what we reversed. ARCHITECTURE.md sits beside it.</p></div>
+</div>
+<p class="ix-t" style="margin:18px 0 0;color:rgba(245,242,237,.6);font-size:12px;max-width:60ch">Plus <b style="color:#F5F2ED">CLAUDE.md</b> at the root — the non-negotiables, the copy voice, and the conventions worth keeping between the design and the code.</p>
+</div>
+
+<div style="margin-top:30px;padding-top:22px;border-top:1px solid rgba(30,43,38,.14);display:flex;gap:28px;flex-wrap:wrap">
+<div style="max-width:300px"><div class="ix-lab" style="color:#A8402F">standalone/ is out of date</div><p class="ix-t" style="margin:8px 0 0;font-size:12.5px">The bundled copies were built before the 27 August corrections and still show eight record kinds, the old capacity bar and the old money figures. <b>Serve this folder and use the .dc.html sources</b> until they are rebuilt.</p></div>
+<div style="max-width:300px"><div class="ix-lab">To edit, serve it</div><p class="ix-t" style="margin:8px 0 0;font-size:12.5px">Right-click → <b>Open with Live Server</b> in VS Code, then open the <b>.dc.html</b> sources rather than <b>standalone/</b>. Over HTTP everything works and edits show on reload.</p></div>
+<div style="max-width:220px"><div class="ix-lab">These are references</div><p class="ix-t" style="margin:8px 0 0;font-size:12.5px">Prototypes of intended look and behaviour, not production code to lift.</p></div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080,&quot;height&quot;:900}}"></script>
+</body>
+</html>

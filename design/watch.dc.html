@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E7E4DE;font-family:"Archivo",system-ui,sans-serif}
+a{color:#24443C}a:hover{color:#14201C}
+.wl-lab{font:600 9.5px/1 "Archivo";letter-spacing:.17em;text-transform:uppercase;color:#A48C7C}
+.wl-cap{font:400 11.5px/1.55 "Archivo";color:rgba(30,43,38,.55)}
+.wl-cap b{color:#1E2B26;font-weight:600}
+.wl-h{font:400 30px/1.1 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.wl-card{background:#FBFAF8;border:1px solid rgba(30,43,38,.11);border-radius:12px;padding:18px 19px}
+.wl-round{width:216px;height:216px;border-radius:50%;background:#000;position:relative;overflow:hidden;box-shadow:0 0 0 9px #16211D,0 0 0 11px #2E3A35,0 14px 34px rgba(0,0,0,.3);flex:none}
+.wl-sq{width:184px;height:222px;border-radius:44px;background:#000;position:relative;overflow:hidden;box-shadow:0 0 0 8px #16211D,0 0 0 10px #2E3A35,0 14px 34px rgba(0,0,0,.3);flex:none}
+.wl-scr{position:absolute;inset:0;display:flex;flex-direction:column;color:#EDE9E1}
+.wl-safe{position:absolute;left:18%;right:18%;top:14%;bottom:14%;display:flex;flex-direction:column}
+.wl-t{font:400 10.5px/1.4 "Archivo";color:#8A968F}
+.wl-n{font:400 40px/1 "Cormorant Garamond",Georgia,serif;color:#EDE9E1}
+.wl-item{font:500 12px/1.3 "Archivo";color:#EDE9E1}
+.wl-btn{border-radius:999px;background:#2C5548;color:#EAF3EF;font:600 11px "Archivo";display:flex;align-items:center;justify-content:center}
+.wl-btn2{border-radius:999px;background:rgba(255,255,255,.1);color:#EDE9E1;font:600 11px "Archivo";display:flex;align-items:center;justify-content:center}
+.wl-one{display:flex;flex-direction:column;align-items:center;gap:11px}
+.wl-sub{font:400 11px/1.4 "Archivo";color:rgba(30,43,38,.5);text-align:center;max-width:216px}
+.wl-row{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+</style></helmet>
+
+<div style="padding:40px 44px 60px">
+
+<div style="display:flex;align-items:center;gap:18px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:48px;height:auto;display:block"/>
+<div>
+<div class="wl-lab">On the wrist</div>
+<div class="wl-h" style="margin-top:6px">Moed on a watch</div>
+<div class="wl-cap" style="margin-top:7px;max-width:560px">The whole product answers one question — how full is the day — and that is a glance, not a session. So the watch gets the arc, the next thing, the timer and the evening close. Nothing else.</div>
+</div>
+</div>
+
+<div style="margin-top:34px">
+<div class="wl-lab">Can it connect · the honest answer</div>
+<div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:14px">
+<div class="wl-card" style="width:250px">
+<div style="font:600 13px 'Archivo';color:#1E2B26">Wear OS · Android watches</div>
+<div class="wl-cap" style="margin-top:8px">Yes, straightforwardly. A native app, plus a Tile and a complication for the arc. Reads steps and workouts through Health Connect. Samsung, Pixel, Fossil, OnePlus.</div>
+<div class="wl-lab" style="margin-top:12px;color:rgba(30,43,38,.35)">One build</div>
+</div>
+<div class="wl-card" style="width:250px">
+<div style="font:600 13px 'Archivo';color:#1E2B26">watchOS · Apple Watch</div>
+<div class="wl-cap" style="margin-top:8px">Yes. Native app, complications, and a Live Activity for the running timer — which is the single best fit for the wrist. Reads workouts through HealthKit.</div>
+<div class="wl-lab" style="margin-top:12px;color:rgba(30,43,38,.35)">One build</div>
+</div>
+<div class="wl-card" style="width:250px;border-color:#A48C7C;background:#F7F1EC">
+<div style="font:600 13px 'Archivo';color:#1E2B26">Huawei · the awkward one</div>
+<div class="wl-cap" style="margin-top:8px">Also yes, but it is not Wear OS. Huawei watches run HarmonyOS, so it is a separate app in a separate language, built in DevEco Studio and shipped through AppGallery — not Google Play.</div>
+<div class="wl-lab" style="margin-top:12px;color:#A48C7C">A third build</div>
+</div>
+</div>
+<div class="wl-card" style="margin-top:14px;max-width:790px;background:#F0F3F1;border-color:#24443C">
+<div class="wl-cap" style="color:#24443C"><b>What that means in practice.</b> Wear OS and watchOS are a fortnight each and share the phone's logic. Huawei is a third codebase for one hardware brand — worth it if your users are on Huawei, not worth it on principle. <span style="color:rgba(30,43,38,.55)">HarmonyOS wearable apps are a documented, supported route — Huawei publishes a wearable getting-started track and watch debugging runs over IP through DevEco Studio and AppGallery Connect — so the question is cost, not possibility.</span></div>
+</div>
+</div>
+
+<div style="margin-top:40px">
+<div class="wl-lab">Round · Wear OS and Huawei GT</div>
+<div class="wl-cap" style="margin-top:7px;max-width:560px">Circular screens punish layout, so everything sits in a centre square and the capacity bar becomes an arc — the same dial as the logo.</div>
+
+<div class="wl-row" style="margin-top:22px">
+
+<div class="wl-one">
+<div class="wl-round">
+<svg width="216" height="216" viewBox="0 0 216 216" style="position:absolute;inset:0">
+<circle cx="108" cy="108" r="94" fill="none" stroke="rgba(255,255,255,.11)" stroke-width="9"/>
+<circle cx="108" cy="108" r="94" fill="none" stroke="#84B5A2" stroke-width="9" stroke-dasharray="325 591" stroke-linecap="round" transform="rotate(-90 108 108)"/>
+<circle cx="108" cy="108" r="94" fill="none" stroke="#B79F8E" stroke-width="9" stroke-dasharray="148 591" stroke-dashoffset="-330" stroke-linecap="round" transform="rotate(-90 108 108)"/>
+</svg>
+<div class="wl-safe" style="align-items:center;justify-content:center;gap:3px">
+<div style="font:600 9px/1 'Archivo';letter-spacing:.15em;color:#8A968F">TUE 26</div>
+<div class="wl-n" style="font-size:44px">1h 40</div>
+<div class="wl-t" style="font-size:9.5px">left of 9h 30m</div>
+<div style="margin-top:7px;width:34px;height:1px;background:rgba(255,255,255,.14)"></div>
+<div class="wl-item" style="font-size:10.5px;margin-top:7px;text-align:center">Dentist · 14:00</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Watch face.</b> Green is committed, taupe is fixed, the gap is what is left.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-round">
+<div class="wl-safe" style="justify-content:center;gap:9px">
+<div style="font:600 8.5px/1 'Archivo';letter-spacing:.15em;color:#84B5A2">NEXT</div>
+<div style="font:500 15px/1.25 'Archivo';color:#EDE9E1">Rewrite the onboarding copy</div>
+<div class="wl-t">10:00 — 12:00 · 58m left</div>
+<div style="height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:2px"><div style="width:52%;height:100%;background:#84B5A2"></div></div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<div class="wl-btn" style="flex:1;height:32px">Done</div>
+<div class="wl-btn2" style="width:40px;height:32px">···</div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">The next thing.</b> One task, one tap. The list lives on the phone.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-round">
+<svg width="216" height="216" viewBox="0 0 216 216" style="position:absolute;inset:0">
+<circle cx="108" cy="108" r="94" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="7"/>
+<circle cx="108" cy="108" r="94" fill="none" stroke="#84B5A2" stroke-width="7" stroke-dasharray="307 591" stroke-linecap="round" transform="rotate(-90 108 108)"/>
+</svg>
+<div class="wl-safe" style="align-items:center;justify-content:center;gap:5px">
+<div style="font:600 8.5px/1 'Archivo';letter-spacing:.15em;color:#84B5A2">RUNNING</div>
+<div class="wl-n" style="font-size:42px">58:12</div>
+<div class="wl-t" style="font-size:9.5px;text-align:center">Onboarding copy</div>
+<div style="display:flex;gap:6px;margin-top:9px">
+<div class="wl-btn2" style="width:52px;height:30px">Pause</div>
+<div class="wl-btn" style="width:52px;height:30px">Done</div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Timer.</b> The one screen people will actually use daily. A Live Activity on iOS.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-round">
+<div class="wl-safe" style="justify-content:center;gap:8px">
+<div style="font:600 8.5px/1 'Archivo';letter-spacing:.15em;color:#B79F8E">CLOSING · 1 OF 3</div>
+<div style="font:500 14px/1.25 'Archivo';color:#EDE9E1">Reply to Marta</div>
+<div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+<div class="wl-btn" style="height:27px">Done</div>
+<div class="wl-btn2" style="height:27px">Move to tomorrow</div>
+<div class="wl-btn2" style="height:27px;color:#D98878">Drop</div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Evening close.</b> Three buttons per leftover was already a watch design. One card at a time.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-round">
+<div class="wl-safe" style="justify-content:center;gap:5px">
+<div style="font:600 8.5px/1 'Archivo';letter-spacing:.15em;color:#84B5A2">FOOD · 640 LEFT</div>
+<div class="wl-n" style="font-size:34px">1,460</div>
+<div class="wl-t" style="font-size:9.5px">of 2,100 today</div>
+<div style="display:flex;gap:4px;margin-top:6px">
+<span style="flex:1;height:16px;border-radius:3px;background:#84B5A2"></span>
+<span style="flex:1;height:16px;border-radius:3px;background:#84B5A2"></span>
+<span style="flex:1;height:16px;border-radius:3px;background:#84B5A2"></span>
+<span style="flex:1;height:16px;border-radius:3px;background:#84B5A2"></span>
+<span style="flex:1;height:16px;border-radius:3px;background:#84B5A2"></span>
+<span style="flex:1;height:16px;border-radius:3px;border:1px solid rgba(255,255,255,.2);box-sizing:border-box"></span>
+<span style="flex:1;height:16px;border-radius:3px;border:1px solid rgba(255,255,255,.2);box-sizing:border-box"></span>
+<span style="flex:1;height:16px;border-radius:3px;border:1px solid rgba(255,255,255,.2);box-sizing:border-box"></span>
+</div>
+<div class="wl-t" style="font-size:9px">water · 5 of 8</div>
+<div style="display:flex;gap:5px;margin-top:5px">
+<div class="wl-btn2" style="width:48px;height:27px">+ Water</div>
+<div class="wl-btn" style="width:48px;height:27px">Log meal</div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Diet, glanceable.</b> Water is the one thing better logged on a wrist than a phone.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-round">
+<div class="wl-safe" style="justify-content:center;gap:9px">
+<div style="font:600 8.5px/1 'Archivo';letter-spacing:.15em;color:#D98878">40 MINUTES OVER</div>
+<div style="font:500 13px/1.3 'Archivo';color:#EDE9E1">This fills the day past its limit</div>
+<div style="display:flex;flex-direction:column;gap:5px;margin-top:3px">
+<div class="wl-btn" style="height:27px">Move to Thursday</div>
+<div class="wl-btn2" style="height:27px">Add anyway</div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">The gate, on the wrist.</b> Same decision, two options instead of four.</div>
+</div>
+
+</div>
+</div>
+
+<div style="margin-top:44px">
+<div class="wl-lab">Square · Apple Watch</div>
+<div class="wl-cap" style="margin-top:7px;max-width:560px">More room vertically, so the arc becomes a bar again and one extra line fits.</div>
+
+<div class="wl-row" style="margin-top:22px">
+
+<div class="wl-one">
+<div class="wl-sq">
+<div class="wl-scr" style="padding:26px 18px 20px;box-sizing:border-box">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font:600 8.5px/1 'Archivo';letter-spacing:.14em;color:#8A968F">TUE 26</span>
+<span style="font:600 11px 'Archivo';color:#EDE9E1">9:41</span>
+</div>
+<div class="wl-n" style="font-size:38px;margin-top:14px">1h 40</div>
+<div class="wl-t" style="font-size:9.5px">left of 9h 30m</div>
+<div style="margin-top:12px;display:flex;height:7px;border-radius:4px;overflow:hidden">
+<div style="flex:53;background:#84B5A2"></div><div style="flex:25;background:#B79F8E"></div><div style="flex:22;background:rgba(255,255,255,.12)"></div>
+</div>
+<div style="flex:1"></div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:center;gap:7px"><span style="width:5px;height:5px;border-radius:50%;background:#84B5A2;flex:none"></span><span class="wl-item" style="font-size:11px">Onboarding copy</span></div>
+<div style="display:flex;align-items:center;gap:7px"><span style="width:5px;height:5px;border-radius:50%;background:#B79F8E;flex:none"></span><span class="wl-item" style="font-size:11px">Dentist · 14:00</span></div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Today.</b> The bar survives here, so it matches the phone.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-sq">
+<div class="wl-scr" style="padding:26px 18px 20px;box-sizing:border-box;justify-content:center;gap:10px">
+<div style="font:600 8.5px/1 'Archivo';letter-spacing:.14em;color:#84B5A2">SESSION</div>
+<div style="font:500 14px/1.25 'Archivo'">Walk, brisk</div>
+<div class="wl-n" style="font-size:34px">44:06</div>
+<div class="wl-t" style="font-size:9.5px">of 45m given</div>
+<div style="height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden"><div style="width:12%;height:100%;background:#84B5A2"></div></div>
+<div class="wl-t" style="font-size:9px;margin-top:2px">The duration comes from the watch. Calories burned are not added to your allowance.</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Workout.</b> A Session started on the wrist. The watch is the sensor, not the judge.</div>
+</div>
+
+<div class="wl-one">
+<div class="wl-sq">
+<div class="wl-scr" style="padding:0;box-sizing:border-box">
+<div style="position:absolute;inset:12px;border-radius:32px;background:#0C1512;padding:16px;box-sizing:border-box;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;gap:7px">
+<img src="assets/moed-mark.png" alt="" style="width:15px;height:auto;filter:brightness(0) invert(1) opacity(.85)"/>
+<span style="font:600 8.5px/1 'Archivo';letter-spacing:.14em;color:#8A968F">MOED</span>
+</div>
+<div class="wl-n" style="font-size:30px;margin-top:12px">3 left</div>
+<div class="wl-t" style="font-size:9.5px">1h 40m of room</div>
+<div style="flex:1"></div>
+<div class="wl-btn" style="height:30px">Open</div>
+</div>
+</div>
+</div>
+<div class="wl-sub"><b style="color:#1E2B26">Complication and Tile.</b> Two numbers: what is left to do, and whether there is room for it.</div>
+</div>
+
+</div>
+</div>
+
+<div class="wl-card" style="margin-top:40px;max-width:790px">
+<div class="wl-lab">What the watch deliberately cannot do</div>
+<div class="wl-cap" style="margin-top:10px">Create a record with a length, edit anything, plan a week, or open the meal plan. Capture on a watch means dictating a line that lands in the tray for the phone to sort. Everything here is under three taps, and the arc is readable at arm's length — which is the only test that matters on a wrist.</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1220,&quot;height&quot;:1000}}"></script>
+</body>
+</html>

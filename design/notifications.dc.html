@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#E7E4DE;font-family:"Archivo",system-ui,sans-serif}
+a{color:#24443C}a:hover{color:#14201C}
+.nb-lab{font:600 9.5px/1 "Archivo";letter-spacing:.17em;text-transform:uppercase;color:#A48C7C}
+.nb-h{font:400 30px/1.1 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.nb-cap{font:400 11.5px/1.55 "Archivo";color:rgba(30,43,38,.55)}
+.nb-cap b{color:#1E2B26;font-weight:600}
+.nb-card{background:#FBFAF8;border:1px solid rgba(30,43,38,.11);border-radius:12px;padding:18px 19px}
+.nb-row{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.nb-one{display:flex;flex-direction:column;gap:11px}
+.nb-sub{font:400 11px/1.45 "Archivo";color:rgba(30,43,38,.5);max-width:300px}
+.nb-sub b{color:#1E2B26;font-weight:600}
+.lock{position:relative;height:100%;overflow:hidden;background:#101A16;display:flex;flex-direction:column}
+.lock:before{content:"";position:absolute;left:-30%;top:-10%;width:160%;height:70%;background:radial-gradient(closest-side,rgba(132,181,162,.16),transparent)}
+.lock-clock{position:relative;padding:58px 0 0;text-align:center;flex:none}
+.n-card{background:rgba(28,42,37,.82);border:.5px solid rgba(237,233,225,.1);border-radius:20px;padding:12px 14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.n-head{display:flex;align-items:center;gap:7px}
+.n-ico{width:19px;height:19px;border-radius:5px;background:#24443C;display:flex;align-items:center;justify-content:center;flex:none}
+.n-app{font:600 10px/1 "Archivo";letter-spacing:.09em;text-transform:uppercase;color:rgba(237,233,225,.55)}
+.n-when{font:400 10px/1 "Archivo";color:rgba(237,233,225,.4);margin-left:auto}
+.n-ttl{font:600 13px/1.3 "Archivo";color:#EDE9E1;margin-top:8px}
+.n-body{font:400 12px/1.45 "Archivo";color:rgba(237,233,225,.68);margin-top:3px}
+.n-acts{display:flex;gap:6px;margin-top:11px}
+.n-act{flex:1;height:31px;border-radius:9px;background:rgba(237,233,225,.1);color:#EDE9E1;font:600 11px "Archivo";display:flex;align-items:center;justify-content:center}
+.n-actp{background:#2C5548;color:#EAF3EF}
+.la{background:rgba(20,31,27,.92);border:.5px solid rgba(132,181,162,.22);border-radius:22px;padding:14px 16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.wg{background:#F5F2ED;border-radius:22px;padding:16px;box-shadow:0 8px 22px rgba(30,43,38,.14);box-sizing:border-box}
+.wg-lab{font:600 8.5px/1 "Archivo";letter-spacing:.15em;text-transform:uppercase;color:#A48C7C}
+.wg-n{font:400 30px/1 "Cormorant Garamond",Georgia,serif;color:#1E2B26}
+.wg-t{font:400 10px/1.4 "Archivo";color:#5C6862}
+.wr{width:190px;height:190px;border-radius:50%;background:#000;position:relative;overflow:hidden;box-shadow:0 0 0 8px #16211D,0 0 0 10px #2E3A35,0 12px 30px rgba(0,0,0,.28);flex:none}
+.wr-safe{position:absolute;left:17%;right:17%;top:14%;bottom:14%;display:flex;flex-direction:column;justify-content:center;color:#EDE9E1}
+</style></helmet>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#24443C"/><g transform="translate(140 75)"><circle cx="60" cy="75" r="58" fill="none" stroke="#F5F2ED" stroke-width="7"/><path d="M28 118V52l32 34 32-34v66" fill="none" stroke="#F5F2ED" stroke-width="7" stroke-linejoin="round"/><path d="M60 6v26" stroke="#F5F2ED" stroke-width="7" stroke-linecap="round"/><circle cx="60" cy="44" r="6" fill="#F5F2ED"/></g></svg></template>
+<div style="padding:40px 44px 60px">
+
+<div style="display:flex;align-items:center;gap:18px">
+<img src="assets/moed-mark.png" alt="Moed" style="width:48px;height:auto;display:block"/>
+<div>
+<div class="nb-lab">Off-screen</div>
+<div class="nb-h" style="margin-top:6px">Notifications, live activity, widgets</div>
+<div class="nb-cap" style="margin-top:7px;max-width:560px">One uninvited notification a day — the evening close. Everything else is a consequence of something that just happened, or a reminder you set. Each one carries the decision on its face, so the common case never needs the app opened.</div>
+</div>
+</div>
+
+<div style="margin-top:36px">
+<div class="nb-lab">iOS · lock screen</div>
+<div class="nb-row" style="margin-top:20px">
+
+<div class="nb-one">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 340 }}" height="{{ 700 }}" dark="{{ true }}" hint-size="340px,700px">
+<div class="lock">
+<div class="lock-clock">
+<div style="font:400 12px 'Archivo';color:rgba(237,233,225,.6)">Tuesday 26 August</div>
+<div style="font:300 74px/1 'Cormorant Garamond',Georgia,serif;color:#EDE9E1;margin-top:2px">10:47</div>
+</div>
+<div style="position:relative;flex:1;padding:26px 14px 0;display:flex;flex-direction:column;gap:9px">
+<div class="la">
+<div class="n-head"><span class="n-ico"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app" style="color:#84B5A2">Running</span><span class="n-when">since 10:00</span></div>
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:11px">
+<div style="flex:1"><div style="font:600 13.5px/1.3 'Archivo';color:#EDE9E1">Rewrite the onboarding copy</div><div class="n-body" style="margin-top:3px">Operon · 2h block</div></div>
+<div style="font:400 30px/1 'Cormorant Garamond',Georgia,serif;color:#84B5A2">58:12</div>
+</div>
+<div style="margin-top:11px;height:4px;border-radius:2px;background:rgba(237,233,225,.13);overflow:hidden"><div style="width:52%;height:100%;background:#84B5A2"></div></div>
+<div class="n-acts"><div class="n-act">Pause</div><div class="n-act n-actp">Done</div></div>
+</div>
+<div class="n-card">
+<div class="n-head"><span class="n-ico"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app">Moed</span><span class="n-when">9:55</span></div>
+<div class="n-ttl">Dentist in 4 hours — leave at 13:35</div>
+<div class="n-body">25 minutes each way. Your afternoon has 1h 40m spare.</div>
+</div>
+<div class="n-card">
+<div class="n-head"><span class="n-ico"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app">Moed</span><span class="n-when">7:04</span></div>
+<div class="n-ttl">You slept 5h 20m</div>
+<div class="n-body">Your day is set to 9h 30m. Plan seven instead?</div>
+<div class="n-acts"><div class="n-act">Keep 9h 30m</div><div class="n-act n-actp">Plan 7h</div></div>
+</div>
+<div class="n-card" style="border-color:rgba(183,159,142,.32)">
+<div class="n-head"><span class="n-ico" style="background:#8A6F5E"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app" style="color:#B79F8E">Trial</span><span class="n-when">yesterday</span></div>
+<div class="n-ttl">Your free fortnight ends tomorrow</div>
+<div class="n-body">31 meals logged, and it shortened two of your days. Nothing to cancel — we never took a card.</div>
+<div class="n-acts"><div class="n-act">Let it lapse</div><div class="n-act n-actp">Keep it · $4.99</div></div>
+</div>
+</div>
+</div>
+</x-import>
+<div class="nb-sub"><b>Three at most, and the top one is not a notification.</b> The Live Activity is the timer itself — glanceable, with the two buttons that end it. The other two are the day's real decisions.</div>
+</div>
+
+<div class="nb-one">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 340 }}" height="{{ 700 }}" dark="{{ true }}" hint-size="340px,700px">
+<div class="lock" style="background:#0B120F">
+<div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 14px">
+<div class="n-card" style="background:rgba(28,42,37,.95);padding:16px 17px">
+<div class="n-head"><span class="n-ico"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app">Moed</span><span class="n-when">now</span></div>
+<div class="n-ttl" style="font-size:14.5px">Next: rewrite the onboarding copy</div>
+<div class="n-body">Starts in 5 minutes. Two hours, and the day has room for it.</div>
+<div style="margin-top:12px;display:flex;height:7px;border-radius:4px;overflow:hidden">
+<div style="flex:53;background:#2C5548"></div><div style="flex:25;background:#B79F8E"></div><div style="flex:22;background:rgba(237,233,225,.14)"></div>
+</div>
+<div class="n-acts" style="flex-direction:column;gap:5px">
+<div class="n-act n-actp" style="height:34px">Start the timer</div>
+<div class="n-act" style="height:34px">Push it 15 minutes</div>
+<div class="n-act" style="height:34px">Move to tomorrow</div>
+</div>
+</div>
+</div>
+</div>
+</x-import>
+<div class="nb-sub"><b>Held down, it expands.</b> Three actions, all of which resolve the thing without opening Moed. The capacity bar comes along so the choice is informed.</div>
+</div>
+
+<div class="nb-one">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 340 }}" height="{{ 700 }}" dark="{{ true }}" hint-size="340px,700px">
+<div class="lock" style="background:#150F0D">
+<div class="lock-clock">
+<div style="font:400 12px 'Archivo';color:rgba(237,233,225,.6)">Tuesday 26 August</div>
+<div style="font:300 74px/1 'Cormorant Garamond',Georgia,serif;color:#EDE9E1;margin-top:2px">19:00</div>
+</div>
+<div style="position:relative;flex:1;padding:26px 14px 0;display:flex;flex-direction:column;gap:9px">
+<div class="n-card" style="border-color:rgba(217,136,120,.3)">
+<div class="n-head"><span class="n-ico" style="background:#A8402F"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app" style="color:#D98878">Over the limit</span><span class="n-when">17:20</span></div>
+<div class="n-ttl">That put you 40 minutes over</div>
+<div class="n-body">Thursday is empty. Moving the roadmap block there fixes it.</div>
+<div class="n-acts"><div class="n-act">Leave it</div><div class="n-act n-actp" style="background:#8A3524">Move it</div></div>
+</div>
+<div class="n-card">
+<div class="n-head"><span class="n-ico"><img src="assets/moed-mark.png" alt="" style="width:13px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app">Moed</span><span class="n-when">now</span></div>
+<div class="n-ttl">Three things left. Shut the day?</div>
+<div class="n-body">Two minutes. Done, move or drop, and Tuesday is closed.</div>
+<div class="n-acts"><div class="n-act">Not tonight</div><div class="n-act n-actp">Close it</div></div>
+</div>
+</div>
+</div>
+</x-import>
+<div class="nb-sub"><b>The two that carry the product.</b> The over-limit warning arrives the moment it happens, not at bedtime. The close is the only scheduled nudge of the day.</div>
+</div>
+
+</div>
+</div>
+
+<div style="margin-top:44px">
+<div class="nb-lab">Android · lock screen and shade</div>
+<div class="nb-row" style="margin-top:20px">
+
+<div class="nb-one">
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 340 }}" height="{{ 660 }}" dark="{{ true }}" surface="#101A16" hint-size="340px,660px">
+<div class="lock" style="min-height:100%">
+<div style="position:relative;padding:34px 0 0;text-align:center;flex:none">
+<div style="font:300 62px/1 'Cormorant Garamond',Georgia,serif;color:#EDE9E1">10:47</div>
+<div style="font:400 12px 'Archivo';color:rgba(237,233,225,.6);margin-top:2px">Tue, 26 August</div>
+</div>
+<div style="position:relative;flex:1;padding:24px 12px 0;display:flex;flex-direction:column;gap:8px">
+<div class="n-card" style="border-radius:26px;background:rgba(28,42,37,.9)">
+<div class="n-head"><span class="n-ico" style="border-radius:50%"><img src="assets/moed-mark.png" alt="" style="width:12px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app" style="text-transform:none;letter-spacing:0;font-weight:500">Moed · ongoing</span><span class="n-when">58m left</span></div>
+<div class="n-ttl" style="font-size:13px">Rewrite the onboarding copy</div>
+<div style="margin-top:9px;height:3px;border-radius:2px;background:rgba(237,233,225,.13);overflow:hidden"><div style="width:52%;height:100%;background:#84B5A2"></div></div>
+<div style="display:flex;gap:16px;margin-top:12px;padding-top:11px;border-top:.5px solid rgba(237,233,225,.1)">
+<span style="font:600 11.5px 'Archivo';color:#84B5A2">PAUSE</span>
+<span style="font:600 11.5px 'Archivo';color:#84B5A2">DONE</span>
+</div>
+</div>
+<div class="n-card" style="border-radius:26px">
+<div class="n-head"><span class="n-ico" style="border-radius:50%"><img src="assets/moed-mark.png" alt="" style="width:12px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app" style="text-transform:none;letter-spacing:0;font-weight:500">Moed</span><span class="n-when">9:55</span></div>
+<div class="n-ttl" style="font-size:13px">Rent, £980, due in 3 days</div>
+<div class="n-body">That leaves £360 of the week once it goes out.</div>
+<div style="display:flex;gap:16px;margin-top:12px;padding-top:11px;border-top:.5px solid rgba(237,233,225,.1)">
+<span style="font:600 11.5px 'Archivo';color:#84B5A2">MARK PAID</span>
+<span style="font:600 11.5px 'Archivo';color:rgba(237,233,225,.5)">SNOOZE</span>
+</div>
+</div>
+<div class="n-card" style="border-radius:26px">
+<div class="n-head"><span class="n-ico" style="border-radius:50%"><img src="assets/moed-mark.png" alt="" style="width:12px;height:auto;filter:brightness(0) invert(1)"/></span><span class="n-app" style="text-transform:none;letter-spacing:0;font-weight:500">Moed</span><span class="n-when">7:12</span></div>
+<div class="n-ttl" style="font-size:13px">Your watch closed “Walk, brisk”</div>
+<div class="n-body">47 minutes. The Session is ticked.</div>
+<div style="display:flex;gap:16px;margin-top:12px;padding-top:11px;border-top:.5px solid rgba(237,233,225,.1)">
+<span style="font:600 11.5px 'Archivo';color:#84B5A2">KEEP</span>
+<span style="font:600 11.5px 'Archivo';color:#84B5A2">THAT WAS NOT ME</span>
+</div>
+</div>
+</div>
+</div>
+</x-import>
+<div class="nb-sub"><b>Ongoing, not dismissible.</b> Android's ongoing notification is the timer's home — it sits in the shade with its two actions until the block ends. Text actions, uppercase, as the platform expects.</div>
+</div>
+
+<div class="nb-one">
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 340 }}" height="{{ 660 }}" dark="{{ false }}" surface="#F5F2ED" hint-size="340px,660px">
+<div style="min-height:100%;background:#F5F2ED;display:flex;flex-direction:column;padding:14px 12px;box-sizing:border-box">
+<div style="background:#FFFDFA;border:1px solid rgba(30,43,38,.1);border-radius:26px;padding:14px 15px;box-shadow:0 6px 18px rgba(30,43,38,.1)">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="width:19px;height:19px;border-radius:50%;background:#24443C;display:flex;align-items:center;justify-content:center;flex:none"><img src="assets/moed-mark.png" alt="" style="width:12px;height:auto;filter:brightness(0) invert(1)"/></span>
+<span style="font:500 10.5px 'Archivo';color:#5C6862">Moed</span>
+<span style="font:400 10px 'Archivo';color:#97A09B;margin-left:auto">now</span>
+</div>
+<div style="font:600 13.5px/1.3 'Archivo';color:#1E2B26;margin-top:9px">Cook — sheet-pan chicken, in 15 minutes</div>
+<div style="font:400 12px/1.45 'Archivo';color:#5C6862;margin-top:3px">A 40m routine you put on today. About 640, which lands you at 1,460 of 2,100.</div>
+<div style="display:flex;gap:16px;margin-top:12px;padding-top:11px;border-top:1px solid rgba(30,43,38,.08)">
+<span style="font:600 11.5px 'Archivo';color:#24443C">LOG IT</span>
+<span style="font:600 11.5px 'Archivo';color:#24443C">SOMETHING ELSE</span>
+</div>
+</div>
+<div style="flex:1;display:flex;align-items:center;justify-content:center">
+<div class="nb-cap" style="text-align:center;max-width:200px;color:rgba(30,43,38,.4)">Heads-up, light mode</div>
+</div>
+</div>
+</x-import>
+<div class="nb-sub"><b>Not a diet notification.</b> It is the reminder on the cook block, which is a routine like any other. That is why it exists at all — no new kind was invented for it. No streaks, no encouragement, no second reminder.</div>
+</div>
+
+</div>
+</div>
+
+<div style="margin-top:44px">
+<div class="nb-lab">Widgets and the watch</div>
+<div class="nb-row" style="margin-top:20px;gap:28px">
+
+<div class="nb-one">
+<div class="wg" style="width:158px;height:158px;display:flex;flex-direction:column">
+<div class="wg-lab">Tue 26</div>
+<div class="wg-n" style="font-size:34px;margin-top:10px">1h 40</div>
+<div class="wg-t" style="margin-top:2px">left of 9h 30m</div>
+<div style="flex:1"></div>
+<div style="display:flex;height:7px;border-radius:4px;overflow:hidden">
+<div style="flex:53;background:#24443C"></div><div style="flex:25;background:#A48C7C"></div><div style="flex:22;background:rgba(30,43,38,.1)"></div>
+</div>
+<div class="wg-t" style="margin-top:8px">3 of 8 done</div>
+</div>
+<div class="nb-sub" style="max-width:158px"><b>Small.</b> One number.</div>
+</div>
+
+<div class="nb-one">
+<div class="wg" style="width:340px;height:158px;display:flex;gap:18px">
+<div style="width:112px;display:flex;flex-direction:column">
+<div class="wg-lab">Tue 26</div>
+<div class="wg-n" style="font-size:32px;margin-top:8px">1h 40</div>
+<div class="wg-t" style="margin-top:2px">left</div>
+<div style="flex:1"></div>
+<div style="display:flex;height:6px;border-radius:3px;overflow:hidden">
+<div style="flex:53;background:#24443C"></div><div style="flex:25;background:#A48C7C"></div><div style="flex:22;background:rgba(30,43,38,.1)"></div>
+</div>
+</div>
+<div style="flex:1;border-left:1px solid rgba(30,43,38,.1);padding-left:18px;display:flex;flex-direction:column;justify-content:center;gap:10px">
+<div style="display:flex;align-items:center;gap:9px"><span style="width:14px;height:14px;border-radius:50%;background:#24443C;flex:none"></span><span style="font:400 12px 'Archivo';color:#1E2B26;flex:1">Onboarding copy</span><span class="wg-t">10:00</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:14px;height:14px;border-radius:50%;border:1.4px solid rgba(30,43,38,.25);box-sizing:border-box;flex:none"></span><span style="font:400 12px 'Archivo';color:#1E2B26;flex:1">Dentist</span><span class="wg-t">14:00</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:14px;height:14px;border-radius:50%;border:1.4px solid rgba(30,43,38,.25);box-sizing:border-box;flex:none"></span><span style="font:400 12px 'Archivo';color:#1E2B26;flex:1">Q4 roadmap</span><span class="wg-t">1h</span></div>
+</div>
+</div>
+<div class="nb-sub" style="max-width:340px"><b>Medium.</b> The bar, then the next three. Tapping a row starts its timer, so the widget is a control surface, not a poster.</div>
+</div>
+
+<div class="nb-one">
+<div class="wr">
+<div class="wr-safe" style="align-items:center;gap:7px">
+<div style="font:600 8px/1 'Archivo';letter-spacing:.15em;color:#84B5A2">MOED · NOW</div>
+<div style="font:500 12.5px/1.25 'Archivo';text-align:center">Rewrite the onboarding copy</div>
+<div style="font:400 26px/1 'Cormorant Garamond',Georgia,serif;color:#84B5A2;margin-top:2px">58:12</div>
+<div style="display:flex;gap:5px;margin-top:5px">
+<div style="width:44px;height:26px;border-radius:999px;background:rgba(237,233,225,.1);font:600 10px/26px 'Archivo';text-align:center">Pause</div>
+<div style="width:44px;height:26px;border-radius:999px;background:#2C5548;color:#EAF3EF;font:600 10px/26px 'Archivo';text-align:center">Done</div>
+</div>
+</div>
+</div>
+<div class="nb-sub" style="max-width:190px"><b>On the wrist.</b> Same notification, two taps deep at most.</div>
+</div>
+
+</div>
+</div>
+
+<div class="nb-card" style="margin-top:44px;max-width:790px">
+<div class="nb-lab">The rule that keeps this from becoming noise</div>
+<div class="nb-cap" style="margin-top:10px">One scheduled nudge a day — the evening close. Everything else is either something you asked for (a reminder you set on a record) or a consequence of something you just did (you went over the limit, your watch closed a Session). There is no morning nudge: the evening close already showed you tomorrow. The one exemption is the trial reminder on day thirteen, which is about the money and fires once. Nothing fires to re-engage you, nothing fires twice, and every one of them can be answered without opening the app. If a notification cannot carry its own decision, it should not be sent.</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1300,&quot;height&quot;:1040}}"></script>
+</body>
+</html>
