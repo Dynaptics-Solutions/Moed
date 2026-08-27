@@ -132,6 +132,28 @@ export default function Projects() {
           </Text>
         )}
 
+        {notice === null && (
+          <Pressable
+            onPress={() => router.push('/newproject')}
+            style={[
+              styles.capCard,
+              { borderColor: theme.colors.line, borderRadius: theme.geometry.card.radius },
+            ]}
+          >
+            <Text
+              style={[
+                theme.type.bodySmall,
+                { fontFamily: theme.fonts.uiMedium, color: theme.colors.acc },
+              ]}
+            >
+              New project
+            </Text>
+            <Text style={[theme.type.meta, styles.capSub, { color: theme.colors.ink3 }]}>
+              Three on the free plan
+            </Text>
+          </Pressable>
+        )}
+
         {notice !== null && (
           <View
             style={[
