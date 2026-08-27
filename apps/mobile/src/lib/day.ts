@@ -66,3 +66,26 @@ export function monthName(date: Date, locale = 'en-GB'): string {
 
 /** Monday-first initials, as the week and month headers print them. */
 export const WEEKDAY_INITIALS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as const;
+
+/**
+ * "Today", "Tomorrow", or the weekday and date — how a scheduled moment reads on a form.
+ *
+ * The near days get their names because that is what someone would say out loud, and
+ * everything else gets a date, because "Thursday" three weeks out is not an answer.
+ */
+export function whenDay(date: Date, today: Date, locale = 'en-GB'): string {
+  const days = Math.round(
+    (startOfLocalDay(date).getTime() - startOfLocalDay(today).getTime()) / 86_400_000,
+  );
+  if (days === 0) return 'Today';
+  if (days === 1) return 'Tomorrow';
+  if (days === -1) return 'Yesterday';
+  if (days > 1 && days < 7) return weekdayName(date, locale);
+  return `${weekdayShort(date, locale)} ${shortDate(date, locale)}`;
+}
+
+function startOfLocalDay(date: Date): Date {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}

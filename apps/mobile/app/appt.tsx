@@ -2,9 +2,10 @@ import { formatMinutes } from '@moed/core';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Field, Input, Note, Toggle } from '@/components/Field';
+import { Field, Note, Toggle } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
-import { clockTime } from '@/lib/day';
+import { WhenInput } from '@/components/WhenInput';
+import { clockTime, whenDay } from '@/lib/day';
 import { useKindForm } from '@/lib/useKindForm';
 import { useTheme } from '@/theme';
 
@@ -83,7 +84,11 @@ export default function Appointment() {
       </View>
 
       <Field label="When">
-        <Input value={`Today · ${clockTime(start)}`} />
+        <WhenInput
+          at={form.startAt}
+          onChange={form.setStartAt}
+          value={`${whenDay(start, form.today)} · ${clockTime(start)}`}
+        />
       </Field>
 
       <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>You can add</Text>

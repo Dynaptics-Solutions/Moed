@@ -4,7 +4,8 @@ import { StyleSheet, View } from 'react-native';
 import { Chip } from '@/components/Chip';
 import { Field, Input } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
-import { clockTime } from '@/lib/day';
+import { WhenInput } from '@/components/WhenInput';
+import { clockTime, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
 import { useKindForm } from '@/lib/useKindForm';
 
@@ -60,7 +61,11 @@ export default function Task() {
       </Field>
 
       <Field label="When">
-        <Input value={`Today · ${clockTime(start)} — ${clockTime(end)}`} />
+        <WhenInput
+          at={form.startAt}
+          onChange={form.setStartAt}
+          value={`${whenDay(start, form.today)} · ${clockTime(start)} — ${clockTime(end)}`}
+        />
       </Field>
 
       <Field label="Project">

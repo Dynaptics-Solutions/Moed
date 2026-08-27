@@ -36,6 +36,7 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     title?: string;
     lengthMinutes?: number;
     recurrence?: Recurrence | null;
+    startAt?: number;
   }>({});
 
   const title = edits.title ?? existing?.title ?? params.title ?? '';
@@ -44,11 +45,19 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     existing?.lengthMinutes ??
     (Number(params.lengthMinutes) || defaultLength);
   const recurrence = edits.recurrence !== undefined ? edits.recurrence : fromParams(params);
-  const startAt = existing?.startAt ?? Number(params.startAt) ?? today.getTime();
+  // `??` cannot fall past `Number(params.startAt)`: with no parameter that is NaN, and
+  // NaN is not nullish, so the default never ran. It only ever worked because the
+  // returned value was guarded with `||` further down, where the reason was invisible.
+  const fromParam = Number(params.startAt);
+  const startAt =
+    edits.startAt ??
+    existing?.startAt ??
+    (Number.isFinite(fromParam) ? fromParam : today.getTime());
 
   const setTitle = (next: string) => setEdits((e) => ({ ...e, title: next }));
   const setLengthMinutes = (next: number) => setEdits((e) => ({ ...e, lengthMinutes: next }));
   const setRecurrence = (next: Recurrence | null) => setEdits((e) => ({ ...e, recurrence: next }));
+  const setStartAt = (next: number) => setEdits((e) => ({ ...e, startAt: next }));
 
   /** Hand the current rule to the editor, and name the route it should come back to. */
   const openRepeat = () =>
@@ -77,7 +86,8 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     setLengthMinutes,
     recurrence,
     setRecurrence,
-    startAt: startAt || today.getTime(),
+    startAt,
+    setStartAt,
     today,
     load,
     limit,

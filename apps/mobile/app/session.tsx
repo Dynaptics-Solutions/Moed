@@ -5,8 +5,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { Field, Input } from '@/components/Field';
+import { WhenInput } from '@/components/WhenInput';
 import { FormScaffold } from '@/components/FormScaffold';
-import { clockTime } from '@/lib/day';
+import { clockTime, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
 import { useKindForm } from '@/lib/useKindForm';
 import { useTheme } from '@/theme';
@@ -68,7 +69,11 @@ export default function Session() {
       </Field>
 
       <Field label="When">
-        <Input value={`Today · ${clockTime(new Date(form.startAt))}`} />
+        <WhenInput
+          at={form.startAt}
+          onChange={form.setStartAt}
+          value={`${whenDay(new Date(form.startAt), form.today)} · ${clockTime(new Date(form.startAt))}`}
+        />
       </Field>
 
       <Field label="Target this week">

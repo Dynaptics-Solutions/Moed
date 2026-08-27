@@ -9,6 +9,7 @@ import { Button } from '@/components/Button';
 import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { Field, Input } from '@/components/Field';
+import { WhenInput } from '@/components/WhenInput';
 import {
   CURRENCY,
   createBill,
@@ -54,12 +55,14 @@ export default function Bill() {
   const [title, setTitle] = useState<string | null>(null);
   const [amount, setAmount] = useState<string | null>(null);
   const [cadence, setCadence] = useState<BillCadence | null>(null);
+  const [due, setDue] = useState<number | null>(null);
 
   // Derived from the record, never copied into state when the query answers. An edit
   // overrides the bill; absent an edit the bill is the answer.
   const name = title ?? existing?.title ?? '';
   const amountText = amount ?? (existing ? minorToText(existing.amountMinor) : '');
   const every = cadence ?? existing?.cadence ?? 'monthly';
+  const dueAt = due ?? existing?.dueAt ?? null;
 
   const amountMinor = textToMinor(amountText);
   const share = weeklyShareMinor(amountMinor, every);
@@ -79,9 +82,9 @@ export default function Bill() {
   const save = async () => {
     if (!canSave) return;
     if (id !== undefined) {
-      await updateBill(id, { title: name.trim(), amountMinor, cadence: every });
+      await updateBill(id, { title: name.trim(), amountMinor, cadence: every, dueAt });
     } else {
-      await createBill({ title: name.trim(), amountMinor, cadence: every });
+      await createBill({ title: name.trim(), amountMinor, cadence: every, dueAt });
     }
     router.replace('/money');
   };
@@ -175,9 +178,12 @@ export default function Bill() {
         </Field>
 
         <Field label="Pay by">
-          <Input
-            value={existing?.dueAt != null ? shortDate(new Date(existing.dueAt)) : 'No date'}
-            muted={existing?.dueAt == null}
+          <WhenInput
+            mode="date"
+            at={dueAt}
+            onChange={setDue}
+            value={dueAt !== null ? shortDate(new Date(dueAt)) : 'No date yet'}
+            muted={dueAt === null}
           />
         </Field>
 
