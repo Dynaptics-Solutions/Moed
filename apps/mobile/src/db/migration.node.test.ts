@@ -1,23 +1,21 @@
-import { DatabaseSync } from 'node:sqlite';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-
-import { describe, expect, it } from 'vitest';
+import { DatabaseSync } from 'node:sqlite';
 
 import { syncedTables } from './schema';
 
 /**
  * The generated migration, applied to a real SQLite database.
  *
- * This is the check that the app can start. `expo export` proves every import
- * resolves and the bundle is well-formed; it says nothing about whether the SQL
- * drizzle-kit emitted is valid or whether the schema it produces is the one the code
- * expects. A migration that fails does so on device, on first launch, after everything
- * else has already been built on the assumption that it worked.
+ * This is the check that the app's database can start. `expo export` proves every
+ * import resolves and the bundle is well-formed; it says nothing about whether the SQL
+ * drizzle-kit emitted is valid, or whether the schema it produces is the one the code
+ * writes to. A migration that fails does so on device, on first launch, after
+ * everything else has been built on the assumption that it worked.
  *
  * Node ships SQLite, so this runs anywhere — no emulator, no device, no Android SDK.
- * It is not expo-sqlite, and it does not pretend to be: what it verifies is the SQL and
- * the shape, which is where the risk is.
+ * It is not expo-sqlite and does not pretend to be: what it verifies is the SQL and the
+ * shape, which is where the risk is.
  */
 
 const DRIZZLE = join(__dirname, '..', '..', 'drizzle');
@@ -28,7 +26,8 @@ function applyMigrations(): DatabaseSync {
     .filter((f) => f.endsWith('.sql'))
     .sort();
 
-  expect(files.length, 'no migrations found — run pnpm db:generate').toBeGreaterThan(0);
+  // No migrations at all would make every assertion below pass vacuously.
+  expect(files).not.toEqual([]);
 
   for (const file of files) {
     const sql = readFileSync(join(DRIZZLE, file), 'utf8');
@@ -51,6 +50,14 @@ const tableNames = (db: DatabaseSync) =>
 const columnNames = (db: DatabaseSync, table: string) =>
   (db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).map((r) => r.name);
 
+/** Drizzle keeps the SQL name on a symbol; this is how it is read back. */
+function sqlName(table: unknown): string {
+  const symbol = Object.getOwnPropertySymbols(table as object).find((s) =>
+    s.toString().includes('Name'),
+  );
+  return String((table as Record<symbol, unknown>)[symbol!]);
+}
+
 const SYNC_COLUMNS = [
   'id',
   'user_id',
@@ -62,6 +69,7 @@ const SYNC_COLUMNS = [
 ];
 
 const HEALTH_TABLES = ['health_sleep', 'health_workouts', 'health_weight', 'health_sync_state'];
+const SYNCED_TABLES = Object.values(syncedTables).map(sqlName);
 
 describe('the migration', () => {
   it('applies cleanly to a real database', () => {
@@ -70,21 +78,19 @@ describe('the migration', () => {
 
   it('creates every table the app queries', () => {
     const names = tableNames(applyMigrations());
+    const missing = [...SYNCED_TABLES, ...HEALTH_TABLES].filter((t) => !names.includes(t));
 
-    for (const table of [...Object.values(syncedTables).map((t) => sqlName(t)), ...HEALTH_TABLES]) {
-      expect(names, `missing ${table}`).toContain(table);
-    }
+    expect(missing).toEqual([]);
   });
 
   it('gives every synced table all seven sync columns', () => {
     const db = applyMigrations();
-
-    for (const table of Object.values(syncedTables).map((t) => sqlName(t))) {
+    const gaps = SYNCED_TABLES.flatMap((table) => {
       const columns = columnNames(db, table);
-      for (const required of SYNC_COLUMNS) {
-        expect(columns, `${table} is missing ${required}`).toContain(required);
-      }
-    }
+      return SYNC_COLUMNS.filter((c) => !columns.includes(c)).map((c) => `${table}.${c}`);
+    });
+
+    expect(gaps).toEqual([]);
   });
 
   it('gives the health tables no sync columns at all', () => {
@@ -92,13 +98,14 @@ describe('the migration', () => {
     // leave the device because there is nowhere in these rows for a sync cursor to go.
     // A future migration that quietly adds user_id to one of them fails here.
     const db = applyMigrations();
-
-    for (const table of HEALTH_TABLES) {
+    const leaks = HEALTH_TABLES.flatMap((table) => {
       const columns = columnNames(db, table);
-      for (const forbidden of ['user_id', 'deleted_at', '_dirty', '_synced_at']) {
-        expect(columns, `${table} must not carry ${forbidden}`).not.toContain(forbidden);
-      }
-    }
+      return ['user_id', 'deleted_at', '_dirty', '_synced_at']
+        .filter((c) => columns.includes(c))
+        .map((c) => `${table}.${c}`);
+    });
+
+    expect(leaks).toEqual([]);
   });
 
   it('accepts a record with the columns the app writes', () => {
@@ -137,10 +144,3 @@ describe('the migration', () => {
     expect(indexes).toContain('settings_user_key');
   });
 });
-
-/** Drizzle keeps the SQL name on a symbol; this is the documented way to read it. */
-function sqlName(table: unknown): string {
-  const symbols = Object.getOwnPropertySymbols(table as object);
-  const nameSymbol = symbols.find((s) => s.toString().includes('Name'));
-  return String((table as Record<symbol, unknown>)[nameSymbol!]);
-}

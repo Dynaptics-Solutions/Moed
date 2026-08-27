@@ -7,6 +7,22 @@ module.exports = [
     ignores: ['drizzle/**', '.expo/**', 'dist/**', 'expo-env.d.ts'],
   },
   {
+    // The test files and the jest setup run under jest's globals, not the app's.
+    files: ['**/*.test.ts', '**/*.test.tsx', 'jest.setup.js', 'jest.config.js'],
+    languageOptions: {
+      globals: {
+        jest: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
+  },
+  {
     rules: {
       // The design tokens are the only place a colour literal belongs, and the
       // schema is deliberately comment-heavy. Nothing else to relax yet.
