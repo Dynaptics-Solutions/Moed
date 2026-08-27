@@ -1,0 +1,14 @@
+# Normalise line endings: LF in the repo, auto on checkout. Development happens on
+# Windows and CI runs on Linux; without this every file churns between them.
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.mp4 binary

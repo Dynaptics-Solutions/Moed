@@ -1,0 +1,141 @@
+import { formatMinutes, gate, type DayLoad } from '@moed/core';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { Button } from './Button';
+import { CapacityBar } from './CapacityBar';
+import { useTheme } from '@/theme';
+
+type FormScaffoldProps = {
+  /** "New task", "New routine" — the small uppercase label in the bar. */
+  kindLabel: string;
+  /** "Cancel" from capture, "Back" from the type picker. */
+  leading: { label: string; onPress: () => void };
+  onSave: () => void;
+  saveLabel: string;
+  /** Title is edited in place, in Cormorant. It is the only typed field on any form. */
+  title: string;
+  onTitleChange?: (next: string) => void;
+  titlePlaceholder?: string;
+  /**
+   * When present, the foot carries the bar and the verdict — does this fit — so the
+   * gate is a confirmation rather than a surprise. The appointment form omits it,
+   * because it draws its own note about what travel would cost.
+   */
+  budget?: { load: DayLoad; limit: number; adding: number; addingIsFixed?: boolean };
+  children: React.ReactNode;
+  /** Extra content above the save button, inside the fixed footer. */
+  footer?: React.ReactNode;
+};
+
+/**
+ * One form per kind, showing only that kind's fields — so the shape is shared and the
+ * fields are not. Five near-identical scaffolds is how five forms start drifting apart
+ * in their spacing and their save behaviour.
+ */
+export function FormScaffold({
+  kindLabel,
+  leading,
+  onSave,
+  saveLabel,
+  title,
+  onTitleChange,
+  titlePlaceholder = 'What is it',
+  budget,
+  children,
+  footer,
+}: FormScaffoldProps) {
+  const theme = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const decision = budget
+    ? gate({
+        committed: budget.load.committed,
+        fixed: budget.load.fixed,
+        limit: budget.limit,
+        adding: budget.adding,
+        addingIsFixed: budget.addingIsFixed,
+      })
+    : null;
+
+  const free = budget ? budget.limit - budget.load.committed - budget.load.fixed : 0;
+
+  return (
+    <View
+      style={[styles.screen, { backgroundColor: theme.colors.bg, paddingTop: insets.top + 18 }]}
+    >
+      <View style={styles.bar}>
+        <Pressable onPress={leading.onPress} hitSlop={12}>
+          <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>{leading.label}</Text>
+        </Pressable>
+        <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>{kindLabel}</Text>
+        <Pressable onPress={onSave} hitSlop={12}>
+          <Text
+            style={[
+              theme.type.bodySmall,
+              { fontFamily: theme.fonts.uiSemiBold, color: theme.colors.acc },
+            ]}
+          >
+            Save
+          </Text>
+        </Pressable>
+      </View>
+
+      {onTitleChange ? (
+        <TextInput
+          value={title}
+          onChangeText={onTitleChange}
+          placeholder={titlePlaceholder}
+          placeholderTextColor={theme.colors.ink3}
+          style={[theme.type.sheetTitle, styles.title, { color: theme.colors.ink }]}
+          selectionColor={theme.colors.acc}
+          multiline
+        />
+      ) : (
+        <Text style={[theme.type.sheetTitle, styles.title, { color: theme.colors.ink }]}>
+          {title}
+        </Text>
+      )}
+
+      <ScrollView
+        style={styles.fields}
+        contentContainerStyle={styles.fieldsContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {children}
+      </ScrollView>
+
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 18 }]}>
+        {footer}
+        {budget && decision && (
+          <>
+            <CapacityBar
+              committed={budget.load.committed + (budget.addingIsFixed ? 0 : budget.adding)}
+              fixed={budget.load.fixed + (budget.addingIsFixed ? budget.adding : 0)}
+              limit={budget.limit}
+              caption={false}
+              height={8}
+            />
+            <Text style={[theme.type.meta, styles.verdict, { color: theme.colors.ink3 }]}>
+              {decision.fits
+                ? `Today has ${formatMinutes(free)} free. This fits.`
+                : `This puts you ${formatMinutes(decision.overBy)} over.`}
+            </Text>
+          </>
+        )}
+        <Button label={saveLabel} style={styles.save} onPress={onSave} />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, paddingHorizontal: 20 },
+  bar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  title: { marginTop: 20, padding: 0 },
+  fields: { flex: 1, marginTop: 22 },
+  fieldsContent: { gap: 17, paddingBottom: 8 },
+  footer: { flexGrow: 0, flexShrink: 0, gap: 0 },
+  verdict: { marginTop: 8 },
+  save: { marginTop: 14 },
+});

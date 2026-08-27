@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Moed",
+    "slug": "moed",
+    "scheme": "moed",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.dynaptics.moed"
+    },
+    "android": {
+      "package": "com.dynaptics.moed",
+      "adaptiveIcon": {
+        "backgroundColor": "#F5F2ED",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/brand/moed-mark.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#F5F2ED",
+          "dark": {
+            "image": "./assets/brand/moed-mark.png",
+            "backgroundColor": "#141F1B"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
