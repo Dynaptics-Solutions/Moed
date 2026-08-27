@@ -8,6 +8,7 @@ import { Sheet } from '@/components/Sheet';
 import { useProjects } from '@/db/projects';
 import { dropRecord, setDone, slipToNextDay, useRecord } from '@/db/records';
 import { useRecurrence } from '@/db/recurrences';
+import { startTimer } from '@/db/timer';
 import type { RecordKind } from '@/db/schema';
 import { clockTime, weekdayName } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
@@ -138,8 +139,19 @@ export default function Detail() {
         </View>
       ) : (
         <View style={styles.actions}>
-          {/* A session cannot be finished, only fed — so it does not get a Done. */}
-          {record.kind !== 'session' && (
+          {/* A session cannot be finished, only fed — so where every other kind offers
+              Done, a session offers the timer. Same slot, because feeding it is just as
+              much its primary action as finishing is theirs. */}
+          {record.kind === 'session' ? (
+            <Button
+              label="Start"
+              style={styles.action}
+              onPress={() => {
+                void startTimer(record.id);
+                router.replace({ pathname: '/timer', params: { id: record.id } });
+              }}
+            />
+          ) : (
             <Button
               label={record.state === 'done' ? 'Not done' : 'Done'}
               style={styles.action}

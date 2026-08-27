@@ -71,6 +71,22 @@ export const records = sqliteTable('records', {
   state: text('state', { enum: RECORD_STATES }).notNull().default('open'),
   /** How many times this has been skipped. Shown in the tray, never hidden. */
   slipCount: integer('slip_count').notNull().default(0),
+  /**
+   * A running session, and what it has been fed so far.
+   *
+   * `timerStartedAt` is epoch ms of the sitting currently under way, and null whenever
+   * one is not — paused, or never started. `timerSeconds` is what previous sittings
+   * added up to. Elapsed is the sum of the two, so the count survives the app being
+   * closed and does not depend on the screen staying open, which a timer kept in React
+   * state would.
+   *
+   * Two columns rather than a `sittings` table, deliberately, and it is worth knowing
+   * which was traded away: this remembers how long, not when or how many times. If the
+   * shut day, or activity sync closing a Session in phase 4, ever needs to show the
+   * sittings themselves, that wants rows and this becomes their sum.
+   */
+  timerStartedAt: integer('timer_started_at'),
+  timerSeconds: integer('timer_seconds').notNull().default(0),
 });
 
 export const RECUR_FREQ = ['daily', 'weekly', 'monthly', 'yearly'] as const;

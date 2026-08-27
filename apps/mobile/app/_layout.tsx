@@ -18,6 +18,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import migrations from '../drizzle/migrations';
 import { db } from '@/db/client';
+import { Splash } from '@/screens/Splash';
 import { useTheme } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync();
@@ -41,9 +42,17 @@ export default function RootLayout() {
   const ready = (fontsLoaded || fontError !== null) && migrated;
   const failure = migrationError ?? fontError;
 
+  // The moment React has something on screen, not when the planner is ready.
+  //
+  // The native splash is a static image; it cannot show progress, and while it was held
+  // until `ready` it covered precisely the window the designed splash exists to fill —
+  // which made that screen unreachable. Handing over as soon as this effect runs is
+  // safe, because an effect only runs after the first paint: the JS splash is already
+  // drawn underneath. The two are the same mark on the same `--bg`, so the swap is not
+  // visible.
   useEffect(() => {
-    if (ready || failure) void SplashScreen.hideAsync();
-  }, [ready, failure]);
+    void SplashScreen.hideAsync();
+  }, []);
 
   // A failure here means the app has no database or no type. Say what happened and
   // what it means, rather than showing an empty planner that looks like data loss.
@@ -63,7 +72,18 @@ export default function RootLayout() {
     );
   }
 
-  if (!ready) return null;
+  // The two things that have to happen before a planner can open. The splash draws the
+  // fraction rather than an invented one, so the rule finishes exactly when the app does
+  // — and on the usual launch, where both are already warm, it is never seen at all.
+  if (!ready) {
+    const done = (fontsLoaded || fontError !== null ? 1 : 0) + (migrated ? 1 : 0);
+    return (
+      <>
+        <StatusBar style={theme.isDark ? 'light' : 'dark'} />
+        <Splash progress={done / 2} />
+      </>
+    );
+  }
 
   return (
     <>

@@ -89,6 +89,9 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
     stops: input.stops ?? null,
     state: 'open' as const,
     slipCount: 0,
+    /** No sitting under way and nothing fed yet — a session starts at zero like the rest. */
+    timerStartedAt: null,
+    timerSeconds: 0,
   };
 
   await db.insert(records).values(row);
