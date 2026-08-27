@@ -18,7 +18,15 @@ export const geometry = {
   chip: { radius: 19 },
   /** The capacity bar is the same on both platforms. */
   bar: { height: 10, radius: 5, minSegment: 2 },
-  nav: { height: 36, bottomPad: ios ? 26 : 14 },
+  /**
+   * The bar's own content height, and the LEAST room to leave under it — not the room
+   * itself. What the bar actually has to clear is whatever the device reports: on the
+   * Pixel we measured, `insets.bottom` is 24 under gesture navigation and 48 with three
+   * buttons. The design table's "36 + 26 / 36 + 14" was the HTML frame faking a home
+   * indicator, exactly as its 44px top inset was, so it survives only as a floor for a
+   * device that reports no inset at all.
+   */
+  nav: { height: 36, minBottomPad: ios ? 26 : 14 },
   /** iOS: an inline pill above the tab bar. Android: a FAB, bottom-right. */
   add: ios ? { kind: 'pill' as const, height: 50 } : { kind: 'fab' as const, size: 58, radius: 19 },
   /** 19x19, 1.4px ink3 ring; checked fills accFill with a white 1.8px tick. */

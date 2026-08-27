@@ -10,6 +10,7 @@ import { RecordRow } from '@/components/RecordRow';
 import { usePlan } from '@/db/plan';
 import { setDone } from '@/db/records';
 import { useSearch } from '@/db/search';
+import { useKeyboardInset } from '@/lib/keyboard';
 import { clockTime } from '@/lib/day';
 import { useTheme } from '@/theme';
 
@@ -28,6 +29,7 @@ type Filter = (typeof FILTERS)[number];
 export default function Search() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const keyboard = useKeyboardInset();
   const router = useRouter();
 
   const plan = usePlan();
@@ -50,7 +52,10 @@ export default function Search() {
 
   return (
     <View
-      style={[styles.screen, { backgroundColor: theme.colors.bg, paddingTop: insets.top + 18 }]}
+      style={[
+        styles.screen,
+        { backgroundColor: theme.colors.bg, paddingTop: insets.top + 18, paddingBottom: keyboard },
+      ]}
     >
       <View style={styles.bar}>
         <View
@@ -168,7 +173,7 @@ export default function Search() {
         )}
       </ScrollView>
 
-      <View style={{ height: insets.bottom }} />
+      <View style={{ height: keyboard > 0 ? 0 : insets.bottom }} />
     </View>
   );
 }

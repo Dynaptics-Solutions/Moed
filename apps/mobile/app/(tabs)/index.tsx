@@ -2,7 +2,6 @@ import { dayLoad, formatMinutes } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AddAffordance } from '@/components/AddAffordance';
 import { CapacityBar } from '@/components/CapacityBar';
@@ -11,6 +10,7 @@ import { useDayLimit } from '@/db/dayLimits';
 import { useTrayRecords } from '@/db/tray';
 import { deleteRecord, setDone, useDayRecords, type PlannerRecord } from '@/db/records';
 import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
+import { useTabScreenInsets } from '@/lib/insets';
 import { useTheme } from '@/theme';
 
 /**
@@ -21,7 +21,7 @@ import { useTheme } from '@/theme';
  */
 export default function Day() {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
   const { landed } = useLocalSearchParams<{ landed?: string }>();
 

@@ -10,13 +10,13 @@ import {
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SegmentedSwitch, type CalendarScale } from '@/components/SegmentedSwitch';
 import { limitFor, useLimitsByDate } from '@/db/dayLimits';
 import { useRangeRecords, weekBounds, type PlannerRecord } from '@/db/records';
 import { WEEKDAY_INITIALS, weekRangeLabel } from '@/lib/day';
 import { useTheme } from '@/theme';
+import { useTabScreenInsets } from '@/lib/insets';
 
 /**
  * `week` — seven columns at real block heights, with the now-line across them.
@@ -35,7 +35,7 @@ const DEFAULT_WINDOW = { from: 8, to: 19 };
 
 export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void }) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
 
   const today = useMemo(() => new Date(), []);

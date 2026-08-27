@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from './Button';
 import { CapacityBar } from './CapacityBar';
+import { useKeyboardInset } from '@/lib/keyboard';
 import { useTheme } from '@/theme';
 
 type FormScaffoldProps = {
@@ -47,6 +48,13 @@ export function FormScaffold({
 }: FormScaffoldProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const keyboard = useKeyboardInset();
+
+  // The title is edited in place, so the keyboard is up while the foot still has to be
+  // readable: it carries the bar and the verdict, which are the whole reason the gate
+  // is a confirmation rather than a surprise. Shrinking the screen by the keyboard's
+  // inset lets the fields scroll and keeps the foot above the keys.
+  const footRoom = keyboard > 0 ? 0 : insets.bottom;
 
   const decision = budget
     ? gate({
@@ -62,7 +70,14 @@ export function FormScaffold({
 
   return (
     <View
-      style={[styles.screen, { backgroundColor: theme.colors.bg, paddingTop: insets.top + 18 }]}
+      style={[
+        styles.screen,
+        {
+          backgroundColor: theme.colors.bg,
+          paddingTop: insets.top + 18,
+          paddingBottom: keyboard,
+        },
+      ]}
     >
       <View style={styles.bar}>
         <Pressable onPress={leading.onPress} hitSlop={12}>
@@ -105,7 +120,7 @@ export function FormScaffold({
         {children}
       </ScrollView>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 18 }]}>
+      <View style={[styles.footer, { paddingBottom: footRoom + 18 }]}>
         {footer}
         {budget && decision && (
           <>

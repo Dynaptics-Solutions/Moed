@@ -2,7 +2,6 @@ import { capacity, dayLoad, formatMinutes, isSameDay, startOfDay } from '@moed/c
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
@@ -11,6 +10,7 @@ import { limitFor, useLimitsByDate } from '@/db/dayLimits';
 import { monthGridBounds, setDone, useRangeRecords } from '@/db/records';
 import { WEEKDAY_INITIALS, clockTime, monthName, weekdayShort } from '@/lib/day';
 import { useTheme } from '@/theme';
+import { useTabScreenInsets } from '@/lib/insets';
 
 /**
  * `month` — no text in the cells. One load bar per day, `over` where the day is over.
@@ -21,7 +21,7 @@ import { useTheme } from '@/theme';
  */
 export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void }) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
 
   const today = useMemo(() => new Date(), []);

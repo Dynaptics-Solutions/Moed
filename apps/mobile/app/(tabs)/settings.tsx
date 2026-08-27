@@ -1,11 +1,11 @@
 import { LAPSE_NOTICE, isEntitled, type Plan } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Chip } from '@/components/Chip';
 import { usePlan } from '@/db/plan';
 import { useTheme } from '@/theme';
+import { useTabScreenInsets } from '@/lib/insets';
 
 /**
  * `settings` — a flat list, no nesting.
@@ -47,7 +47,7 @@ const ROWS: { key: string; value: string; route?: string }[] = [
 
 export default function Settings() {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
   const plan = usePlan();
 
