@@ -40,6 +40,11 @@ export function dayTitle(date: Date, locale = 'en-GB'): string {
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long' }).format(date);
 }
 
+/** "1 Sep" — a date on a row, where the long month would crowd the amount beside it. */
+export function shortDate(date: Date, locale = 'en-GB'): string {
+  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(date);
+}
+
 /** "9:30" — a clock time on a row. Never zero-padded on the hour. */
 export function clockTime(date: Date, locale = 'en-GB'): string {
   return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' }).format(date);

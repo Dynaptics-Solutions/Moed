@@ -2,6 +2,14 @@ export { capacity, segmentWidths } from './capacity';
 export type { Capacity, CapacityInput, CapacitySegments } from './capacity';
 export { formatMinutes, minutes, remainingLabel } from './format';
 export type { Unit } from './format';
+export {
+  DEFAULT_WEEK_MONEY_LIMIT_MINOR,
+  formatMoney,
+  money,
+  weeklyBillsMinor,
+  weeklyShareMinor,
+} from './money';
+export type { BillCadence } from './money';
 export { parseCapture, parsedSummary } from './capture';
 export type { ParsedCapture, ParseOptions } from './capture';
 export { dayLoad } from './load';
