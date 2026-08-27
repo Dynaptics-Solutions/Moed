@@ -9,6 +9,7 @@ import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
 import { SegmentedSwitch } from '@/components/SegmentedSwitch';
 import { useDayLimit } from '@/db/dayLimits';
+import { useTrayRecords } from '@/db/tray';
 import { deleteRecord, setDone, useDayRecords, type PlannerRecord } from '@/db/records';
 import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
 import { useTheme } from '@/theme';
@@ -28,8 +29,10 @@ export default function Day() {
   const today = useMemo(() => new Date(), []);
   const limit = useDayLimit(today);
   const { data: records } = useDayRecords(today);
+  const { data: trayRows } = useTrayRecords(today);
 
   const rows = useMemo(() => records ?? [], [records]);
+  const tray = useMemo(() => trayRows ?? [], [trayRows]);
   const load = dayLoad(rows);
 
   // Adding a record returns here with the new row highlighted and one undo. No success
@@ -107,6 +110,27 @@ export default function Day() {
         <SegmentedSwitch active="day" />
       </View>
 
+      {/* Nothing disappears, and the count is the point — a record that has slipped is
+          visible from the day it slipped off, not buried in a menu. */}
+      {tray.length > 0 && (
+        <Pressable
+          onPress={() => router.push('/tray')}
+          style={[
+            styles.tray,
+            {
+              backgroundColor: theme.colors.taupeSoft,
+              borderColor: theme.colors.taupe,
+              borderRadius: theme.geometry.input.radius,
+            },
+          ]}
+        >
+          <Text style={[theme.type.bodySmall, { color: theme.colors.ink }]}>
+            {tray.length === 1 ? 'One record' : `${tray.length} records`} waiting in the tray
+          </Text>
+          <Text style={[theme.type.meta, { color: theme.colors.taupe }]}>›</Text>
+        </Pressable>
+      )}
+
       {/* Lists scroll, screens do not. */}
       <ScrollView
         style={styles.list}
@@ -132,6 +156,12 @@ export default function Day() {
                 </View>
               </View>
             ))}
+        {/* The close is triggered by the evening notification in the finished product.
+            Until notifications exist it needs a door, and the foot of the day is where
+            someone already is when the day is over. */}
+        <Pressable onPress={() => router.push('/close')} style={styles.closeRow}>
+          <Text style={[theme.type.bodySmall, { color: theme.colors.acc }]}>Close the day</Text>
+        </Pressable>
       </ScrollView>
 
       {showUndo && (
@@ -225,6 +255,16 @@ const styles = StyleSheet.create({
   group: { marginTop: 9 },
   groupGap: { marginTop: 22 },
   highlight: { paddingHorizontal: 10, marginHorizontal: -10 },
+  tray: {
+    marginTop: 16,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 11,
+    paddingHorizontal: 13,
+  },
+  closeRow: { paddingTop: 22, paddingBottom: 4 },
   undo: {
     flexDirection: 'row',
     justifyContent: 'space-between',

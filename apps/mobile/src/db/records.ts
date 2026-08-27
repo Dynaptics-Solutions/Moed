@@ -139,3 +139,54 @@ export async function deleteRecord(id: string): Promise<void> {
     .set({ deletedAt: now, updatedAt: now, dirty: true })
     .where(eq(records.id, id));
 }
+
+/**
+ * Move a record to the next day, counting the slip.
+ *
+ * The count is the point. A record that has slipped three times should be visible as
+ * having slipped three times, rather than quietly rescheduled a fourth — that is what
+ * the tray exists to prevent, and the number is a fact rather than a reprimand.
+ */
+export async function slipToNextDay(id: string, from: Date): Promise<void> {
+  const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
+  if (!row) return;
+
+  const to = new Date(from);
+  to.setDate(to.getDate() + 1);
+  if (row.startAt !== null) {
+    const was = new Date(row.startAt);
+    to.setHours(was.getHours(), was.getMinutes(), 0, 0);
+  } else {
+    to.setHours(9, 0, 0, 0);
+  }
+
+  await db
+    .update(records)
+    .set({
+      startAt: to.getTime(),
+      slipCount: row.slipCount + 1,
+      updatedAt: Date.now(),
+      dirty: true,
+    })
+    .where(eq(records.id, id));
+}
+
+/**
+ * Dropped, not deleted. It stays readable, exportable and countable in the day it was
+ * dropped from — nothing disappears, and a decision to abandon something is part of the
+ * record of the day rather than an erasure of it.
+ */
+export async function dropRecord(id: string): Promise<void> {
+  await db
+    .update(records)
+    .set({ state: 'dropped', updatedAt: Date.now(), dirty: true })
+    .where(eq(records.id, id));
+}
+
+/** Put a record back on a day, from the tray. The slip it already carries stays. */
+export async function scheduleRecord(id: string, at: number): Promise<void> {
+  await db
+    .update(records)
+    .set({ startAt: at, state: 'open', updatedAt: Date.now(), dirty: true })
+    .where(eq(records.id, id));
+}

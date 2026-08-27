@@ -8,10 +8,18 @@ type ChipProps = {
   onPress?: () => void;
   /** A tighter chip, used inside the gate's option rows. */
   compact?: boolean;
+  /** Fills its share of the row — the close's three choices sit side by side. */
+  block?: boolean;
 };
 
 /** Pill, 19px radius on both platforms. Selected fills `accFill`. */
-export function Chip({ label, selected = false, onPress, compact = false }: ChipProps) {
+export function Chip({
+  label,
+  selected = false,
+  onPress,
+  compact = false,
+  block = false,
+}: ChipProps) {
   const theme = useTheme();
 
   return (
@@ -22,6 +30,7 @@ export function Chip({ label, selected = false, onPress, compact = false }: Chip
       style={[
         styles.chip,
         compact ? styles.compact : styles.regular,
+        block && styles.block,
         {
           borderRadius: theme.geometry.chip.radius,
           backgroundColor: selected ? theme.colors.accFill : theme.colors.card,
@@ -40,7 +49,8 @@ export function Chip({ label, selected = false, onPress, compact = false }: Chip
 }
 
 const styles = StyleSheet.create({
-  chip: { borderWidth: 1, flexGrow: 0, flexShrink: 0 },
+  chip: { borderWidth: 1, flexGrow: 0, flexShrink: 0, alignItems: 'center' },
+  block: { flexGrow: 1, flexShrink: 1 },
   regular: { paddingVertical: 8, paddingHorizontal: 12 },
   compact: { paddingVertical: 7, paddingHorizontal: 11 },
 });
