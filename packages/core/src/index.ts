@@ -31,3 +31,15 @@ export {
 export type { Recurrence, RecurrenceLabels, Frequency, Ends } from './recurrence';
 export { leftovers, daySummary, tomorrowLine, leftoverMeta } from './close';
 export type { Closeable, CloseCounts, DaySummary } from './close';
+export {
+  isEntitled,
+  capFor,
+  canCreate,
+  canUse,
+  historyWindowDays,
+  capNotice,
+  LAPSE_NOTICE,
+} from './entitlements';
+export type { Plan, CappedCapability, PaidCapability } from './entitlements';
+export { projectStats } from './project';
+export type { ProjectStats, ProjectRecord } from './project';

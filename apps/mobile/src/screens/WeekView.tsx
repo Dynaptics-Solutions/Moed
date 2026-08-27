@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { SegmentedSwitch } from '@/components/SegmentedSwitch';
+import { SegmentedSwitch, type CalendarScale } from '@/components/SegmentedSwitch';
 import { limitFor, useLimitsByDate } from '@/db/dayLimits';
 import { useRangeRecords, weekBounds, type PlannerRecord } from '@/db/records';
 import { WEEKDAY_INITIALS, weekRangeLabel } from '@/lib/day';
@@ -33,7 +33,7 @@ const HOUR_HEIGHT = 37;
 const GUTTER = 22;
 const DEFAULT_WINDOW = { from: 8, to: 19 };
 
-export default function Week() {
+export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void }) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -102,7 +102,7 @@ export default function Week() {
       </View>
 
       <View style={styles.switch}>
-        <SegmentedSwitch active="week" />
+        <SegmentedSwitch active="week" onScale={onScale} />
       </View>
 
       <View style={styles.dayHeads}>

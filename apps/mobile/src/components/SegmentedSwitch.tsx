@@ -3,21 +3,30 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '@/theme';
 
-export type CalendarScale = 'day' | 'week' | 'month';
-
-const ROUTES: Record<CalendarScale, '/' | '/week' | '/month'> = {
-  day: '/',
-  week: '/week',
-  month: '/month',
-};
+export type CalendarScale = 'week' | 'month';
 
 /**
- * Day / Week / Month. The calendar holds one of these; the three scales read the same
- * records, so switching between them is navigation and nothing else.
+ * Day / Week / Month, on the Calendar tab.
+ *
+ * Day jumps to the Today tab rather than rendering a third view here, because Today and
+ * Calendar → Day are the same screen and having two of it would be two things to keep
+ * in step. Week and month switch in place: changing scale is not navigation.
  */
-export function SegmentedSwitch({ active }: { active: CalendarScale }) {
+export function SegmentedSwitch({
+  active,
+  onScale,
+}: {
+  active: CalendarScale;
+  onScale: (scale: CalendarScale) => void;
+}) {
   const theme = useTheme();
   const router = useRouter();
+
+  const segments: { label: string; on: boolean; press: () => void }[] = [
+    { label: 'Day', on: false, press: () => router.navigate('/') },
+    { label: 'Week', on: active === 'week', press: () => onScale('week') },
+    { label: 'Month', on: active === 'month', press: () => onScale('month') },
+  ];
 
   return (
     <View
@@ -30,31 +39,28 @@ export function SegmentedSwitch({ active }: { active: CalendarScale }) {
         },
       ]}
     >
-      {(['day', 'week', 'month'] as const).map((scale) => {
-        const on = scale === active;
-        return (
-          <Pressable
-            key={scale}
-            onPress={() => !on && router.replace(ROUTES[scale])}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: on }}
-            style={[styles.segment, on && { backgroundColor: theme.colors.accFill }]}
+      {segments.map((segment) => (
+        <Pressable
+          key={segment.label}
+          onPress={segment.press}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: segment.on }}
+          style={[styles.segment, segment.on && { backgroundColor: theme.colors.accFill }]}
+        >
+          <Text
+            style={[
+              theme.type.chip,
+              {
+                fontFamily: theme.fonts.uiSemiBold,
+                fontSize: 12.5,
+                color: segment.on ? theme.colors.onAcc : theme.colors.ink2,
+              },
+            ]}
           >
-            <Text
-              style={[
-                theme.type.chip,
-                {
-                  fontFamily: theme.fonts.uiSemiBold,
-                  fontSize: 12.5,
-                  color: on ? theme.colors.onAcc : theme.colors.ink2,
-                },
-              ]}
-            >
-              {scale[0]!.toUpperCase() + scale.slice(1)}
-            </Text>
-          </Pressable>
-        );
-      })}
+            {segment.label}
+          </Text>
+        </Pressable>
+      ))}
     </View>
   );
 }

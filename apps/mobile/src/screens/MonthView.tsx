@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
-import { SegmentedSwitch } from '@/components/SegmentedSwitch';
+import { SegmentedSwitch, type CalendarScale } from '@/components/SegmentedSwitch';
 import { limitFor, useLimitsByDate } from '@/db/dayLimits';
 import { monthGridBounds, setDone, useRangeRecords } from '@/db/records';
 import { WEEKDAY_INITIALS, clockTime, monthName, weekdayShort } from '@/lib/day';
@@ -19,7 +19,7 @@ import { useTheme } from '@/theme';
  * this scale can honestly answer — how full was that day — and tapping a cell peeks the
  * day at the bottom for the rest.
  */
-export default function Month() {
+export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void }) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -68,7 +68,7 @@ export default function Month() {
       </View>
 
       <View style={styles.switch}>
-        <SegmentedSwitch active="month" />
+        <SegmentedSwitch active="month" onScale={onScale} />
       </View>
 
       <View style={styles.weekdays}>

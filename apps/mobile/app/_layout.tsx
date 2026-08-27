@@ -84,9 +84,11 @@ export default function RootLayout() {
           name="gate"
           options={{ presentation: 'transparentModal', animation: 'fade' }}
         />
-        {['types', 'task', 'routine', 'session', 'errand', 'appt', 'repeat'].map((name) => (
-          <Stack.Screen key={name} name={name} options={{ presentation: 'modal' }} />
-        ))}
+        {['types', 'task', 'routine', 'session', 'errand', 'appt', 'repeat', 'search'].map(
+          (name) => (
+            <Stack.Screen key={name} name={name} options={{ presentation: 'modal' }} />
+          ),
+        )}
       </Stack>
     </>
   );
