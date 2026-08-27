@@ -34,13 +34,16 @@ export default function Task() {
       saveLabel="Add to today"
       budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
       onSave={() =>
-        void form.save({
-          kind: 'task',
-          title: form.title,
-          lengthMinutes: form.lengthMinutes,
-          startAt: form.startAt,
-          recurrence: form.recurrence,
-        })
+        void form.save(
+          {
+            kind: 'task',
+            title: form.title,
+            lengthMinutes: form.lengthMinutes,
+            startAt: form.startAt,
+            recurrence: form.recurrence,
+          },
+          form.id,
+        )
       }
     >
       <Field label="How long">

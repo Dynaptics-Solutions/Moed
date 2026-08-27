@@ -43,14 +43,17 @@ export default function Errand() {
       saveLabel="Save errand"
       budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
       onSave={() =>
-        void form.save({
-          kind: 'errand',
-          title: form.title,
-          lengthMinutes: form.lengthMinutes,
-          startAt: form.startAt,
-          stops,
-          recurrence: form.recurrence,
-        })
+        void form.save(
+          {
+            kind: 'errand',
+            title: form.title,
+            lengthMinutes: form.lengthMinutes,
+            startAt: form.startAt,
+            stops,
+            recurrence: form.recurrence,
+          },
+          form.id,
+        )
       }
     >
       <Field label={`Stops · ${stops.length}`}>

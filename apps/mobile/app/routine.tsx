@@ -42,14 +42,17 @@ export default function Routine() {
       saveLabel="Save routine"
       budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
       onSave={() =>
-        void form.save({
-          kind: 'routine',
-          title: form.title,
-          lengthMinutes: form.lengthMinutes,
-          startAt: form.startAt,
-          steps,
-          recurrence: form.recurrence,
-        })
+        void form.save(
+          {
+            kind: 'routine',
+            title: form.title,
+            lengthMinutes: form.lengthMinutes,
+            startAt: form.startAt,
+            steps,
+            recurrence: form.recurrence,
+          },
+          form.id,
+        )
       }
     >
       <Field label="One block, this long">

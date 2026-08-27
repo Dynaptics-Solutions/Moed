@@ -2,16 +2,26 @@ import type { Recurrence } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 
+import { useRecord } from '@/db/records';
 import type { RecordKind } from '@/db/schema';
 import { fromParams, toParams } from './recurrenceParams';
 import { useSaveDraft } from './saveDraft';
 
 /**
  * The setup every kind's form shares: what capture handed over, what the recurrence
- * editor handed back, and where Save goes.
+ * editor handed back, what an existing record already says, and where Save goes.
  *
  * The fields differ per kind — that is the only reason kinds exist — but the way a form
  * is seeded and saved should not.
+ *
+ * Editing and creating are the same form. The difference is one `id`, and it is
+ * threaded through here rather than decided in each screen, because a form that reaches
+ * for create when it meant update duplicates the record someone was trying to change.
+ *
+ * Values are *derived* rather than copied into state when the record loads: an edit
+ * overrides the record, and absent an edit the record is the answer. That avoids
+ * seeding state from an async query, which is the shape that produces a form flashing
+ * the wrong values for a frame.
  */
 export function useKindForm(kind: RecordKind, defaultLength: number) {
   const router = useRouter();
@@ -19,12 +29,26 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
   const { save, load, limit } = useSaveDraft();
 
   const today = useMemo(() => new Date(), []);
+  const id = params.id;
+  const existing = useRecord(id);
 
-  const [title, setTitle] = useState(params.title ?? '');
-  const [lengthMinutes, setLengthMinutes] = useState(Number(params.lengthMinutes) || defaultLength);
-  const [recurrence, setRecurrence] = useState<Recurrence | null>(() => fromParams(params));
+  const [edits, setEdits] = useState<{
+    title?: string;
+    lengthMinutes?: number;
+    recurrence?: Recurrence | null;
+  }>({});
 
-  const startAt = Number(params.startAt) || today.getTime();
+  const title = edits.title ?? existing?.title ?? params.title ?? '';
+  const lengthMinutes =
+    edits.lengthMinutes ??
+    existing?.lengthMinutes ??
+    (Number(params.lengthMinutes) || defaultLength);
+  const recurrence = edits.recurrence !== undefined ? edits.recurrence : fromParams(params);
+  const startAt = existing?.startAt ?? Number(params.startAt) ?? today.getTime();
+
+  const setTitle = (next: string) => setEdits((e) => ({ ...e, title: next }));
+  const setLengthMinutes = (next: number) => setEdits((e) => ({ ...e, lengthMinutes: next }));
+  const setRecurrence = (next: Recurrence | null) => setEdits((e) => ({ ...e, recurrence: next }));
 
   /** Hand the current rule to the editor, and name the route it should come back to. */
   const openRepeat = () =>
@@ -33,23 +57,27 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
       params: {
         ...toParams(recurrence),
         from: kind === 'appointment' ? 'appt' : kind,
+        id: id ?? '',
         title,
         lengthMinutes: String(lengthMinutes),
         startAt: String(startAt),
       },
     });
 
-  const back = () => router.replace('/types');
-  const cancel = () => router.replace('/');
+  const back = () => (id ? router.back() : router.replace('/types'));
+  const cancel = () => (id ? router.back() : router.replace('/'));
 
   return {
+    id,
+    isEditing: Boolean(id),
+    existing,
     title,
     setTitle,
     lengthMinutes,
     setLengthMinutes,
     recurrence,
     setRecurrence,
-    startAt,
+    startAt: startAt || today.getTime(),
     today,
     load,
     limit,

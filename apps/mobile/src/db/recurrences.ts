@@ -1,4 +1,6 @@
 import type { Recurrence } from '@moed/core';
+import { and, eq, isNull } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { randomUUID } from 'expo-crypto';
 
 import { db } from './client';
@@ -30,4 +32,36 @@ export async function createRecurrence(rule: Recurrence): Promise<string> {
   });
 
   return id;
+}
+
+/** One rule, live, for the detail sheet to read back as a sentence. */
+export function useRecurrence(id: string | null | undefined): Recurrence | null {
+  const userId = currentUserId();
+
+  const { data } = useLiveQuery(
+    db
+      .select()
+      .from(recurrences)
+      .where(
+        and(
+          eq(recurrences.userId, userId),
+          eq(recurrences.id, id ?? ''),
+          isNull(recurrences.deletedAt),
+        ),
+      )
+      .limit(1),
+    [id, userId],
+  );
+
+  const row = id ? data?.[0] : undefined;
+  if (!row) return null;
+
+  return {
+    freq: row.freq,
+    interval: row.interval,
+    byWeekday: row.byWeekday ?? [],
+    ends: row.ends,
+    endsOn: row.endsOn ?? undefined,
+    endsAfter: row.endsAfter ?? undefined,
+  };
 }

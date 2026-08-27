@@ -42,13 +42,16 @@ export default function Session() {
       saveLabel="Save session"
       budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
       onSave={() =>
-        void form.save({
-          kind: 'session',
-          title: form.title,
-          lengthMinutes: form.lengthMinutes,
-          startAt: form.startAt,
-          recurrence: form.recurrence,
-        })
+        void form.save(
+          {
+            kind: 'session',
+            title: form.title,
+            lengthMinutes: form.lengthMinutes,
+            startAt: form.startAt,
+            recurrence: form.recurrence,
+          },
+          form.id,
+        )
       }
     >
       <Field label="Give it">

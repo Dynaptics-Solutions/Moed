@@ -97,6 +97,7 @@ export default function Project() {
                   : formatMinutes(record.lengthMinutes)
               }
               first={i === 0}
+              onPress={() => router.push({ pathname: '/detail', params: { id: record.id } })}
               onToggle={() => void setDone(record.id, true)}
             />
           ))

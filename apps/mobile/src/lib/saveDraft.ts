@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 
 import { useDayLimit } from '@/db/dayLimits';
-import { createRecord, useDayRecords } from '@/db/records';
+import { createRecord, updateRecord, useDayRecords } from '@/db/records';
 import { createRecurrence } from '@/db/recurrences';
 import { useUpcomingDays } from '@/db/upcoming';
 import { encodeDraft, type RecordDraft } from '@/lib/draft';
@@ -37,7 +37,27 @@ export function useSaveDraft() {
     router.replace({ pathname: '/', params: { landed: created.id } });
   };
 
-  const save = async (draft: RecordDraft) => {
+  /**
+   * Editing an existing record does not pass the gate.
+   *
+   * The gate is about *adding* commitment to a day. Re-saving something already on it —
+   * fixing a typo, correcting a length — is not an addition, and making someone answer
+   * "this puts you 40 minutes over" to rename a task they had already accepted would
+   * turn the one interaction the product depends on into an obstacle.
+   *
+   * Lengthening an edited record can therefore take a day past its limit without the
+   * sheet. The bar says so immediately, which is the honest place for it.
+   */
+  const update = async (id: string, draft: RecordDraft) => {
+    if (draft.title.trim().length === 0) return;
+    const recurrenceId = draft.recurrence ? await createRecurrence(draft.recurrence) : undefined;
+    const { recurrence: _rule, ...record } = draft;
+    await updateRecord(id, { ...record, ...(recurrenceId && { recurrenceId }) });
+    router.replace({ pathname: '/', params: { landed: id } });
+  };
+
+  const save = async (draft: RecordDraft, id?: string) => {
+    if (id) return update(id, draft);
     if (draft.title.trim().length === 0) return;
 
     const decision = gate(

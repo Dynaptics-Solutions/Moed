@@ -51,14 +51,17 @@ export default function Appointment() {
       saveLabel="Save appointment"
       budget={{ load: form.load, limit: form.limit, adding: total, addingIsFixed: true }}
       onSave={() =>
-        void form.save({
-          kind: 'appointment',
-          title: form.title,
-          lengthMinutes: total,
-          startAt: form.startAt,
-          isFixed: true,
-          recurrence: form.recurrence,
-        })
+        void form.save(
+          {
+            kind: 'appointment',
+            title: form.title,
+            lengthMinutes: total,
+            startAt: form.startAt,
+            isFixed: true,
+            recurrence: form.recurrence,
+          },
+          form.id,
+        )
       }
     >
       <View

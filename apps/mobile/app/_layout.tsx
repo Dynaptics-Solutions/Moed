@@ -81,6 +81,10 @@ export default function RootLayout() {
           options={{ presentation: 'transparentModal', animation: 'fade' }}
         />
         <Stack.Screen
+          name="detail"
+          options={{ presentation: 'transparentModal', animation: 'fade' }}
+        />
+        <Stack.Screen
           name="gate"
           options={{ presentation: 'transparentModal', animation: 'fade' }}
         />

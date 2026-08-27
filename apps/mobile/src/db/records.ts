@@ -190,3 +190,45 @@ export async function scheduleRecord(id: string, at: number): Promise<void> {
     .set({ startAt: at, state: 'open', updatedAt: Date.now(), dirty: true })
     .where(eq(records.id, id));
 }
+
+/** One record, live. Returns undefined while the query is in flight or if it is gone. */
+export function useRecord(id: string | undefined) {
+  const userId = currentUserId();
+
+  const { data } = useLiveQuery(
+    db
+      .select()
+      .from(records)
+      .where(and(eq(records.userId, userId), eq(records.id, id ?? ''), isNull(records.deletedAt)))
+      .limit(1),
+    [id, userId],
+  );
+
+  return id ? data?.[0] : undefined;
+}
+
+/**
+ * Edit an existing record in place.
+ *
+ * Separate from `createRecord` on purpose: a form that reaches for one when it meant
+ * the other silently duplicates the thing someone was trying to change, and the
+ * duplicate looks exactly like a bug in the day view rather than in the form.
+ */
+export async function updateRecord(id: string, fields: Partial<NewRecord>): Promise<void> {
+  await db
+    .update(records)
+    .set({
+      ...(fields.title !== undefined && { title: fields.title }),
+      ...(fields.lengthMinutes !== undefined && { lengthMinutes: fields.lengthMinutes }),
+      ...(fields.startAt !== undefined && { startAt: fields.startAt }),
+      ...(fields.isFixed !== undefined && { isFixed: fields.isFixed }),
+      ...(fields.projectId !== undefined && { projectId: fields.projectId }),
+      ...(fields.notes !== undefined && { notes: fields.notes }),
+      ...(fields.steps !== undefined && { steps: fields.steps }),
+      ...(fields.stops !== undefined && { stops: fields.stops }),
+      ...(fields.recurrenceId !== undefined && { recurrenceId: fields.recurrenceId }),
+      updatedAt: Date.now(),
+      dirty: true,
+    })
+    .where(eq(records.id, id));
+}

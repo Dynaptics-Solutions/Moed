@@ -218,6 +218,7 @@ export default function Day() {
           done={record.state === 'done'}
           trailing={trailing}
           first={first || highlighted}
+          onPress={() => router.push({ pathname: '/detail', params: { id: record.id } })}
           onToggle={() => void setDone(record.id, record.state !== 'done')}
         />
       </View>
