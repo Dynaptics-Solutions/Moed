@@ -35,7 +35,7 @@ export default function Errand() {
 
   return (
     <FormScaffold
-      kindLabel="New errand"
+      kindLabel={form.isEditing ? 'Edit errand' : 'New errand'}
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
       onTitleChange={form.setTitle}

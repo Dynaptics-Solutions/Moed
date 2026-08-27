@@ -8,7 +8,12 @@ import { useKeyboardInset } from '@/lib/keyboard';
 import { useTheme } from '@/theme';
 
 type FormScaffoldProps = {
-  /** "New task", "New routine" — the small uppercase label in the bar. */
+  /**
+   * "New task", "Edit routine" — the small uppercase label in the bar. It names the
+   * kind *and* which of the two things is happening, because create and edit are the
+   * same screen: a form reached from Edit that still says NEW is telling the plainest
+   * possible lie about what the Save button will do.
+   */
   kindLabel: string;
   /** "Cancel" from capture, "Back" from the type picker. */
   leading: { label: string; onPress: () => void };
@@ -20,8 +25,9 @@ type FormScaffoldProps = {
   titlePlaceholder?: string;
   /**
    * When present, the foot carries the bar and the verdict — does this fit — so the
-   * gate is a confirmation rather than a surprise. The appointment form omits it,
-   * because it draws its own note about what travel would cost.
+   * gate is a confirmation rather than a surprise. Every kind passes it, the
+   * appointment included: fixed time still spends the day, and saying so in the foot
+   * costs nothing next to the note it already draws about travel.
    */
   budget?: { load: DayLoad; limit: number; adding: number; addingIsFixed?: boolean };
   children: React.ReactNode;

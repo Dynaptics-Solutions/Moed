@@ -27,7 +27,7 @@ export default function Task() {
 
   return (
     <FormScaffold
-      kindLabel="New task"
+      kindLabel={form.isEditing ? 'Edit task' : 'New task'}
       leading={{ label: 'Cancel', onPress: form.cancel }}
       title={form.title}
       onTitleChange={form.setTitle}

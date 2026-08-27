@@ -1,4 +1,4 @@
-import { dayLoad, gate, isSameDay, parseCapture, parsedSummary } from '@moed/core';
+import { parseCapture, parsedSummary } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
@@ -7,9 +7,7 @@ import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
 import { Ring } from '@/components/Ring';
 import { Sheet } from '@/components/Sheet';
-import { useDayLimit } from '@/db/dayLimits';
-import { createRecord, useDayRecords } from '@/db/records';
-import { useUpcomingDays } from '@/db/upcoming';
+import { useSaveDraft } from '@/lib/saveDraft';
 import { useTheme } from '@/theme';
 
 /**
@@ -28,10 +26,7 @@ export default function Capture() {
   const [text, setText] = useState('');
   const [dayChoice, setDayChoice] = useState<'today' | 'tomorrow'>('today');
 
-  const today = useMemo(() => new Date(), []);
-  const limit = useDayLimit(today);
-  const { data: dayRecords } = useDayRecords(today);
-  const upcoming = useUpcomingDays(today);
+  const { save, today } = useSaveDraft();
 
   const parsed = useMemo(() => parseCapture(text), [text]);
   const summary = parsedSummary(parsed);
@@ -47,42 +42,21 @@ export default function Capture() {
   const lengthMinutes = parsed.lengthMinutes ?? 30;
   const canSave = parsed.title.trim().length > 0;
 
-  const onSave = async () => {
+  /**
+   * Through the same save every form uses.
+   *
+   * This used to decide the gate for itself and then hand it three loose parameters —
+   * title, lengthMinutes, startAt — while the gate reads a single encoded `draft`. So on
+   * a full day the gate found no draft and sent itself back to the day, and the line
+   * someone had just typed was dropped with nothing said. Silence is the worst possible
+   * answer to "does this fit", and this is the path people take most.
+   *
+   * `useSaveDraft` exists precisely so the limit is enforced in one place. Capture was
+   * the sixth place, and the one that broke.
+   */
+  const onSave = () => {
     if (!canSave) return;
-
-    const load = dayLoad(dayRecords ?? []);
-    const decision = gate(
-      { ...load, limit, adding: lengthMinutes },
-      (dayRecords ?? [])
-        .filter((r) => !r.isFixed && r.state === 'open')
-        .map((r) => ({ id: r.id, title: r.title, lengthMinutes: r.lengthMinutes })),
-      upcoming,
-    );
-
-    // The gate only has standing over the day the record would actually overfill.
-    // Something scheduled for Thursday is Thursday's problem, and this sheet does not
-    // know Thursday's shape.
-    const landsToday = isSameDay(new Date(startAt), today);
-
-    if (decision.fits || !landsToday) {
-      const created = await createRecord({
-        kind: 'task',
-        title: parsed.title,
-        lengthMinutes,
-        startAt,
-      });
-      router.replace({ pathname: '/', params: { landed: created.id } });
-      return;
-    }
-
-    router.replace({
-      pathname: '/gate',
-      params: {
-        title: parsed.title,
-        lengthMinutes: String(lengthMinutes),
-        startAt: String(startAt),
-      },
-    });
+    void save({ kind: 'task', title: parsed.title, lengthMinutes, startAt });
   };
 
   return (

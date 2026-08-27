@@ -43,7 +43,7 @@ export default function Appointment() {
 
   return (
     <FormScaffold
-      kindLabel="Appointment"
+      kindLabel={form.isEditing ? 'Edit appointment' : 'New appointment'}
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
       onTitleChange={form.setTitle}

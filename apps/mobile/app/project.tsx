@@ -1,6 +1,6 @@
 import { formatMinutes, projectStats, weekBounds } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -27,7 +27,7 @@ export default function Project() {
   const today = useMemo(() => new Date(), []);
   const week = useMemo(() => weekBounds(today), [today]);
 
-  const { data: projectRows } = useProjects();
+  const { data: projectRows, updatedAt } = useProjects();
   const { data: recordRows } = useProjectRecords();
 
   const project = (projectRows ?? []).find((p) => p.id === id);
@@ -38,12 +38,23 @@ export default function Project() {
   const stats = projectStats(mine, week);
   const open = mine.filter((r) => r.state === 'open');
 
-  if (!project) {
-    // Reached by a stale link or a project that has been archived since. The list is
-    // the honest place to be rather than an empty screen with a title.
-    router.replace('/projects');
-    return null;
-  }
+  // Reached by a stale link or a project archived since. The list is the honest place
+  // to be rather than an empty screen with a title — but only once the query has
+  // actually answered, and `data` cannot tell you that. Drizzle's useLiveQuery seeds
+  // `data` to [] rather than undefined, so "no such project" and "has not read the
+  // table yet" look identical through it. `updatedAt` is the difference: undefined
+  // until the first result lands. Redirecting on the empty first frame made this screen
+  // unreachable — it bounced straight back to the list every time.
+  //
+  // The redirect belongs in an effect too, because navigating during render sets state
+  // on the navigator mid-render, which React rejects outright.
+  const answered = updatedAt !== undefined;
+
+  useEffect(() => {
+    if (answered && !project) router.replace('/projects');
+  }, [answered, project, router]);
+
+  if (!project) return null;
 
   const colour = project.colour ?? theme.colors.acc;
 

@@ -34,7 +34,7 @@ export default function Routine() {
 
   return (
     <FormScaffold
-      kindLabel="New routine"
+      kindLabel={form.isEditing ? 'Edit routine' : 'New routine'}
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
       onTitleChange={form.setTitle}

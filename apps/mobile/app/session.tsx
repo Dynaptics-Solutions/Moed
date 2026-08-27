@@ -34,7 +34,7 @@ export default function Session() {
 
   return (
     <FormScaffold
-      kindLabel="New session"
+      kindLabel={form.isEditing ? 'Edit session' : 'New session'}
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
       onTitleChange={form.setTitle}

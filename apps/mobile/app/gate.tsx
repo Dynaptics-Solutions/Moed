@@ -1,5 +1,6 @@
 import { dayLoad, formatMinutes, gate, type GateOption } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
@@ -27,11 +28,16 @@ export default function Gate() {
   const draft = decodeDraft(params.draft);
 
   // Nothing to decide about. Reached by a stale link or a reload; the day is the
-  // honest place to be rather than an empty sheet.
-  if (!draft) {
-    router.replace('/');
-    return null;
-  }
+  // honest place to be rather than an empty sheet. Through an effect, because
+  // navigating during render sets state on the navigator mid-render and React rejects
+  // it — the same fault that made the project screen unreachable.
+  const hasDraft = draft !== null;
+
+  useEffect(() => {
+    if (!hasDraft) router.replace('/');
+  }, [hasDraft, router]);
+
+  if (!draft) return null;
 
   const adding = draft.lengthMinutes ?? 0;
   const decision = gate(
