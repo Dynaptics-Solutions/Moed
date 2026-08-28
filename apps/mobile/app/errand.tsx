@@ -147,7 +147,7 @@ export default function Errand() {
 
       <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
         One {formatMinutes(form.lengthMinutes)} trip on the day, not{' '}
-        {stops.length > 0 ? stops.length : 'three'} loose tasks.
+        {stops.length > 0 ? stops.length : 'three'} loose {stops.length === 1 ? 'task' : 'tasks'}.
       </Text>
     </FormScaffold>
   );

@@ -137,7 +137,7 @@ export default function Routine() {
         onPress={form.openRepeat}
       />
 
-      <Note>{`Costs the day ${formatMinutes(form.lengthMinutes)} once — not ${steps.length || 'six'} separate entries.`}</Note>
+      <Note>{`Costs the day ${formatMinutes(form.lengthMinutes)} once — not ${steps.length || 'six'} separate ${steps.length === 1 ? 'entry' : 'entries'}.`}</Note>
     </FormScaffold>
   );
 }

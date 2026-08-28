@@ -57,11 +57,19 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
   // old value and make the field impossible to unset.
   const projectId = edits.projectId !== undefined ? edits.projectId : (existing?.projectId ?? null);
 
+  // A previous fix here handled a *missing* parameter — `Number(undefined)` is NaN, and
+  // NaN is not nullish, so `??` walked straight past the default. It missed the other
+  // way in: the type picker passes `startAt: ''` when it has no date to carry, and
+  // `Number('')` is 0, which is finite. So a form opened through "Make this a…" without
+  // a captured date landed the record on 1 January 1970, and the foot said so —
+  // "Thu 1 Jan has 2h free" — which is how it was eventually noticed.
+  //
+  // Zero is the guard rather than the empty string, because it is the actual property
+  // being relied on: no record this app can plan belongs at the epoch.
   const fromParam = Number(params.startAt);
-  const startAt =
-    edits.startAt ??
-    existing?.startAt ??
-    (Number.isFinite(fromParam) ? fromParam : today.getTime());
+  const carried = Number.isFinite(fromParam) && fromParam > 0;
+
+  const startAt = edits.startAt ?? existing?.startAt ?? (carried ? fromParam : today.getTime());
 
   // The figures in the foot are the landing day's, not today's, and they leave this
   // record out of its own day so an edit is not counted twice.

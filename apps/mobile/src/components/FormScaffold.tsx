@@ -84,6 +84,17 @@ export function FormScaffold({
 
   const free = budget ? budget.limit - budget.load.committed - budget.load.fixed : 0;
 
+  /**
+   * `save` refuses a record with no title, and used to refuse it in silence: tapping
+   * Save on an untitled form did nothing at all, with no message and nothing to read.
+   * A screen that has to say no says why.
+   *
+   * Here rather than in each form, because the rule lives in one place and the control
+   * that obeys it should too. It matches the capture sheet, whose Save is already dim
+   * until there is something to save.
+   */
+  const canSave = title.trim().length > 0;
+
   return (
     <View
       style={[
@@ -100,11 +111,14 @@ export function FormScaffold({
           <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>{leading.label}</Text>
         </Pressable>
         <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>{kindLabel}</Text>
-        <Pressable onPress={onSave} hitSlop={12}>
+        <Pressable onPress={canSave ? onSave : undefined} hitSlop={12}>
           <Text
             style={[
               theme.type.bodySmall,
-              { fontFamily: theme.fonts.uiSemiBold, color: theme.colors.acc },
+              {
+                fontFamily: theme.fonts.uiSemiBold,
+                color: canSave ? theme.colors.acc : theme.colors.ink3,
+              },
             ]}
           >
             Save
@@ -164,7 +178,7 @@ export function FormScaffold({
             </Text>
           </>
         )}
-        <Button label={saveLabel} style={styles.save} onPress={onSave} />
+        <Button label={saveLabel} style={styles.save} onPress={onSave} disabled={!canSave} />
       </View>
     </View>
   );
