@@ -9,18 +9,22 @@ import { useTheme } from '@/theme';
  * because the fast path is capture, and a type picker in front of every new record
  * would make the most common action the slowest one.
  *
- * Five kinds here, not the seven the design shows. Bill and Spending spend money rather
- * than hours and arrive with the money phase; listing them now would be two cards that
- * lead nowhere, which is worse than a shorter list. The heading changes to "Seven
- * kinds" when they land.
+ * Seven kinds, as the design shows. It listed five while bill and spending had no
+ * screens to lead to; they arrived with the money phase, so the two cards and the
+ * heading arrive with them.
+ *
+ * The five time kinds carry what capture parsed. Bill and spending do not: what they
+ * take is an amount and a cadence, and a length in minutes means nothing to either.
  */
 
 const KINDS = [
-  { route: '/task', name: 'Task', desc: 'One thing, one length' },
-  { route: '/routine', name: 'Routine', desc: 'A checklist in one block' },
-  { route: '/session', name: 'Session', desc: 'Time, not a tick box' },
-  { route: '/errand', name: 'Errand', desc: 'A place, not a time' },
-  { route: '/appt', name: 'Appointment', desc: 'Fixed, from your calendar' },
+  { route: '/task', name: 'Task', desc: 'One thing, one length', carries: true },
+  { route: '/routine', name: 'Routine', desc: 'A checklist in one block', carries: true },
+  { route: '/session', name: 'Session', desc: 'Time, not a tick box', carries: true },
+  { route: '/errand', name: 'Errand', desc: 'A place, not a time', carries: true },
+  { route: '/appt', name: 'Appointment', desc: 'Fixed, from your calendar', carries: true },
+  { route: '/bill', name: 'Bill', desc: 'Money, on a cadence', carries: false },
+  { route: '/spend', name: 'Spending', desc: 'Money, already gone', carries: false },
 ] as const;
 
 export default function Types() {
@@ -52,7 +56,7 @@ export default function Types() {
       </View>
 
       <Text style={[theme.type.sheetTitle, styles.title, { color: theme.colors.ink }]}>
-        Five kinds{'\n'}of record
+        Seven kinds{'\n'}of record
       </Text>
       <Text style={[theme.type.bodySmall, styles.blurb, { color: theme.colors.ink2 }]}>
         Each behaves differently. That is the only reason kinds exist.
@@ -66,7 +70,9 @@ export default function Types() {
         {KINDS.map((kind) => (
           <Pressable
             key={kind.route}
-            onPress={() => router.replace({ pathname: kind.route, params: carry })}
+            onPress={() =>
+              router.replace(kind.carries ? { pathname: kind.route, params: carry } : kind.route)
+            }
             style={[
               styles.card,
               theme.shadow,
