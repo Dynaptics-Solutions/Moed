@@ -111,9 +111,23 @@ export default function Day() {
     return () => clearTimeout(timer);
   }, [showUndo, landed]);
 
+  // The list shows what the bar counts, and nothing else.
+  //
+  // A record set aside to the tray keeps its date — that is deliberate, so putting it
+  // back does not have to guess — but it is waiting rather than planned, and `dayLoad`
+  // has always excluded it from the day's total. Drawing it as an ordinary row anyway
+  // put the same record in two places at once: counted in "3 records waiting in the
+  // tray" and listed under Morning with a time, costing the day nothing. The list and
+  // the bar disagreed about the same day, which is the one thing they may never do.
+  //
+  // Dropped goes for the same reason. Nothing disappears — it stays readable,
+  // exportable and in the day it was dropped from — but a decision that has been taken
+  // is not a row with a tickable ring on a day's plan.
+  const planned = rows.filter((r) => r.state !== 'tray' && r.state !== 'dropped');
+
   const grouped = PARTS.map((part) => ({
     part,
-    records: rows.filter((r) => r.startAt !== null && dayPart(new Date(r.startAt)) === part),
+    records: planned.filter((r) => r.startAt !== null && dayPart(new Date(r.startAt)) === part),
   })).filter((g) => g.records.length > 0);
 
   // One tap reverses the whole decision. Accepting the gate's "move Rye to Thursday and
