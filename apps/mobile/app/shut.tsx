@@ -23,7 +23,9 @@ export default function Shut() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const params = useLocalSearchParams<{ done?: string; moved?: string; dropped?: string }>();
+  // Only the move count travels. Done and dropped are on the day's own records, and
+  // reading them there counts the whole day rather than the last few minutes of it.
+  const params = useLocalSearchParams<{ moved?: string }>();
 
   const today = useMemo(() => new Date(), []);
   const tomorrow = useMemo(() => {
@@ -37,11 +39,7 @@ export default function Shut() {
   const { data: tomorrowRows } = useDayRecords(tomorrow);
 
   const limit = limitFor(limits, today);
-  const summary = daySummary(todayRows ?? [], limit, {
-    done: Number(params.done) || 0,
-    moved: Number(params.moved) || 0,
-    dropped: Number(params.dropped) || 0,
-  });
+  const summary = daySummary(todayRows ?? [], limit, Number(params.moved) || 0);
 
   const load = dayLoad(todayRows ?? []);
   const tomorrowLoad = dayLoad(tomorrowRows ?? []);

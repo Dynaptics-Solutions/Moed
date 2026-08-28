@@ -26,11 +26,7 @@ describe('daySummary', () => {
   it('counts what the day spent, including what was finished', () => {
     // A finished record still spent the day; the shut screen and the day view must not
     // disagree about the same day.
-    const summary = daySummary([r('done', 300), r('done', 130), r('open', 60)], DAY, {
-      done: 2,
-      moved: 1,
-      dropped: 0,
-    });
+    const summary = daySummary([r('done', 300), r('done', 130), r('open', 60)], DAY, 1);
 
     expect(summary.usedMinutes).toBe(490);
     expect(summary.limitMinutes).toBe(DAY);
@@ -38,13 +34,24 @@ describe('daySummary', () => {
   });
 
   it('does not count what left the day', () => {
-    const summary = daySummary([r('done', 120), r('moved', 120), r('dropped', 120)], DAY, {
-      done: 1,
-      moved: 1,
-      dropped: 1,
-    });
+    const summary = daySummary([r('done', 120), r('moved', 120), r('dropped', 120)], DAY, 1);
 
     expect(summary.usedMinutes).toBe(120);
+  });
+
+  it('counts the whole day, not the sitting that closed it', () => {
+    // Two ticked off during the day and one dropped in the close. A count under a date
+    // is that date's count, so all three are the day's and none of them the close's.
+    const summary = daySummary([r('done'), r('done'), r('dropped'), r('open')], DAY, 0);
+
+    expect(summary.counts).toEqual({ done: 2, moved: 0, dropped: 1 });
+  });
+
+  it('takes the move count from the close, which is the only thing that saw it', () => {
+    // A moved record is on tomorrow by now and carries nothing saying which day it left.
+    const summary = daySummary([r('done')], DAY, 3);
+
+    expect(summary.counts.moved).toBe(3);
   });
 });
 

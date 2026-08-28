@@ -196,11 +196,7 @@ export default function Close() {
           onPress={() =>
             router.replace({
               pathname: '/shut',
-              params: {
-                done: String(counts.done),
-                moved: String(counts.moved),
-                dropped: String(counts.dropped),
-              },
+              params: { moved: String(counts.moved) },
             })
           }
         />

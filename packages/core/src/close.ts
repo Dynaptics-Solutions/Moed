@@ -33,14 +33,32 @@ export type DaySummary = {
  * A record that was done still counts — it spent the day. One that was moved or
  * dropped does not, because it left. That is the same rule the capacity bar follows,
  * so the shut screen and the day view never disagree about the same day.
+ *
+ * The counts are the day's, not the sitting's. Done and dropped are read off the day's
+ * own records, so a task ticked at eleven in the morning is counted by a close at
+ * nine at night — the shut screen is headed with the date, and a figure under a date
+ * has to be that day's figure or it is a lie with a true number in it.
+ *
+ * `movedCount` is passed in because it is the one thing the day cannot answer: a moved
+ * record is on tomorrow by the time anyone counts, and nothing on it records which day
+ * it left or when. Until closes are themselves recorded, the close is the only witness.
  */
 export function daySummary(
   records: readonly LoadContribution[],
   limitMinutes: number,
-  counts: CloseCounts,
+  movedCount: number,
 ): DaySummary {
   const load = dayLoad(records);
-  return { usedMinutes: load.committed + load.fixed, limitMinutes, counts };
+
+  return {
+    usedMinutes: load.committed + load.fixed,
+    limitMinutes,
+    counts: {
+      done: records.filter((r) => r.state === 'done').length,
+      moved: movedCount,
+      dropped: records.filter((r) => r.state === 'dropped').length,
+    },
+  };
 }
 
 /** The smallest length the forms offer, so "room" means room for something real. */
