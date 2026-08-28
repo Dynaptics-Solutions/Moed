@@ -6,6 +6,7 @@ import {
   isWeekend,
   isoWeek,
   mondayIndex,
+  startOfDay,
 } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
@@ -39,6 +40,11 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
   const router = useRouter();
 
   const today = useMemo(() => new Date(), []);
+
+  /** Open a day at the day scale. Any day — not always this one. */
+  const openDay = (date: Date) =>
+    router.replace({ pathname: '/', params: { date: String(startOfDay(date).getTime()) } });
+
   const { start, end } = weekBounds(today);
   const { data: records } = useRangeRecords(start, end);
   const limits = useLimitsByDate();
@@ -112,7 +118,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
           return (
             <Pressable
               key={date.toISOString()}
-              onPress={() => router.replace('/')}
+              onPress={() => openDay(date)}
               style={[
                 styles.dayHead,
                 isToday && { backgroundColor: theme.colors.accSoft, borderRadius: 7 },
@@ -242,7 +248,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
 
     return (
       <Pressable
-        onPress={() => router.replace('/')}
+        onPress={() => openDay(start)}
         style={[
           styles.block,
           {

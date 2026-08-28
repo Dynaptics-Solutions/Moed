@@ -1,4 +1,4 @@
-import { bestMove, dayLoad, formatMinutes, full } from '@moed/core';
+import { bestMove, dayLoad, formatMinutes, full, isSameDay } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -36,7 +36,8 @@ export default function Day() {
   const theme = useTheme();
   const insets = useTabScreenInsets();
   const router = useRouter();
-  const { landed, movedId, movedTitle, movedTo, movedFrom } = useLocalSearchParams<{
+  const { date, landed, movedId, movedTitle, movedTo, movedFrom } = useLocalSearchParams<{
+    date?: string;
     landed?: string;
     movedId?: string;
     movedTitle?: string;
@@ -45,11 +46,23 @@ export default function Day() {
   }>();
 
   const today = useMemo(() => new Date(), []);
-  const limit = useDayLimit(today);
-  const { data: records } = useDayRecords(today);
+
+  // Any day, not only this one. Week and month both had to send you here to open a day
+  // and could only ever send you to today, so a Thursday tapped in the week view opened
+  // Tuesday — and `full`, which is the whole reason to look at another day before it
+  // arrives, was unreachable for every day but the one in front of you.
+  const shown = useMemo(() => {
+    const at = Number(date);
+    return Number.isFinite(at) && at > 0 ? new Date(at) : today;
+  }, [date, today]);
+
+  const isToday = isSameDay(shown, today);
+
+  const limit = useDayLimit(shown);
+  const { data: records } = useDayRecords(shown);
   const { data: trayRows } = useTrayRecords(today);
 
-  const upcoming = useUpcomingDays(today);
+  const upcoming = useUpcomingDays(shown);
 
   const rows = useMemo(() => records ?? [], [records]);
   const tray = useMemo(() => trayRows ?? [], [trayRows]);
@@ -156,10 +169,10 @@ export default function Day() {
       <View style={styles.header}>
         <View>
           <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
-            {weekdayName(today)}
+            {weekdayName(shown)}
           </Text>
           <Text style={[theme.type.screenTitle, styles.date, { color: theme.colors.ink }]}>
-            {dayTitle(today)}
+            {dayTitle(shown)}
           </Text>
         </View>
         <View
@@ -242,7 +255,7 @@ export default function Day() {
 
       {/* Nothing disappears, and the count is the point — a record that has slipped is
           visible from the day it slipped off, not buried in a menu. */}
-      {tray.length > 0 && (
+      {isToday && tray.length > 0 && (
         <Pressable
           onPress={() => router.push('/tray')}
           style={[
@@ -289,10 +302,23 @@ export default function Day() {
             ))}
         {/* The close is triggered by the evening notification in the finished product.
             Until notifications exist it needs a door, and the foot of the day is where
-            someone already is when the day is over. */}
-        <Pressable onPress={() => router.push('/close')} style={styles.closeRow}>
-          <Text style={[theme.type.bodySmall, { color: theme.colors.acc }]}>Close the day</Text>
-        </Pressable>
+            someone already is when the day is over. It belongs to today only: there is
+            no evening to close on a Thursday that has not happened. */}
+        {isToday ? (
+          <Pressable onPress={() => router.push('/close')} style={styles.closeRow}>
+            <Text style={[theme.type.bodySmall, { color: theme.colors.acc }]}>Close the day</Text>
+          </Pressable>
+        ) : (
+          // The way back, and the only one that does not depend on which tab is
+          // remembering which parameter.
+          <Pressable
+            onPress={() => router.replace('/')}
+            style={styles.closeRow}
+            accessibilityRole="button"
+          >
+            <Text style={[theme.type.bodySmall, { color: theme.colors.acc }]}>Back to today</Text>
+          </Pressable>
+        )}
       </ScrollView>
 
       {(taken || showUndo) && (

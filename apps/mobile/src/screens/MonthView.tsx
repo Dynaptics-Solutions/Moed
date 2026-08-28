@@ -142,7 +142,15 @@ export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void
 
       {peekedCell && (
         <Pressable
-          onPress={() => router.replace('/')}
+          // The peek answers "how full was that day"; tapping it opens that day, not
+          // this one. Opening today from a cell in the middle of last month was the
+          // month view's only way out and it went to the wrong place.
+          onPress={() =>
+            router.replace({
+              pathname: '/',
+              params: { date: String(startOfDay(peekedCell.date).getTime()) },
+            })
+          }
           style={[
             styles.peek,
             theme.shadow,
