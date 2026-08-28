@@ -8,6 +8,7 @@ import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { RecordRow } from '@/components/RecordRow';
 import { useDayLimit } from '@/db/dayLimits';
+import { useProjects } from '@/db/projects';
 import { useTrayRecords } from '@/db/tray';
 import { useUpcomingDays } from '@/db/upcoming';
 import {
@@ -63,6 +64,14 @@ export default function Day() {
   const { data: trayRows } = useTrayRecords(today);
 
   const upcoming = useUpcomingDays(shown);
+
+  // Names for the rows' project dots. Three on the free plan, so this is a small map
+  // rather than a join, and it is the same live query the projects tab already runs.
+  const { data: projectRows } = useProjects();
+  const projectNames = useMemo(
+    () => new Map((projectRows ?? []).map((p) => [p.id, p.name])),
+    [projectRows],
+  );
 
   const rows = useMemo(() => records ?? [], [records]);
   const tray = useMemo(() => trayRows ?? [], [trayRows]);
@@ -402,6 +411,8 @@ export default function Day() {
         ? clockTime(new Date(record.startAt))
         : formatMinutes(record.lengthMinutes);
 
+    const project = record.projectId !== null ? projectNames.get(record.projectId) : undefined;
+
     return (
       <View
         style={
@@ -420,8 +431,14 @@ export default function Day() {
           title={record.title}
           done={record.state === 'done'}
           // A row past the limit says so instead of saying when it is. The time is the
-          // less useful of the two facts once the day cannot hold it.
-          meta={isPast ? `${formatMinutes(record.lengthMinutes)} · past the limit` : undefined}
+          // less useful of the two facts once the day cannot hold it. Otherwise the
+          // meta line is the project it belongs to, which is what the design puts there.
+          meta={
+            isPast
+              ? `${formatMinutes(record.lengthMinutes)} · past the limit`
+              : (project ?? undefined)
+          }
+          projectColour={!isPast && project ? theme.colors.acc : undefined}
           trailing={isPast ? undefined : trailing}
           first={first || highlighted}
           past={isPast}

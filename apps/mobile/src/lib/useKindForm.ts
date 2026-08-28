@@ -40,6 +40,7 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     lengthMinutes?: number;
     recurrence?: Recurrence | null;
     startAt?: number;
+    projectId?: string | null;
   }>({});
 
   const title = edits.title ?? existing?.title ?? params.title ?? '';
@@ -51,6 +52,11 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
   // `??` cannot fall past `Number(params.startAt)`: with no parameter that is NaN, and
   // NaN is not nullish, so the default never ran. It only ever worked because the
   // returned value was guarded with `||` further down, where the reason was invisible.
+  // `!== undefined` rather than `??`, because null is a real answer here: it is what
+  // clearing the project means, and `??` would fall straight past it to the record's
+  // old value and make the field impossible to unset.
+  const projectId = edits.projectId !== undefined ? edits.projectId : (existing?.projectId ?? null);
+
   const fromParam = Number(params.startAt);
   const startAt =
     edits.startAt ??
@@ -66,6 +72,7 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
   const setLengthMinutes = (next: number) => setEdits((e) => ({ ...e, lengthMinutes: next }));
   const setRecurrence = (next: Recurrence | null) => setEdits((e) => ({ ...e, recurrence: next }));
   const setStartAt = (next: number) => setEdits((e) => ({ ...e, startAt: next }));
+  const setProjectId = (next: string | null) => setEdits((e) => ({ ...e, projectId: next }));
 
   /** Hand the current rule to the editor, and name the route it should come back to. */
   const openRepeat = () =>
@@ -96,6 +103,8 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     setRecurrence,
     startAt,
     setStartAt,
+    projectId,
+    setProjectId,
     today,
     load: budget.load,
     limit: budget.limit,

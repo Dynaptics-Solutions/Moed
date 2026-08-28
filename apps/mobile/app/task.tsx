@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Chip } from '@/components/Chip';
 import { Field, Input } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
+import { ProjectField } from '@/components/ProjectField';
 import { WhenInput } from '@/components/WhenInput';
 import { clockTime, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
@@ -46,6 +47,7 @@ export default function Task() {
             title: form.title,
             lengthMinutes: form.lengthMinutes,
             startAt: form.startAt,
+            projectId: form.projectId,
             recurrence: form.recurrence,
           },
           form.id,
@@ -73,9 +75,7 @@ export default function Task() {
         />
       </Field>
 
-      <Field label="Project">
-        <Input value="None" muted />
-      </Field>
+      <ProjectField value={form.projectId} onChange={form.setProjectId} />
 
       <Field label="Remind">
         <Input value="Never" muted />
