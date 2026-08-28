@@ -3,7 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { AddAffordance } from '@/components/AddAffordance';
+import { AddAffordance, useAddClearance } from '@/components/AddAffordance';
 import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { RecordRow } from '@/components/RecordRow';
@@ -37,6 +37,7 @@ export default function Day() {
   const theme = useTheme();
   const insets = useTabScreenInsets();
   const router = useRouter();
+  const addClearance = useAddClearance();
   const { date, landed, movedId, movedTitle, movedTo, movedFrom } = useLocalSearchParams<{
     date?: string;
     landed?: string;
@@ -286,29 +287,40 @@ export default function Day() {
       {/* Lists scroll, screens do not. */}
       <ScrollView
         style={styles.list}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, { paddingBottom: 8 + addClearance }]}
         showsVerticalScrollIndicator={false}
       >
-        {grouped.length === 0
-          ? null
-          : grouped.map((group, groupIndex) => (
-              <View key={group.part} style={groupIndex > 0 ? styles.groupGap : undefined}>
-                <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
-                  {group.part}
-                </Text>
-                <View style={styles.group}>
-                  {group.records.map((record, i) => (
-                    <Row
-                      key={record.id}
-                      record={record}
-                      first={i === 0}
-                      highlighted={record.id === landed}
-                      past={past.has(record.id)}
-                    />
-                  ))}
-                </View>
+        {/* The first thing anyone ever sees. It was nothing at all — an empty frame
+            under a full-width empty bar, with no way of telling a new account from a
+            failed query. It says what the day holds and what the limit is, because
+            those are the two facts this screen exists for and they are both true of an
+            empty day. */}
+        {grouped.length === 0 ? (
+          <Text style={[theme.type.bodySmall, styles.empty, { color: theme.colors.ink3 }]}>
+            {isToday
+              ? `Nothing planned today. The whole ${formatMinutes(limit)} is free.`
+              : `Nothing planned. The whole ${formatMinutes(limit)} is free.`}
+          </Text>
+        ) : (
+          grouped.map((group, groupIndex) => (
+            <View key={group.part} style={groupIndex > 0 ? styles.groupGap : undefined}>
+              <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>
+                {group.part}
+              </Text>
+              <View style={styles.group}>
+                {group.records.map((record, i) => (
+                  <Row
+                    key={record.id}
+                    record={record}
+                    first={i === 0}
+                    highlighted={record.id === landed}
+                    past={past.has(record.id)}
+                  />
+                ))}
               </View>
-            ))}
+            </View>
+          ))
+        )}
         {/* The close is triggered by the evening notification in the finished product.
             Until notifications exist it needs a door, and the foot of the day is where
             someone already is when the day is over. It belongs to today only: there is
@@ -340,6 +352,9 @@ export default function Day() {
               backgroundColor: theme.colors.card,
               borderColor: theme.colors.line,
               borderRadius: theme.geometry.input.radius,
+              // Above the FAB on Android, which floats and would otherwise sit on the
+              // word "Undo". On iOS the pill is in the flow and this is zero.
+              marginBottom: 10 + addClearance,
             },
           ]}
         >
@@ -470,6 +485,7 @@ const styles = StyleSheet.create({
   listContent: { paddingBottom: 8 },
   group: { marginTop: 9 },
   groupGap: { marginTop: 22 },
+  empty: { paddingTop: 2, lineHeight: 20 },
   highlight: { paddingHorizontal: 10, marginHorizontal: -10 },
   advisory: { marginTop: 18, borderWidth: 1, paddingVertical: 16, paddingHorizontal: 17 },
   advisoryTitle: { fontSize: 14, lineHeight: 19.6 },

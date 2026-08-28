@@ -10,6 +10,20 @@ type AddAffordanceProps = {
 };
 
 /**
+ * How much room the affordance needs above the bottom inset, so a screen can keep its
+ * own content out from under it.
+ *
+ * The iOS pill sits in the flow and takes its own space, so nothing has to be reserved.
+ * The Android FAB floats, which means it silently sits on top of whatever is at the
+ * foot of the screen — and on the day that was the undo banner's "Undo", the one
+ * affordance the "undo, not confirm" rule depends on.
+ */
+export function useAddClearance(): number {
+  const add = useTheme().geometry.add;
+  return add.kind === 'fab' ? add.size + 16 : 0;
+}
+
+/**
  * Capture, which is the highest-frequency action in the app — so it gets each
  * platform's own shape rather than one compromise on both. Both variants position
  * themselves, so a screen renders this once and does not branch.
