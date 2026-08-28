@@ -6,7 +6,7 @@ import { Chip } from '@/components/Chip';
 import { Field, Input, Note } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
-import { useKindForm } from '@/lib/useKindForm';
+import { useKindForm, useListField } from '@/lib/useKindForm';
 import { useTheme } from '@/theme';
 
 /**
@@ -22,7 +22,7 @@ const LENGTHS = [20, 40, 60];
 export default function Routine() {
   const theme = useTheme();
   const form = useKindForm('routine', 40);
-  const [steps, setSteps] = useState<string[]>([]);
+  const [steps, setSteps] = useListField(form.existing?.steps);
   const [draftStep, setDraftStep] = useState('');
 
   const addStep = () => {

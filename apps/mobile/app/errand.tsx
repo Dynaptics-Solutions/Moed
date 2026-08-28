@@ -7,7 +7,7 @@ import { WhenInput } from '@/components/WhenInput';
 import { FormScaffold } from '@/components/FormScaffold';
 import { clockTime, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
-import { useKindForm } from '@/lib/useKindForm';
+import { useKindForm, useListField } from '@/lib/useKindForm';
 import { useTheme } from '@/theme';
 
 /**
@@ -24,7 +24,7 @@ import { useTheme } from '@/theme';
 export default function Errand() {
   const theme = useTheme();
   const form = useKindForm('errand', 40);
-  const [stops, setStops] = useState<string[]>([]);
+  const [stops, setStops] = useListField(form.existing?.stops);
   const [draftStop, setDraftStop] = useState('');
 
   const addStop = () => {

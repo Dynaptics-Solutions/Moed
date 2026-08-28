@@ -108,3 +108,27 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     cancel,
   };
 }
+
+/**
+ * A routine's steps or an errand's stops, derived the way `useKindForm` derives every
+ * other field: an edit overrides the record, and absent an edit the record is the
+ * answer.
+ *
+ * Both screens held these in a plain `useState([])`, which seeded empty on every mount
+ * and never read the record. Opening a six-step routine to change its title showed no
+ * steps and then saved none, so an ordinary edit erased them — invisibly, because the
+ * day view shows a routine's title and its length and never its steps. `Steps · 0` was
+ * the only tell, and on a form that is also used to create things it reads as normal.
+ */
+export function useListField(from: string[] | null | undefined) {
+  const [edited, setEdited] = useState<string[] | null>(null);
+  const value = edited ?? from ?? [];
+
+  // The setter works over the derived list rather than over the edit, so a caller can
+  // append to steps it has never touched — which is the first thing anyone does when
+  // adding a step to a routine that already has five.
+  const set = (next: string[] | ((previous: string[]) => string[])) =>
+    setEdited(typeof next === 'function' ? next(value) : next);
+
+  return [value, set] as const;
+}
