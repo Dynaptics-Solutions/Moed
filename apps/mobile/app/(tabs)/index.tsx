@@ -1,17 +1,30 @@
-import { dayLoad, formatMinutes } from '@moed/core';
+import { bestMove, dayLoad, formatMinutes, full } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AddAffordance } from '@/components/AddAffordance';
 import { CapacityBar } from '@/components/CapacityBar';
+import { Chip } from '@/components/Chip';
 import { RecordRow } from '@/components/RecordRow';
 import { useDayLimit } from '@/db/dayLimits';
 import { useTrayRecords } from '@/db/tray';
-import { deleteRecord, setDone, setStartAt, useDayRecords, type PlannerRecord } from '@/db/records';
-import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
+import { useUpcomingDays } from '@/db/upcoming';
+import {
+  deleteRecord,
+  moveRecord,
+  moveToTray,
+  setDone,
+  setStartAt,
+  useDayRecords,
+  type PlannerRecord,
+} from '@/db/records';
+import { PARTS, clockTime, dayPart, dayTitle, weekdayName, weekdayShort } from '@/lib/day';
 import { useTabScreenInsets } from '@/lib/insets';
 import { useTheme } from '@/theme';
+
+/** Something the day just did on the user's say-so, and the one tap that takes it back. */
+type Taken = { label: string; undo: () => Promise<void> };
 
 /**
  * `day` — home, and the screen every other list in the planner copies.
@@ -36,9 +49,30 @@ export default function Day() {
   const { data: records } = useDayRecords(today);
   const { data: trayRows } = useTrayRecords(today);
 
+  const upcoming = useUpcomingDays(today);
+
   const rows = useMemo(() => records ?? [], [records]);
   const tray = useMemo(() => trayRows ?? [], [trayRows]);
   const load = dayLoad(rows);
+
+  // `full` — the over-committed day, and the state the product exists for. The day can
+  // go over without anyone passing a gate: a record edited longer, one moved in from
+  // the tray, a limit lowered by a short night. Being told only at the moment of adding
+  // would mean the app's one claim held only while it was being watched.
+  const over = full(rows, limit);
+  const past = new Set(over.past.map((r) => r.id));
+
+  // The two concrete offers. Move keeps the whole commitment, so it goes first; the
+  // tray gives up the day but not the record, which is the plainer of the two ways of
+  // not doing something today.
+  const move = bestMove(
+    rows
+      .filter((r) => !r.isFixed && r.state === 'open')
+      .map((r) => ({ id: r.id, title: r.title, lengthMinutes: r.lengthMinutes })),
+    upcoming,
+    over.overBy,
+  );
+  const spill = over.past.find((r) => r.id !== move?.record.id) ?? over.past[0];
 
   // Adding a record returns here with the new row highlighted and one undo. No success
   // screen and no confirmation dialog — undo, not confirm.
@@ -71,6 +105,49 @@ export default function Day() {
 
   const undoLabel =
     movedTitle && movedTo ? `Added, and “${movedTitle}” moved to ${movedTo}` : 'Added';
+
+  // Anything the day does in place — accepting one of the advisory card's offers — is
+  // reversible on the same terms as adding: one tap, six seconds, no confirmation.
+  const [taken, setTaken] = useState<Taken | null>(null);
+
+  useEffect(() => {
+    if (!taken) return;
+    const timer = setTimeout(() => setTaken(null), 6000);
+    return () => clearTimeout(timer);
+  }, [taken]);
+
+  const accept = async (label: string, act: () => Promise<void>, undoIt: () => Promise<void>) => {
+    await act();
+    setTaken({
+      label,
+      undo: async () => {
+        await undoIt();
+        setTaken(null);
+      },
+    });
+  };
+
+  const acceptMove = async () => {
+    if (!move) return;
+    let from: number | null = null;
+    await accept(
+      `“${move.record.title}” moved to ${move.day.label}`,
+      async () => {
+        from = await moveRecord(move.record.id, move.day.date);
+      },
+      () => setStartAt(move.record.id, from),
+    );
+  };
+
+  const acceptTray = async () => {
+    if (!spill) return;
+    await accept(
+      `“${spill.title}” moved to the tray`,
+      () => moveToTray(spill.id),
+      // Back on the day it never left. `state: 'tray'` was the only thing that changed.
+      () => setDone(spill.id, false),
+    );
+  };
 
   return (
     <View
@@ -115,6 +192,54 @@ export default function Day() {
         />
       </View>
 
+      {/* The advisory card. It states the fact, names what could be done, and moves
+          nothing: both offers are one tap, and the tap is the user's. */}
+      {over.isOver && (
+        <View
+          style={[
+            styles.advisory,
+            {
+              backgroundColor: theme.colors.overSoft,
+              borderColor: theme.colors.over,
+              borderRadius: theme.geometry.card.radius,
+            },
+          ]}
+        >
+          <Text
+            style={[
+              theme.type.body,
+              styles.advisoryTitle,
+              { fontFamily: theme.fonts.uiSemiBold, color: theme.colors.over },
+            ]}
+          >
+            The day is full. Something here will not happen.
+          </Text>
+          <Text style={[theme.type.bodySmall, styles.advisoryLead, { color: theme.colors.ink2 }]}>
+            {move
+              ? `${move.detail}. Nothing moves unless you tap.`
+              : 'Nothing moves unless you tap.'}
+          </Text>
+
+          <View style={styles.offers}>
+            {move && (
+              <Offer
+                label={`${move.record.title} · ${formatMinutes(move.record.lengthMinutes)}`}
+                chip={`Move to ${weekdayShort(new Date(move.day.date))}`}
+                selected
+                onPress={() => void acceptMove()}
+              />
+            )}
+            {spill && (
+              <Offer
+                label={`${spill.title} · ${formatMinutes(spill.lengthMinutes)}`}
+                chip="To tray"
+                onPress={() => void acceptTray()}
+              />
+            )}
+          </View>
+        </View>
+      )}
+
       {/* Nothing disappears, and the count is the point — a record that has slipped is
           visible from the day it slipped off, not buried in a menu. */}
       {tray.length > 0 && (
@@ -156,6 +281,7 @@ export default function Day() {
                       record={record}
                       first={i === 0}
                       highlighted={record.id === landed}
+                      past={past.has(record.id)}
                     />
                   ))}
                 </View>
@@ -169,9 +295,9 @@ export default function Day() {
         </Pressable>
       </ScrollView>
 
-      {showUndo && (
+      {(taken || showUndo) && (
         <Pressable
-          onPress={() => void undo()}
+          onPress={() => void (taken ? taken.undo() : undo())}
           style={[
             styles.undo,
             theme.shadow,
@@ -183,7 +309,7 @@ export default function Day() {
           ]}
         >
           <Text style={[theme.type.bodySmall, styles.undoLabel, { color: theme.colors.ink2 }]}>
-            {undoLabel}
+            {taken ? taken.label : undoLabel}
           </Text>
           <Text
             style={[
@@ -200,14 +326,50 @@ export default function Day() {
     </View>
   );
 
+  /** One of the advisory card's two offers: what it would do, and the tap that does it. */
+  function Offer({
+    label,
+    chip,
+    selected = false,
+    onPress,
+  }: {
+    label: string;
+    chip: string;
+    selected?: boolean;
+    onPress: () => void;
+  }) {
+    return (
+      <View
+        style={[
+          styles.offer,
+          { backgroundColor: theme.colors.card, borderRadius: theme.geometry.input.radius },
+        ]}
+      >
+        <Text
+          style={[
+            theme.type.bodySmall,
+            styles.offerLabel,
+            { fontFamily: theme.fonts.uiMedium, color: theme.colors.ink },
+          ]}
+          numberOfLines={1}
+        >
+          {label}
+        </Text>
+        <Chip label={chip} compact selected={selected} onPress={onPress} />
+      </View>
+    );
+  }
+
   function Row({
     record,
     first,
     highlighted,
+    past: isPast,
   }: {
     record: PlannerRecord;
     first: boolean;
     highlighted: boolean;
+    past: boolean;
   }) {
     const trailing =
       record.startAt !== null
@@ -231,8 +393,12 @@ export default function Day() {
         <RecordRow
           title={record.title}
           done={record.state === 'done'}
-          trailing={trailing}
+          // A row past the limit says so instead of saying when it is. The time is the
+          // less useful of the two facts once the day cannot hold it.
+          meta={isPast ? `${formatMinutes(record.lengthMinutes)} · past the limit` : undefined}
+          trailing={isPast ? undefined : trailing}
           first={first || highlighted}
+          past={isPast}
           onPress={() => router.push({ pathname: '/detail', params: { id: record.id } })}
           onToggle={() => void setDone(record.id, record.state !== 'done')}
         />
@@ -262,6 +428,18 @@ const styles = StyleSheet.create({
   group: { marginTop: 9 },
   groupGap: { marginTop: 22 },
   highlight: { paddingHorizontal: 10, marginHorizontal: -10 },
+  advisory: { marginTop: 18, borderWidth: 1, paddingVertical: 16, paddingHorizontal: 17 },
+  advisoryTitle: { fontSize: 14, lineHeight: 19.6 },
+  advisoryLead: { marginTop: 6 },
+  offers: { marginTop: 14, gap: 8 },
+  offer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 11,
+    paddingHorizontal: 12,
+  },
+  offerLabel: { flex: 1, fontSize: 12.5 },
   tray: {
     marginTop: 16,
     borderWidth: 1,

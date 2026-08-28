@@ -230,6 +230,23 @@ export async function dropRecord(id: string): Promise<void> {
     .where(eq(records.id, id));
 }
 
+/**
+ * Take a record off the day and leave it waiting.
+ *
+ * `state: 'tray'` is what marks something owed with no day attached, so the tray finds
+ * it whatever its date says. The date is left alone deliberately: it is where the
+ * record was, and putting it back should not have to guess.
+ *
+ * No slip is counted. A slip is a day passing with the record still open on it; being
+ * set aside on purpose is a decision, and the tray's count only means the first thing.
+ */
+export async function moveToTray(id: string): Promise<void> {
+  await db
+    .update(records)
+    .set({ state: 'tray', updatedAt: Date.now(), dirty: true })
+    .where(eq(records.id, id));
+}
+
 /** Put a record back on a day, from the tray. The slip it already carries stays. */
 export async function scheduleRecord(id: string, at: number): Promise<void> {
   await db

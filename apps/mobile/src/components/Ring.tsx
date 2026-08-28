@@ -8,6 +8,11 @@ type RingProps = {
   onPress?: () => void;
   /** What the row is, so a screen reader says more than "checkbox". */
   label: string;
+  /**
+   * The open ring's colour. `ink3` everywhere except a row that is past the day's
+   * limit, which is drawn in `over` — the one thing that colour ever means.
+   */
+  tone?: string;
 };
 
 /**
@@ -17,7 +22,7 @@ type RingProps = {
  * Deliberately not a platform checkbox: it appears on every row of every list in the
  * planner, and the one thing it must never look like is a form control.
  */
-export function Ring({ done, onPress, label }: RingProps) {
+export function Ring({ done, onPress, label, tone }: RingProps) {
   const theme = useTheme();
   const { size, borderWidth, tickWidth } = theme.geometry.ring;
 
@@ -35,7 +40,9 @@ export function Ring({ done, onPress, label }: RingProps) {
       </Svg>
     </View>
   ) : (
-    <View style={[styles.ring, ringSize(size), { borderWidth, borderColor: theme.colors.ink3 }]} />
+    <View
+      style={[styles.ring, ringSize(size), { borderWidth, borderColor: tone ?? theme.colors.ink3 }]}
+    />
   );
 
   if (!onPress) return body;

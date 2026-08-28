@@ -39,6 +39,8 @@ export {
 export type { Recurrence, RecurrenceLabels, Frequency, Ends } from './recurrence';
 export { leftovers, daySummary, tomorrowLine, leftoverMeta } from './close';
 export type { Closeable, CloseCounts, DaySummary } from './close';
+export { full } from './full';
+export type { Full, DayRecord } from './full';
 export {
   isEntitled,
   capFor,

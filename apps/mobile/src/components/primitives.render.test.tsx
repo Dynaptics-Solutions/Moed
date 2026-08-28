@@ -78,6 +78,23 @@ describe('RecordRow', () => {
     expect(view.getByText('Overdue')).toBeTruthy();
     expect(view.queryByText('10:00')).toBeNull();
   });
+
+  it('draws a record past the limit in the one colour that means past the limit', async () => {
+    // The only place `over` is allowed on a row, and the reason it exists.
+    const view = await render(
+      <RecordRow title="Groceries" meta="40m · past the limit" past trailing="17:00" />,
+    );
+
+    expect(styleValue(view.getByText('Groceries'), 'color')).toBe(lightColors.over);
+    expect(styleValue(view.getByText('40m · past the limit'), 'color')).toBe(lightColors.over);
+  });
+
+  it('leaves the alert colour off a row that is within the day', async () => {
+    const view = await render(<RecordRow title="Groceries" meta="40m" trailing="17:00" />);
+
+    expect(allColours(view.toJSON())).not.toContain(lightColors.over);
+    expect(allColours(view.toJSON())).not.toContain(lightColors.overSoft);
+  });
 });
 
 describe('Ring', () => {
