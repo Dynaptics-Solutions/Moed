@@ -105,9 +105,9 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
  * and nothing else on either day shifts. That is the whole behaviour: no cascade, no
  * repacking, no cleverness.
  */
-export async function moveRecord(id: string, toDayStart: number): Promise<void> {
+export async function moveRecord(id: string, toDayStart: number): Promise<number | null> {
   const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
-  if (!row) return;
+  if (!row) return null;
 
   let startAt = toDayStart;
   if (row.startAt !== null) {
@@ -117,6 +117,25 @@ export async function moveRecord(id: string, toDayStart: number): Promise<void> 
     startAt = to.getTime();
   }
 
+  await db
+    .update(records)
+    .set({ startAt, updatedAt: Date.now(), dirty: true })
+    .where(eq(records.id, id));
+
+  // Where it was, so whoever proposed the move can offer one tap back. The gate
+  // proposes and the person accepts, but accepting is still something the app did on
+  // their behalf, and nothing the app does on their behalf is one-way.
+  return row.startAt;
+}
+
+/**
+ * Put a record's time back exactly as it was, including back to no time at all.
+ *
+ * This is the other half of `moveRecord`: it undoes, so it takes the value rather than
+ * a day, and it does not touch the slip count — an undone move never happened, and a
+ * slip it did not cause is not its to record.
+ */
+export async function setStartAt(id: string, startAt: number | null): Promise<void> {
   await db
     .update(records)
     .set({ startAt, updatedAt: Date.now(), dirty: true })

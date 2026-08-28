@@ -9,6 +9,19 @@ import { useUpcomingDays } from '@/db/upcoming';
 import { encodeDraft, type RecordDraft } from '@/lib/draft';
 
 /**
+ * A record the app moved out of the way on the user's say-so, and everything needed to
+ * put it back exactly where it was.
+ */
+export type MovedAside = {
+  id: string;
+  title: string;
+  /** The day it went to, named the way the gate named it: "Thursday". */
+  to: string;
+  /** Where it was, or null if it had no time of day. */
+  from: number | null;
+};
+
+/**
  * Saving, from any form.
  *
  * The gate fires on save from every one of them, which is the whole reason this is one
@@ -31,10 +44,29 @@ export function useSaveDraft() {
     return createRecord({ ...record, recurrenceId });
   };
 
-  /** Straight to the day, no gate — used once the gate has been answered. */
-  const commit = async (draft: RecordDraft) => {
+  /**
+   * Straight to the day, no gate — used once the gate has been answered.
+   *
+   * `alongside` is whatever else answering the gate did. It travels to the day so the
+   * one undo there reverses the whole answer rather than half of it: accepting "move
+   * Rye to Thursday" is one decision, and undoing it must not leave Rye on Thursday.
+   */
+  const commit = async (draft: RecordDraft, alongside?: MovedAside) => {
     const created = await write(draft);
-    router.replace({ pathname: '/', params: { landed: created.id } });
+    router.replace({
+      pathname: '/',
+      params: {
+        landed: created.id,
+        ...(alongside && {
+          movedId: alongside.id,
+          movedTitle: alongside.title,
+          movedTo: alongside.to,
+          // A record with no time of day has none to put back, and an empty parameter
+          // is the honest way to say so — `'null'` would be a string that reads as data.
+          movedFrom: alongside.from === null ? '' : String(alongside.from),
+        }),
+      },
+    });
   };
 
   /**

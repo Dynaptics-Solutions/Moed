@@ -8,7 +8,7 @@ import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
 import { useDayLimit } from '@/db/dayLimits';
 import { useTrayRecords } from '@/db/tray';
-import { deleteRecord, setDone, useDayRecords, type PlannerRecord } from '@/db/records';
+import { deleteRecord, setDone, setStartAt, useDayRecords, type PlannerRecord } from '@/db/records';
 import { PARTS, clockTime, dayPart, dayTitle, weekdayName } from '@/lib/day';
 import { useTabScreenInsets } from '@/lib/insets';
 import { useTheme } from '@/theme';
@@ -23,7 +23,13 @@ export default function Day() {
   const theme = useTheme();
   const insets = useTabScreenInsets();
   const router = useRouter();
-  const { landed } = useLocalSearchParams<{ landed?: string }>();
+  const { landed, movedId, movedTitle, movedTo, movedFrom } = useLocalSearchParams<{
+    landed?: string;
+    movedId?: string;
+    movedTitle?: string;
+    movedTo?: string;
+    movedFrom?: string;
+  }>();
 
   const today = useMemo(() => new Date(), []);
   const limit = useDayLimit(today);
@@ -53,11 +59,18 @@ export default function Day() {
     records: rows.filter((r) => r.startAt !== null && dayPart(new Date(r.startAt)) === part),
   })).filter((g) => g.records.length > 0);
 
+  // One tap reverses the whole decision. Accepting the gate's "move Rye to Thursday and
+  // add this" is one answer to one question, so undoing it puts Rye back as well —
+  // an undo that only half undoes is worse than none, because it looks like it worked.
   const undo = async () => {
     if (!landed) return;
     await deleteRecord(landed);
+    if (movedId) await setStartAt(movedId, movedFrom ? Number(movedFrom) : null);
     setDismissed(landed);
   };
+
+  const undoLabel =
+    movedTitle && movedTo ? `Added, and “${movedTitle}” moved to ${movedTo}` : 'Added';
 
   return (
     <View
@@ -169,7 +182,9 @@ export default function Day() {
             },
           ]}
         >
-          <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>Added</Text>
+          <Text style={[theme.type.bodySmall, styles.undoLabel, { color: theme.colors.ink2 }]}>
+            {undoLabel}
+          </Text>
           <Text
             style={[
               theme.type.bodySmall,
@@ -257,6 +272,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
   },
   closeRow: { paddingTop: 22, paddingBottom: 4 },
+  undoLabel: { flex: 1, marginRight: 12 },
   undo: {
     flexDirection: 'row',
     justifyContent: 'space-between',

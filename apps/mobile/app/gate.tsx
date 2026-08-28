@@ -55,9 +55,15 @@ export default function Gate() {
     }
 
     // Move carries everything: the record keeps its length, reminder and project, and
-    // nothing else on either day shifts.
-    await moveRecord(option.record.id, option.day.date);
-    await commit(draft);
+    // nothing else on either day shifts. Where it was travels to the day with it, so the
+    // undo waiting there reverses the move as well as the addition.
+    const from = await moveRecord(option.record.id, option.day.date);
+    await commit(draft, {
+      id: option.record.id,
+      title: option.record.title,
+      to: option.day.label,
+      from,
+    });
   };
 
   const after = dayLoad([
