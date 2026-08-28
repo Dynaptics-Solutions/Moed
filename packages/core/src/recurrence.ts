@@ -178,3 +178,36 @@ export function recurrenceCost(
 
   return `${remaining} more of these.${cost}`;
 }
+
+/**
+ * A year. How far ahead a rule that never ends is laid out.
+ *
+ * Bounded because "forever" is not a number of days. Long enough that nobody reaches
+ * the edge in normal use, short enough that a daily rule is 365 dates rather than an
+ * unbounded write.
+ */
+export const RECURRENCE_HORIZON_DAYS = 365;
+
+/**
+ * The dates a rule lands on *after* the one it starts from, within the horizon.
+ *
+ * The seed record already occupies the first occurrence, so this is what is still owed:
+ * the twenty-six the repeat editor promises, or a year of a rule that never ends.
+ *
+ * Each date is that day's midnight. The caller puts the time of day back, because the
+ * time belongs to the record rather than to the rule.
+ */
+export function followingOccurrences(
+  recurrence: Recurrence,
+  from: Date,
+  horizonDays = RECURRENCE_HORIZON_DAYS,
+): Date[] {
+  const first = startOfDay(from).getTime();
+
+  const horizon = startOfDay(from);
+  horizon.setDate(horizon.getDate() + horizonDays);
+
+  return occurrences(recurrence, from).filter(
+    (d) => d.getTime() > first && d.getTime() <= horizon.getTime(),
+  );
+}

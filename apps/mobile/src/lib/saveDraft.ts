@@ -4,7 +4,12 @@ import { useMemo } from 'react';
 
 import type { DayBudget } from '@/db/budget';
 import { useDayLimit } from '@/db/dayLimits';
-import { createRecord, updateRecord, useDayRecords } from '@/db/records';
+import {
+  createFollowingOccurrences,
+  createRecord,
+  updateRecord,
+  useDayRecords,
+} from '@/db/records';
 import { createRecurrence } from '@/db/recurrences';
 import { useUpcomingDays } from '@/db/upcoming';
 import { encodeDraft, type RecordDraft } from '@/lib/draft';
@@ -39,10 +44,21 @@ export function useSaveDraft() {
   const rows = dayRecords ?? [];
   const load = dayLoad(rows);
 
+  /**
+   * The record, and the rest of the series if it repeats.
+   *
+   * The repeat editor already promises "26 more of these. Each one costs its day 40
+   * minutes." Until now exactly one was ever written, so a weekly routine appeared
+   * once and the sentence under the rule was the only trace of the other twenty-six.
+   */
   const write = async (draft: RecordDraft) => {
     const recurrenceId = draft.recurrence ? await createRecurrence(draft.recurrence) : null;
-    const { recurrence: _rule, ...record } = draft;
-    return createRecord({ ...record, recurrenceId });
+    const { recurrence: rule, ...record } = draft;
+    const created = await createRecord({ ...record, recurrenceId });
+
+    if (rule && recurrenceId) await createFollowingOccurrences(rule, created, recurrenceId);
+
+    return created;
   };
 
   /**

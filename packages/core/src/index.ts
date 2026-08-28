@@ -32,9 +32,11 @@ export {
 export {
   describeRecurrence,
   occurrences,
+  followingOccurrences,
   remainingOccurrences,
   recurrenceCost,
   joinWords,
+  RECURRENCE_HORIZON_DAYS,
 } from './recurrence';
 export type { Recurrence, RecurrenceLabels, Frequency, Ends } from './recurrence';
 export { leftovers, daySummary, tomorrowLine, leftoverMeta } from './close';

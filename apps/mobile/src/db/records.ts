@@ -1,4 +1,10 @@
-import { dayBounds, monthGridBounds, weekBounds } from '@moed/core';
+import {
+  dayBounds,
+  followingOccurrences,
+  monthGridBounds,
+  weekBounds,
+  type Recurrence,
+} from '@moed/core';
 import { and, eq, gte, isNull, lt } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { randomUUID } from 'expo-crypto';
@@ -96,6 +102,86 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
 
   await db.insert(records).values(row);
   return row;
+}
+
+/** SQLite takes a bounded number of bind variables per statement; 40 rows stays well inside it. */
+const INSERT_CHUNK = 40;
+
+/**
+ * Write out the rest of a recurring record's occurrences.
+ *
+ * MATERIALISED RATHER THAN DERIVED, and it is a decision rather than an obvious call.
+ * Nothing in the planning documents settles it.
+ *
+ * The alternative is generating occurrences on read. It stores less and it is wrong
+ * here: the database is the state in this app, and every screen is a live query over
+ * this table. A derived occurrence has no row, so it cannot be ticked, cannot be moved,
+ * cannot slip into the tray, cannot be found by search, and cannot be counted by a
+ * project — and one of those is the first thing anyone does to an occurrence. Ticking
+ * one would have to write a row at that moment anyway, which is the same decision taken
+ * later and in a worse place.
+ *
+ * So each occurrence is an ordinary record that happens to share a `recurrenceId`. Every
+ * screen already works, and the tray, the close and the capacity bar need no special
+ * case for a kind of record that is only half there.
+ *
+ * NOT YET BUILT: editing a rule after the fact does not rewrite the occurrences already
+ * written. The rule row is shared and the detail sheet reads it back correctly, but the
+ * records themselves stay where they were put. That wants its own decision about what
+ * "change every occurrence" means for ones already moved or ticked, and inventing an
+ * answer here would settle it in the wrong place.
+ */
+export async function createFollowingOccurrences(
+  rule: Recurrence,
+  seed: PlannerRecord,
+  recurrenceId: string,
+): Promise<number> {
+  // A record with no time is not on a day, so there is no series to lay out.
+  if (seed.startAt === null) return 0;
+
+  const seedAt = new Date(seed.startAt);
+  const dates = followingOccurrences(rule, seedAt);
+  if (dates.length === 0) return 0;
+
+  const now = Date.now();
+  const userId = currentUserId();
+
+  const rows = dates.map((date) => {
+    // Each occurrence keeps the seed's time of day. A 7am routine is a 7am routine.
+    const at = new Date(date);
+    at.setHours(seedAt.getHours(), seedAt.getMinutes(), 0, 0);
+
+    return {
+      id: randomUUID(),
+      userId,
+      createdAt: now,
+      updatedAt: now,
+      deletedAt: null,
+      dirty: true,
+      syncedAt: null,
+      kind: seed.kind,
+      title: seed.title,
+      lengthMinutes: seed.lengthMinutes,
+      startAt: at.getTime(),
+      isFixed: seed.isFixed,
+      projectId: seed.projectId,
+      recurrenceId,
+      remindAt: null,
+      notes: seed.notes,
+      steps: seed.steps,
+      stops: seed.stops,
+      state: 'open' as const,
+      slipCount: 0,
+      timerStartedAt: null,
+      timerSeconds: 0,
+    };
+  });
+
+  for (let i = 0; i < rows.length; i += INSERT_CHUNK) {
+    await db.insert(records).values(rows.slice(i, i + INSERT_CHUNK));
+  }
+
+  return rows.length;
 }
 
 /**
