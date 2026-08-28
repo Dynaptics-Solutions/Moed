@@ -1,4 +1,4 @@
-import { dayLoad, gate } from '@moed/core';
+import { dayLoad, gate, startOfDay } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 
@@ -13,6 +13,18 @@ import {
 import { createRecurrence } from '@/db/recurrences';
 import { useUpcomingDays } from '@/db/upcoming';
 import { encodeDraft, type RecordDraft } from '@/lib/draft';
+
+/**
+ * The day a saved record landed on, as a route parameter.
+ *
+ * Saving returned to today whatever day the record was for, so a task put on Saturday
+ * left you looking at Friday with an "Added" banner and a highlight pointing at a row
+ * that was not on screen. The confirmation has to be shown where the thing is.
+ */
+function dayOf(at: number | null | undefined): { date?: string } {
+  if (at === null || at === undefined) return {};
+  return { date: String(startOfDay(new Date(at)).getTime()) };
+}
 
 /**
  * A record the app moved out of the way on the user's say-so, and everything needed to
@@ -74,6 +86,7 @@ export function useSaveDraft() {
       pathname: '/',
       params: {
         landed: created.id,
+        ...dayOf(created.startAt),
         ...(alongside && {
           movedId: alongside.id,
           movedTitle: alongside.title,
@@ -102,7 +115,7 @@ export function useSaveDraft() {
     const recurrenceId = draft.recurrence ? await createRecurrence(draft.recurrence) : undefined;
     const { recurrence: _rule, ...record } = draft;
     await updateRecord(id, { ...record, ...(recurrenceId && { recurrenceId }) });
-    router.replace({ pathname: '/', params: { landed: id } });
+    router.replace({ pathname: '/', params: { landed: id, ...dayOf(draft.startAt ?? null) } });
   };
 
   /**

@@ -96,3 +96,16 @@ export function clockFromMinutes(minutes: number): string {
   const m = minutes % 60;
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
+
+/**
+ * A day label as it reads inside a sentence: "today", "tomorrow", "Saturday".
+ *
+ * `whenDay` returns labels fit to stand alone, where "Today" is capitalised like a
+ * heading. Dropped mid-sentence that reads as a proper noun, and lowercasing everything
+ * instead would give "add to saturday". Only the three relative words change.
+ */
+export function inSentence(label: string): string {
+  return label === 'Today' || label === 'Tomorrow' || label === 'Yesterday'
+    ? label.toLowerCase()
+    : label;
+}

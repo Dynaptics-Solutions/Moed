@@ -6,7 +6,7 @@ import { Field, Input } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
 import { ProjectField } from '@/components/ProjectField';
 import { WhenInput } from '@/components/WhenInput';
-import { clockTime, whenDay } from '@/lib/day';
+import { clockTime, inSentence, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
 import { useKindForm } from '@/lib/useKindForm';
 
@@ -33,7 +33,9 @@ export default function Task() {
       leading={{ label: 'Cancel', onPress: form.cancel }}
       title={form.title}
       onTitleChange={form.setTitle}
-      saveLabel="Add to today"
+      // Names the day it will actually land on. It said "Add to today" whatever the
+      // When field said, which is the same lie the foot above it used to tell.
+      saveLabel={`Add to ${inSentence(form.dayLabel)}`}
       budget={{
         load: form.load,
         limit: form.limit,
