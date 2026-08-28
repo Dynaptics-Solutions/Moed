@@ -144,7 +144,17 @@ export default function Spend() {
           caption={false}
           height={8}
         />
-        <Text style={[theme.type.meta, styles.verdict, { color: theme.colors.ink3 }]}>
+        {/* Money has no gate sheet, and should not: a spend has already happened, so
+            there is nothing to propose moving or shortening. This line is therefore the
+            only place the week can say it has been passed, and it says it in the colour
+            that means exactly that. */}
+        <Text
+          style={[
+            theme.type.meta,
+            styles.verdict,
+            { color: after.isOver ? theme.colors.over : theme.colors.ink3 },
+          ]}
+        >
           {formatMoney(committed + fixed, CURRENCY)} committed
           {pending > 0 ? ` · ${formatMoney(pending, CURRENCY)} pending` : ''} ·{' '}
           {remainingLabel(after, unit)}

@@ -147,7 +147,15 @@ export function FormScaffold({
               caption={false}
               height={8}
             />
-            <Text style={[theme.type.meta, styles.verdict, { color: theme.colors.ink3 }]}>
+            {/* The one colour that means past the limit, used at the one moment it
+                means it. Fitting is an ordinary fact and reads as one. */}
+            <Text
+              style={[
+                theme.type.meta,
+                styles.verdict,
+                { color: decision.fits ? theme.colors.ink3 : theme.colors.over },
+              ]}
+            >
               {decision.fits
                 ? `${budget.dayLabel} has ${formatMinutes(free)} free. This fits.`
                 : budget.dayLabel === 'Today'

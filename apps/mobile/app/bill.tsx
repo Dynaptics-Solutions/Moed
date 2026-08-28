@@ -208,7 +208,13 @@ export default function Bill() {
           caption={false}
           height={8}
         />
-        <Text style={[theme.type.meta, styles.verdict, { color: theme.colors.ink3 }]}>
+        <Text
+          style={[
+            theme.type.meta,
+            styles.verdict,
+            { color: after.isOver ? theme.colors.over : theme.colors.ink3 },
+          ]}
+        >
           {amountMinor > 0
             ? `${formatMoney(amountMinor, CURRENCY)} ${everyLabel(every)} lands as ${formatMoney(share, CURRENCY)} a week. ${remainingLabel(after, unit)}.`
             : 'A bill is spread across the weeks between its payments, so no week is written off by it.'}
