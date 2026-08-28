@@ -93,6 +93,9 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
     notes: input.notes ?? null,
     steps: input.steps ?? null,
     stops: input.stops ?? null,
+    /** Made here, so no calendar owns it and none mirrors it yet. */
+    calendarEventId: null,
+    mirroredEventId: null,
     state: 'open' as const,
     slipCount: 0,
     /** No sitting under way and nothing fed yet — a session starts at zero like the rest. */
@@ -170,6 +173,8 @@ export async function createFollowingOccurrences(
       notes: seed.notes,
       steps: seed.steps,
       stops: seed.stops,
+      calendarEventId: null,
+      mirroredEventId: null,
       state: 'open' as const,
       slipCount: 0,
       timerStartedAt: null,

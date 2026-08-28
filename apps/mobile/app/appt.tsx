@@ -17,9 +17,10 @@ import { useTheme } from '@/theme';
  * the visual difference between load you took on and load that was handed to you.
  *
  * The design shows the title and time read-only, because the appointment came from a
- * calendar and is edited where it came from. Calendar import is not built yet, so both
- * are editable here; the read-only treatment arrives with the import rather than being
- * faked before it.
+ * calendar and is edited where it came from. That is now true of the ones that did:
+ * an imported appointment carries a `calendarEventId`, and this form will not let it be
+ * edited, because the next sync would overwrite the change and the edit would look like
+ * it had simply been forgotten. One typed by hand stays editable — nothing owns it.
  *
  * Travel is a real cost and it is drawn as one. Adding it does not shorten the
  * appointment — it lengthens what the day spends, and the note says by how much.
@@ -53,6 +54,9 @@ const PREP: { label: string; minutes: number }[] = [
 export default function Appointment() {
   const theme = useTheme();
   const form = useKindForm('appointment', 60);
+
+  /** Mirrored in from a calendar, which owns it. */
+  const fromCalendar = form.existing?.calendarEventId != null;
   // Null until the person says. Nothing is added on their behalf, so nothing has to be
   // guessed on their behalf either.
   const [travel, setTravel] = useState<number | null>(null);
@@ -73,12 +77,19 @@ export default function Appointment() {
 
   return (
     <FormScaffold
-      kindLabel={form.isEditing ? 'Edit appointment' : 'New appointment'}
+      kindLabel={
+        fromCalendar
+          ? 'From your calendar'
+          : form.isEditing
+            ? 'Edit appointment'
+            : 'New appointment'
+      }
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
-      onTitleChange={form.setTitle}
+      onTitleChange={fromCalendar ? undefined : form.setTitle}
       titlePlaceholder="Dentist"
       saveLabel="Save appointment"
+      readOnly={fromCalendar}
       budget={{
         load: form.load,
         limit: form.limit,

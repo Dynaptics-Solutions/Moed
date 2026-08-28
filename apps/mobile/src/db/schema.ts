@@ -68,6 +68,20 @@ export const records = sqliteTable('records', {
   /** Routine steps and errand stops, as JSON arrays of strings. */
   steps: text('steps', { mode: 'json' }).$type<string[]>(),
   stops: text('stops', { mode: 'json' }).$type<string[]>(),
+  /**
+   * This record **is** a calendar event, mirrored in. The calendar owns it: it is
+   * read-only here and edited where it came from, which is what the design says an
+   * imported appointment is.
+   */
+  calendarEventId: text('calendar_event_id'),
+  /**
+   * This record **has** a calendar event, written out. Moed owns it; the event follows.
+   *
+   * Two columns rather than one with a direction, because they mean opposite things
+   * about who is allowed to change what, and a single field would put that distinction
+   * somewhere a reader has to remember rather than somewhere they can see.
+   */
+  mirroredEventId: text('mirrored_event_id'),
   state: text('state', { enum: RECORD_STATES }).notNull().default('open'),
   /** How many times this has been skipped. Shown in the tray, never hidden. */
   slipCount: integer('slip_count').notNull().default(0),

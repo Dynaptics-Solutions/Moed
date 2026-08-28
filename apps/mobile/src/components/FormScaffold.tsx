@@ -40,6 +40,14 @@ type FormScaffoldProps = {
      */
     dayLabel: string;
   };
+  /**
+   * Nothing on this form can be changed, because something else owns the record — an
+   * appointment mirrored in from a calendar is edited in the calendar it came from.
+   *
+   * The save control goes rather than being dimmed. A dimmed button says "not yet";
+   * this is "not here", and the two should not look alike.
+   */
+  readOnly?: boolean;
   children: React.ReactNode;
   /** Extra content above the save button, inside the fixed footer. */
   footer?: React.ReactNode;
@@ -59,6 +67,7 @@ export function FormScaffold({
   onTitleChange,
   titlePlaceholder = 'What is it',
   budget,
+  readOnly = false,
   children,
   footer,
 }: FormScaffoldProps) {
@@ -93,7 +102,7 @@ export function FormScaffold({
    * that obeys it should too. It matches the capture sheet, whose Save is already dim
    * until there is something to save.
    */
-  const canSave = title.trim().length > 0;
+  const canSave = !readOnly && title.trim().length > 0;
 
   return (
     <View
@@ -111,19 +120,23 @@ export function FormScaffold({
           <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>{leading.label}</Text>
         </Pressable>
         <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>{kindLabel}</Text>
-        <Pressable onPress={canSave ? onSave : undefined} hitSlop={12}>
-          <Text
-            style={[
-              theme.type.bodySmall,
-              {
-                fontFamily: theme.fonts.uiSemiBold,
-                color: canSave ? theme.colors.acc : theme.colors.ink3,
-              },
-            ]}
-          >
-            Save
-          </Text>
-        </Pressable>
+        {readOnly ? (
+          <View style={styles.balance} />
+        ) : (
+          <Pressable onPress={canSave ? onSave : undefined} hitSlop={12}>
+            <Text
+              style={[
+                theme.type.bodySmall,
+                {
+                  fontFamily: theme.fonts.uiSemiBold,
+                  color: canSave ? theme.colors.acc : theme.colors.ink3,
+                },
+              ]}
+            >
+              Save
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       {onTitleChange ? (
@@ -178,7 +191,13 @@ export function FormScaffold({
             </Text>
           </>
         )}
-        <Button label={saveLabel} style={styles.save} onPress={onSave} disabled={!canSave} />
+        {readOnly ? (
+          <Text style={[theme.type.meta, styles.owned, { color: theme.colors.ink3 }]}>
+            This came from your calendar. It is edited there, and read here.
+          </Text>
+        ) : (
+          <Button label={saveLabel} style={styles.save} onPress={onSave} disabled={!canSave} />
+        )}
       </View>
     </View>
   );
@@ -193,4 +212,6 @@ const styles = StyleSheet.create({
   footer: { flexGrow: 0, flexShrink: 0, gap: 0 },
   verdict: { marginTop: 8 },
   save: { marginTop: 14 },
+  balance: { width: 44 },
+  owned: { marginTop: 16, lineHeight: 17 },
 });

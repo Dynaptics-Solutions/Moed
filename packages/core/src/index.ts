@@ -41,6 +41,8 @@ export {
 export type { Recurrence, RecurrenceLabels, Frequency, Ends } from './recurrence';
 export { leftovers, daySummary, tomorrowLine, leftoverMeta } from './close';
 export type { Closeable, CloseCounts, DaySummary } from './close';
+export { reconcileCalendar, isImportable, eventLengthMinutes } from './calendar';
+export type { CalendarEvent, MirroredRecord, CalendarPlan } from './calendar';
 export { full } from './full';
 export type { Full, DayRecord } from './full';
 export {

@@ -53,7 +53,7 @@ const PLAN_LABEL: Record<Plan, string> = {
  * says what it is for is a map.
  */
 const ROWS: { key: string; value: string; route?: string }[] = [
-  { key: 'Calendars', value: 'None connected' },
+  { key: 'Calendars', value: '', route: '/calendars' },
   { key: 'Projects', value: '', route: '/projects' },
   { key: 'Search', value: '', route: '/search' },
   { key: 'The tray', value: '', route: '/tray' },
