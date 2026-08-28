@@ -1,7 +1,7 @@
 import { dayBounds, dayLoad, type DayCandidate } from '@moed/core';
 import { useMemo } from 'react';
 
-import { limitFor, useLimitsByDate } from './dayLimits';
+import { limitFor, useDefaultDayLimit, useLimitsByDate } from './dayLimits';
 import { useRangeRecords } from './records';
 import { weekdayName } from '@/lib/day';
 
@@ -25,6 +25,7 @@ export function useUpcomingDays(from: Date, count = 7): DayCandidate[] {
 
   const { data: rows } = useRangeRecords(start, end);
   const limits = useLimitsByDate();
+  const fallback = useDefaultDayLimit();
 
   return useMemo(
     () =>
@@ -41,11 +42,11 @@ export function useUpcomingDays(from: Date, count = 7): DayCandidate[] {
 
         return {
           date: bounds.start,
-          free: Math.max(0, limitFor(limits, date) - planned),
+          free: Math.max(0, limitFor(limits, date, fallback) - planned),
           label: weekdayName(date),
           isEmpty: planned === 0,
         };
       }),
-    [count, start, rows, limits],
+    [count, start, rows, limits, fallback],
   );
 }

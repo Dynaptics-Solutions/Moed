@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@/components/Button';
 import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
-import { limitFor, useLimitsByDate } from '@/db/dayLimits';
+import { limitFor, useDefaultDayLimit, useLimitsByDate } from '@/db/dayLimits';
 import { useDayRecords } from '@/db/records';
 import { clockTime, weekdayName } from '@/lib/day';
 import { useTheme } from '@/theme';
@@ -35,15 +35,16 @@ export default function Shut() {
   }, [today]);
 
   const limits = useLimitsByDate();
+  const fallback = useDefaultDayLimit();
   const { data: todayRows } = useDayRecords(today);
   const { data: tomorrowRows } = useDayRecords(tomorrow);
 
-  const limit = limitFor(limits, today);
+  const limit = limitFor(limits, today, fallback);
   const summary = daySummary(todayRows ?? [], limit, Number(params.moved) || 0);
 
   const load = dayLoad(todayRows ?? []);
   const tomorrowLoad = dayLoad(tomorrowRows ?? []);
-  const tomorrowLimit = limitFor(limits, tomorrow);
+  const tomorrowLimit = limitFor(limits, tomorrow, fallback);
 
   return (
     <View

@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { SegmentedSwitch, type CalendarScale } from '@/components/SegmentedSwitch';
-import { limitFor, useLimitsByDate } from '@/db/dayLimits';
+import { limitFor, useDefaultDayLimit, useLimitsByDate } from '@/db/dayLimits';
 import { useRangeRecords, weekBounds, type PlannerRecord } from '@/db/records';
 import { WEEKDAY_INITIALS, weekRangeLabel } from '@/lib/day';
 import { useTheme } from '@/theme';
@@ -48,6 +48,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
   const { start, end } = weekBounds(today);
   const { data: records } = useRangeRecords(start, end);
   const limits = useLimitsByDate();
+  const fallback = useDefaultDayLimit();
 
   const days = useMemo(
     () =>
@@ -83,7 +84,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
   const perDay = days.map((date) => {
     const dayRows = rows.filter((r) => r.startAt !== null && isSameDay(new Date(r.startAt), date));
     const load = dayLoad(dayRows);
-    const c = capacity({ ...load, limit: limitFor(limits, date) });
+    const c = capacity({ ...load, limit: limitFor(limits, date, fallback) });
     return { date, rows: dayRows, load, capacity: c };
   });
 

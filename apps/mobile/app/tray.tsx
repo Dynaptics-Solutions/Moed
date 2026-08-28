@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
-import { limitFor, useLimitsByDate } from '@/db/dayLimits';
+import { limitFor, useDefaultDayLimit, useLimitsByDate } from '@/db/dayLimits';
 import { dropRecord, scheduleRecord, useDayRecords, type PlannerRecord } from '@/db/records';
 import { useTrayRecords } from '@/db/tray';
 import { weekdayName } from '@/lib/day';
@@ -39,9 +39,10 @@ export default function Tray() {
   const { data: waiting } = useTrayRecords(today);
   const { data: todayRows } = useDayRecords(today);
   const limits = useLimitsByDate();
+  const fallback = useDefaultDayLimit();
 
   const rows = useMemo(() => waiting ?? [], [waiting]);
-  const limit = limitFor(limits, today);
+  const limit = limitFor(limits, today, fallback);
   const load = dayLoad(todayRows ?? []);
   const free = Math.max(0, limit - load.committed - load.fixed);
 
