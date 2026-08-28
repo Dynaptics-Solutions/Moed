@@ -6,9 +6,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
-import { dropRecord, setDone, slipToNextDay, useDayRecords } from '@/db/records';
+import {
+  dropRecord,
+  setDone,
+  slipToNextDay,
+  unslip,
+  useDayRecords,
+  type PlannerRecord,
+} from '@/db/records';
 import { weekdayName } from '@/lib/day';
 import { useTheme } from '@/theme';
+
+type Choice = 'done' | 'moved' | 'dropped';
+
+/**
+ * A decision taken in this sitting, what it would take to reverse it, and the record as
+ * it stood when it was taken — a moved record leaves the day the moment it is tapped,
+ * so the card can only keep being drawn from a copy.
+ */
+type Decision = { choice: Choice; from: number | null; record: PlannerRecord };
 
 /**
  * `close` — the evening close, and the one uninvited notification a day.
@@ -19,6 +35,11 @@ import { useTheme } from '@/theme';
  *
  * Choices apply as they are tapped and each one is reversible until the day is shut,
  * because a close with a Save button is a close people abandon halfway.
+ *
+ * Reversible means the list is the leftovers as they stood when the close opened, held
+ * for the sitting. Reading it live would be simpler and wrong: a record goes to `done`
+ * or leaves for tomorrow the instant it is tapped, so a live list drops the card at the
+ * moment of the decision and there is nothing left to change one's mind with.
  */
 export default function Close() {
   const theme = useTheme();
@@ -30,23 +51,64 @@ export default function Close() {
   const rows = useMemo(() => records ?? [], [records]);
 
   // What was decided in this sitting, so the shut screen can report it without a table
-  // to record closes in.
-  const [decided, setDecided] = useState<Record<string, 'done' | 'moved' | 'dropped'>>({});
+  // to record closes in, and so each decision knows how to undo itself.
+  const [decided, setDecided] = useState<Record<string, Decision>>({});
 
-  const open = leftovers(rows);
+  // The sitting's list: everything still open, plus everything decided in this sitting,
+  // held from the copy taken when it was decided.
+  //
+  // The second half is what makes a decision reversible. A record goes to `done` or
+  // leaves for tomorrow the instant it is tapped, so reading the list live would drop
+  // the card at the moment of the decision and leave nothing to change one's mind with.
+  const open = useMemo(() => {
+    const undecided = leftovers(rows).filter((r) => !decided[r.id]);
+    const settled = Object.values(decided).map((d) => d.record);
+    return [...undecided, ...settled].sort((a, b) => (a.startAt ?? 0) - (b.startAt ?? 0));
+  }, [rows, decided]);
+
   const remaining = open.filter((r) => !decided[r.id]);
 
-  const decide = async (id: string, choice: 'done' | 'moved' | 'dropped') => {
-    setDecided((d) => ({ ...d, [id]: choice }));
-    if (choice === 'done') await setDone(id, true);
-    else if (choice === 'moved') await slipToNextDay(id, today);
-    else await dropRecord(id);
+  /** Put a record back exactly as the close found it. */
+  const revert = async (id: string, decision: Decision) => {
+    if (decision.choice === 'moved') await unslip(id, decision.from);
+    // Done and dropped both left the record where it was and only changed its state, so
+    // both come back the same way. There is no third thing to undo.
+    else await setDone(id, false);
+  };
+
+  /**
+   * Tapping the chosen chip again takes the decision back; tapping a different one
+   * replaces it. Either way the previous decision is reversed first, so a record never
+   * carries two decisions at once — dropping something and then marking it done used to
+   * leave it dropped *and* done, and moving then changing one's mind left the slip
+   * count up by one for a slip that did not happen.
+   */
+  const decide = async (record: PlannerRecord, choice: Choice) => {
+    const id = record.id;
+    const previous = decided[id];
+    if (previous) await revert(id, previous);
+
+    if (previous?.choice === choice) {
+      setDecided(({ [id]: _cleared, ...rest }) => rest);
+      return;
+    }
+
+    if (choice === 'done') {
+      await setDone(id, true);
+      setDecided((d) => ({ ...d, [id]: { choice, from: null, record } }));
+    } else if (choice === 'moved') {
+      const from = await slipToNextDay(id, today);
+      setDecided((d) => ({ ...d, [id]: { choice, from, record } }));
+    } else {
+      await dropRecord(id);
+      setDecided((d) => ({ ...d, [id]: { choice, from: null, record } }));
+    }
   };
 
   const counts = {
-    done: Object.values(decided).filter((c) => c === 'done').length,
-    moved: Object.values(decided).filter((c) => c === 'moved').length,
-    dropped: Object.values(decided).filter((c) => c === 'dropped').length,
+    done: Object.values(decided).filter((d) => d.choice === 'done').length,
+    moved: Object.values(decided).filter((d) => d.choice === 'moved').length,
+    dropped: Object.values(decided).filter((d) => d.choice === 'dropped').length,
   };
 
   const headline =
@@ -76,7 +138,7 @@ export default function Close() {
         showsVerticalScrollIndicator={false}
       >
         {open.map((record) => {
-          const choice = decided[record.id];
+          const choice = decided[record.id]?.choice;
           const meta = leftoverMeta(record.lengthMinutes, record.slipCount);
 
           return (
@@ -113,7 +175,7 @@ export default function Close() {
                     block
                     label={option === 'done' ? 'Done' : option === 'moved' ? 'Move' : 'Drop'}
                     selected={choice === option}
-                    onPress={() => void decide(record.id, option)}
+                    onPress={() => void decide(record, option)}
                   />
                 ))}
               </View>

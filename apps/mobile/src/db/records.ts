@@ -169,9 +169,9 @@ export async function deleteRecord(id: string): Promise<void> {
  * having slipped three times, rather than quietly rescheduled a fourth — that is what
  * the tray exists to prevent, and the number is a fact rather than a reprimand.
  */
-export async function slipToNextDay(id: string, from: Date): Promise<void> {
+export async function slipToNextDay(id: string, from: Date): Promise<number | null> {
   const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
-  if (!row) return;
+  if (!row) return null;
 
   const to = new Date(from);
   to.setDate(to.getDate() + 1);
@@ -187,6 +187,31 @@ export async function slipToNextDay(id: string, from: Date): Promise<void> {
     .set({
       startAt: to.getTime(),
       slipCount: row.slipCount + 1,
+      updatedAt: Date.now(),
+      dirty: true,
+    })
+    .where(eq(records.id, id));
+
+  return row.startAt;
+}
+
+/**
+ * Take back a slip: the record's time as it was, and the count down by one.
+ *
+ * The count has to come down with it. A slip that was undone is not a slip, and the
+ * tray's whole worth is that its number is the number of times something has actually
+ * been put off — inflating it by one every time someone changes their mind during a
+ * close would make the one figure the tray exists to show untrustworthy.
+ */
+export async function unslip(id: string, startAt: number | null): Promise<void> {
+  const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
+  if (!row) return;
+
+  await db
+    .update(records)
+    .set({
+      startAt,
+      slipCount: Math.max(0, row.slipCount - 1),
       updatedAt: Date.now(),
       dirty: true,
     })

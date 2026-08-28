@@ -72,7 +72,7 @@ export default function Detail() {
   const stops = record.stops ?? [];
 
   const close = () => router.back();
-  const after = async (action: () => Promise<void>) => {
+  const after = async (action: () => Promise<unknown>) => {
     await action();
     close();
   };
