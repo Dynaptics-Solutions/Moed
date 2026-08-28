@@ -55,7 +55,19 @@
           }
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-notifications",
+        {
+          "color": "#24443C"
+        }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Moed reads one calendar so appointments spend your day without being typed twice."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -89,3 +89,10 @@ function startOfLocalDay(date: Date): Date {
   d.setHours(0, 0, 0, 0);
   return d;
 }
+
+/** "19:00" from minutes past midnight, for the times a setting holds rather than a date. */
+export function clockFromMinutes(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}

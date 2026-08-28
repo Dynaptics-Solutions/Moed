@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Chip } from '@/components/Chip';
+import { Toggle } from '@/components/Field';
 import { Stepper } from '@/components/Stepper';
 import {
   DAY_LIMIT_MAX,
@@ -13,6 +14,17 @@ import {
   useDefaultDayLimit,
 } from '@/db/dayLimits';
 import { usePlan } from '@/db/plan';
+import { setSetting, useBooleanSetting, useNumberSetting } from '@/db/settings';
+import { clockFromMinutes } from '@/lib/day';
+import {
+  CLOSE_MAX,
+  CLOSE_MIN,
+  CLOSE_ON_KEY,
+  CLOSE_STEP,
+  CLOSE_TIME_KEY,
+  DEFAULT_CLOSE_MINUTES,
+  askForPermission,
+} from '@/lib/notifications';
 import { useTheme } from '@/theme';
 import { useTabScreenInsets } from '@/lib/insets';
 
@@ -41,7 +53,6 @@ const PLAN_LABEL: Record<Plan, string> = {
  * says what it is for is a map.
  */
 const ROWS: { key: string; value: string; route?: string }[] = [
-  { key: 'Notifications', value: 'Evening close' },
   { key: 'Calendars', value: 'None connected' },
   { key: 'Projects', value: '', route: '/projects' },
   { key: 'Search', value: '', route: '/search' },
@@ -60,6 +71,30 @@ export default function Settings() {
   const plan = usePlan();
   const dayLimit = useDefaultDayLimit();
   const [editingLimit, setEditingLimit] = useState(false);
+
+  const closeOn = useBooleanSetting(CLOSE_ON_KEY, false);
+  const closeMinutes = useNumberSetting(CLOSE_TIME_KEY, DEFAULT_CLOSE_MINUTES);
+  const [editingClose, setEditingClose] = useState(false);
+  const [denied, setDenied] = useState(false);
+
+  /**
+   * Turning it on asks for permission; turning it off just turns it off.
+   *
+   * A refused prompt leaves the switch off and says why, rather than showing it on and
+   * silently never firing — which is the state that makes someone think the feature is
+   * broken rather than declined.
+   */
+  const toggleClose = async () => {
+    if (closeOn) {
+      await setSetting(CLOSE_ON_KEY, false);
+      setDenied(false);
+      return;
+    }
+
+    const granted = await askForPermission();
+    setDenied(!granted);
+    if (granted) await setSetting(CLOSE_ON_KEY, true);
+  };
 
   return (
     <View
@@ -169,6 +204,66 @@ export default function Settings() {
           </View>
         )}
 
+        {/* The one uninvited notification a day. Off until someone asks for it, and the
+            permission prompt comes with the tap rather than at first launch — asking
+            before saying what it is for is how the answer becomes no. */}
+        <Pressable
+          onPress={() => setEditingClose((open) => !open)}
+          accessibilityRole="button"
+          style={[styles.row, { borderTopWidth: 1, borderTopColor: theme.colors.line2 }]}
+        >
+          <Text style={[theme.type.rowTitle, styles.rowKey, { color: theme.colors.ink }]}>
+            Evening close
+          </Text>
+          <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
+            {closeOn ? clockFromMinutes(closeMinutes) : 'Off'}
+          </Text>
+          <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
+            {editingClose ? '⌄' : '›'}
+          </Text>
+        </Pressable>
+
+        {editingClose && (
+          <View style={styles.limitEditor}>
+            <View style={styles.closeToggle}>
+              <Text
+                style={[theme.type.bodySmall, styles.closeToggleLabel, { color: theme.colors.ink }]}
+              >
+                One notification a day, in the evening
+              </Text>
+              <Toggle on={closeOn} onPress={() => void toggleClose()} label="Evening close" />
+            </View>
+
+            {closeOn && (
+              <Stepper
+                onLess={() =>
+                  void setSetting(CLOSE_TIME_KEY, Math.max(CLOSE_MIN, closeMinutes - CLOSE_STEP))
+                }
+                onMore={() =>
+                  void setSetting(CLOSE_TIME_KEY, Math.min(CLOSE_MAX, closeMinutes + CLOSE_STEP))
+                }
+                atLeast={closeMinutes <= CLOSE_MIN}
+                atMost={closeMinutes >= CLOSE_MAX}
+                lessLabel="Earlier"
+                moreLabel="Later"
+              >
+                <Text style={[theme.type.body, { color: theme.colors.ink }]}>
+                  <Text style={{ fontFamily: theme.fonts.uiSemiBold }}>
+                    {clockFromMinutes(closeMinutes)}
+                  </Text>{' '}
+                  each evening
+                </Text>
+              </Stepper>
+            )}
+
+            <Text style={[theme.type.meta, styles.limitNote, { color: theme.colors.ink3 }]}>
+              {denied
+                ? 'Notifications are turned off for Moed in your phone’s settings. Turn them on there and this will start working.'
+                : 'It carries its own decision: close the day, or not tonight. Nothing else is ever scheduled.'}
+            </Text>
+          </View>
+        )}
+
         {ROWS.map((row) => (
           <Pressable
             key={row.key}
@@ -228,4 +323,6 @@ const styles = StyleSheet.create({
   rowKey: { flex: 1, fontSize: 14.5 },
   limitEditor: { paddingBottom: 15, gap: 9 },
   limitNote: { lineHeight: 16 },
+  closeToggle: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  closeToggleLabel: { flex: 1 },
 });

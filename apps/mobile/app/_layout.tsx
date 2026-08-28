@@ -10,14 +10,17 @@ import { CormorantGaramond_400Regular } from '@expo-google-fonts/cormorant-garam
 import { CormorantGaramond_500Medium } from '@expo-google-fonts/cormorant-garamond/500Medium';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import * as Notifications from 'expo-notifications';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import migrations from '../drizzle/migrations';
 import { db } from '@/db/client';
+import { useEveningClose } from '@/lib/eveningClose';
+import { CLOSE_ACTION_OPEN, registerCloseCategory } from '@/lib/notifications';
 import { Splash } from '@/screens/Splash';
 import { useTheme } from '@/theme';
 
@@ -38,6 +41,27 @@ export default function RootLayout() {
   });
 
   const { success: migrated, error: migrationError } = useMigrations(db, migrations);
+  const router = useRouter();
+
+  const today = useMemo(() => new Date(), []);
+  useEveningClose(today);
+
+  // The actions have to exist before anything carrying them is sent, and registering is
+  // cheap and idempotent, so it happens once at the root rather than at the moment
+  // someone turns the close on.
+  useEffect(() => {
+    void registerCloseCategory();
+  }, []);
+
+  // "Close it" on the notification's face. It opens the close and nothing else — the app
+  // does not decide anything on the way in, and "Not tonight" is handled by not being
+  // handled: the day stays open and nothing fires again tonight.
+  useEffect(() => {
+    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
+      if (response.actionIdentifier === CLOSE_ACTION_OPEN) router.push('/close');
+    });
+    return () => sub.remove();
+  }, [router]);
 
   const ready = (fontsLoaded || fontError !== null) && migrated;
   const failure = migrationError ?? fontError;

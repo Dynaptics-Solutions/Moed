@@ -31,6 +31,23 @@ export function useNumberSetting(key: string, fallback: number): number {
   return typeof stored === 'number' ? stored : fallback;
 }
 
+/** One flag, live. Stored as a boolean; anything else under the key reads as the default. */
+export function useBooleanSetting(key: string, fallback: boolean): boolean {
+  const userId = currentUserId();
+
+  const { data } = useLiveQuery(
+    db
+      .select()
+      .from(settings)
+      .where(and(eq(settings.userId, userId), eq(settings.key, key), isNull(settings.deletedAt)))
+      .limit(1),
+    [userId, key],
+  );
+
+  const stored = data?.[0]?.value;
+  return typeof stored === 'boolean' ? stored : fallback;
+}
+
 /**
  * Write a setting, creating the row the first time.
  *
