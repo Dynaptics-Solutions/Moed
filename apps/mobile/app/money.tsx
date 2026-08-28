@@ -19,6 +19,7 @@ import {
   WEEK_LIMIT_MAX_MINOR,
   WEEK_LIMIT_MIN_MINOR,
   WEEK_LIMIT_STEP_MINOR,
+  deleteSpending,
   setWeekMoneyLimit,
   useBills,
   useWeekMoneyLimit,
@@ -201,6 +202,16 @@ export default function Money() {
               <Text style={[theme.type.sheetTitle, styles.amount, { color: theme.colors.ink }]}>
                 {formatMoney(spend.amountMinor, spend.currency)}
               </Text>
+              {/* Not `over`, which is only ever past the limit. Removing a mistyped
+                  spend is an ordinary correction, not an alarm. */}
+              <Pressable
+                onPress={() => void deleteSpending(spend.id)}
+                hitSlop={12}
+                accessibilityRole="button"
+                accessibilityLabel={`Remove ${spend.title}`}
+              >
+                <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>✕</Text>
+              </Pressable>
             </View>
           ))
         )}

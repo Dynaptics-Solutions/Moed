@@ -179,3 +179,22 @@ export async function logSpending(input: {
   await db.insert(spending).values(row);
   return row;
 }
+
+/**
+ * Take a logged spend back off the week.
+ *
+ * Soft, like every other delete here — a missing row is indistinguishable from one a
+ * device has not seen yet, so sync needs the tombstone.
+ *
+ * This existed for bills from the day they were built and never for spending, which
+ * left the one screen anyone uses standing in a shop as the only write in the app with
+ * no way back. A mistyped amount was permanent, and it stayed wrong in the bar, in the
+ * week's total and in every export from then on.
+ */
+export async function deleteSpending(id: string): Promise<void> {
+  const now = Date.now();
+  await db
+    .update(spending)
+    .set({ deletedAt: now, updatedAt: now, dirty: true })
+    .where(eq(spending.id, id));
+}
