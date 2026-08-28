@@ -39,6 +39,10 @@ export default function Appointment() {
   const freeBefore = form.limit - form.load.committed - form.load.fixed;
   const freeAfter = freeBefore - total;
 
+  // "today's 4h free", "Thursday's 4h free" — the note describes the day the
+  // appointment is on, which is not always this one.
+  const dayPossessive = form.dayLabel === 'Today' ? "today's" : `${form.dayLabel}'s`;
+
   const start = new Date(form.startAt);
   const end = new Date(form.startAt + form.lengthMinutes * 60_000);
 
@@ -50,7 +54,13 @@ export default function Appointment() {
       onTitleChange={form.setTitle}
       titlePlaceholder="Dentist"
       saveLabel="Save appointment"
-      budget={{ load: form.load, limit: form.limit, adding: total, addingIsFixed: true }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: total,
+        addingIsFixed: true,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {
@@ -109,8 +119,8 @@ export default function Appointment() {
       {extra > 0 && (
         <Note>
           {freeAfter >= 0
-            ? `That adds ${formatMinutes(extra)} to today's ${formatMinutes(freeBefore)} free. It leaves ${formatMinutes(freeAfter)}.`
-            : `That adds ${formatMinutes(extra)}, which is more than today's ${formatMinutes(freeBefore)} free.`}
+            ? `That adds ${formatMinutes(extra)} to ${dayPossessive} ${formatMinutes(freeBefore)} free. It leaves ${formatMinutes(freeAfter)}.`
+            : `That adds ${formatMinutes(extra)}, which is more than ${dayPossessive} ${formatMinutes(freeBefore)} free.`}
         </Note>
       )}
     </FormScaffold>

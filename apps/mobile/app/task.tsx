@@ -33,7 +33,12 @@ export default function Task() {
       title={form.title}
       onTitleChange={form.setTitle}
       saveLabel="Add to today"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {

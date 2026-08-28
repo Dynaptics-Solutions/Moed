@@ -7,7 +7,9 @@ import { Button } from '@/components/Button';
 import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { Sheet } from '@/components/Sheet';
+import { useDayBudget } from '@/db/budget';
 import { moveRecord } from '@/db/records';
+import { whenDay } from '@/lib/day';
 import { decodeDraft } from '@/lib/draft';
 import { useSaveDraft } from '@/lib/saveDraft';
 import { useTheme } from '@/theme';
@@ -23,9 +25,14 @@ export default function Gate() {
   const theme = useTheme();
   const router = useRouter();
   const params = useLocalSearchParams<{ draft?: string }>();
-  const { commit, load, limit, rows, upcoming } = useSaveDraft();
+  const { commit, today } = useSaveDraft();
 
   const draft = decodeDraft(params.draft);
+
+  // The gate judges the day the record lands on. A draft with no day of its own is
+  // being added to this one.
+  const { date, rows, load, limit, upcoming } = useDayBudget(draft?.startAt ?? today.getTime());
+  const dayLabel = whenDay(date, today);
 
   // Nothing to decide about. Reached by a stale link or a reload; the day is the
   // honest place to be rather than an empty sheet. Through an effect, because
@@ -77,7 +84,9 @@ export default function Gate() {
         Before you add this
       </Text>
       <Text style={[theme.type.sheetTitle, { color: theme.colors.ink }]}>
-        This puts you {formatMinutes(decision.overBy)} over
+        {dayLabel === 'Today'
+          ? `This puts you ${formatMinutes(decision.overBy)} over`
+          : `This puts ${dayLabel} ${formatMinutes(decision.overBy)} over`}
       </Text>
 
       <CapacityBar

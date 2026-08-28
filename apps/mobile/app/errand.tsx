@@ -42,7 +42,12 @@ export default function Errand() {
       onTitleChange={form.setTitle}
       titlePlaceholder="Saturday run"
       saveLabel="Save errand"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {

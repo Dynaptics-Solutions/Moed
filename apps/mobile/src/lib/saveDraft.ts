@@ -1,7 +1,8 @@
-import { dayLoad, gate, isSameDay } from '@moed/core';
+import { dayLoad, gate } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 
+import type { DayBudget } from '@/db/budget';
 import { useDayLimit } from '@/db/dayLimits';
 import { createRecord, updateRecord, useDayRecords } from '@/db/records';
 import { createRecurrence } from '@/db/recurrences';
@@ -88,29 +89,36 @@ export function useSaveDraft() {
     router.replace({ pathname: '/', params: { landed: id } });
   };
 
-  const save = async (draft: RecordDraft, id?: string) => {
+  /**
+   * Save, through the gate of whichever day the record lands on.
+   *
+   * `onDay` is that day's budget. It used to be today's and only today's, with a
+   * `landsToday` check that skipped the gate entirely for any other day — so a day
+   * could be filled to fourteen hours without a word, as long as it was not this one.
+   * A planner that only enforces the limit on the day you happen to be looking at does
+   * not enforce it.
+   */
+  const save = async (draft: RecordDraft, id?: string, onDay?: DayBudget) => {
     if (id) return update(id, draft);
     if (draft.title.trim().length === 0) return;
 
+    const day = onDay ?? { load, limit, rows, upcoming };
+
     const decision = gate(
       {
-        committed: load.committed,
-        fixed: load.fixed,
-        limit,
+        committed: day.load.committed,
+        fixed: day.load.fixed,
+        limit: day.limit,
         adding: draft.lengthMinutes ?? 0,
         addingIsFixed: draft.isFixed,
       },
-      rows
+      day.rows
         .filter((r) => !r.isFixed && r.state === 'open')
         .map((r) => ({ id: r.id, title: r.title, lengthMinutes: r.lengthMinutes })),
-      upcoming,
+      day.upcoming,
     );
 
-    // The gate only has standing over the day the record would actually overfill.
-    // Something scheduled for Thursday is Thursday's problem.
-    const landsToday = draft.startAt ? isSameDay(new Date(draft.startAt), today) : false;
-
-    if (decision.fits || !landsToday) {
+    if (decision.fits) {
       await commit(draft);
       return;
     }

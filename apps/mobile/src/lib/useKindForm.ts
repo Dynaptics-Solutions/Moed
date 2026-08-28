@@ -2,10 +2,13 @@ import type { Recurrence } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 
+import { useDayBudget } from '@/db/budget';
 import { useRecord } from '@/db/records';
 import type { RecordKind } from '@/db/schema';
+import { whenDay } from './day';
 import { fromParams, toParams } from './recurrenceParams';
 import { useSaveDraft } from './saveDraft';
+import type { RecordDraft } from './draft';
 
 /**
  * The setup every kind's form shares: what capture handed over, what the recurrence
@@ -26,7 +29,7 @@ import { useSaveDraft } from './saveDraft';
 export function useKindForm(kind: RecordKind, defaultLength: number) {
   const router = useRouter();
   const params = useLocalSearchParams<Record<string, string>>();
-  const { save, load, limit } = useSaveDraft();
+  const { save } = useSaveDraft();
 
   const today = useMemo(() => new Date(), []);
   const id = params.id;
@@ -53,6 +56,11 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     edits.startAt ??
     existing?.startAt ??
     (Number.isFinite(fromParam) ? fromParam : today.getTime());
+
+  // The figures in the foot are the landing day's, not today's, and they leave this
+  // record out of its own day so an edit is not counted twice.
+  const budget = useDayBudget(startAt, id);
+  const dayLabel = whenDay(budget.date, today);
 
   const setTitle = (next: string) => setEdits((e) => ({ ...e, title: next }));
   const setLengthMinutes = (next: number) => setEdits((e) => ({ ...e, lengthMinutes: next }));
@@ -89,9 +97,12 @@ export function useKindForm(kind: RecordKind, defaultLength: number) {
     startAt,
     setStartAt,
     today,
-    load,
-    limit,
-    save,
+    load: budget.load,
+    limit: budget.limit,
+    /** "Today", "Thursday" — whichever day the foot is actually describing. */
+    dayLabel,
+    /** Gates against the landing day rather than today. */
+    save: (draft: RecordDraft, recordId?: string) => save(draft, recordId, budget),
     openRepeat,
     back,
     cancel,

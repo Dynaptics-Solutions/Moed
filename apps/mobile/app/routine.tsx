@@ -40,7 +40,12 @@ export default function Routine() {
       onTitleChange={form.setTitle}
       titlePlaceholder="Morning routine"
       saveLabel="Save routine"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {

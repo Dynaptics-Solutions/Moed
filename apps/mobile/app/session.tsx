@@ -41,7 +41,12 @@ export default function Session() {
       onTitleChange={form.setTitle}
       titlePlaceholder="Reading"
       saveLabel="Save session"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {

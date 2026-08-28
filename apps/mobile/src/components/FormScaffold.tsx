@@ -29,7 +29,17 @@ type FormScaffoldProps = {
    * appointment included: fixed time still spends the day, and saying so in the foot
    * costs nothing next to the note it already draws about travel.
    */
-  budget?: { load: DayLoad; limit: number; adding: number; addingIsFixed?: boolean };
+  budget?: {
+    load: DayLoad;
+    limit: number;
+    adding: number;
+    addingIsFixed?: boolean;
+    /**
+     * The day being described — "Today", "Thursday". The foot has to name it, because
+     * it is the landing day's free time and only sometimes this one's.
+     */
+    dayLabel: string;
+  };
   children: React.ReactNode;
   /** Extra content above the save button, inside the fixed footer. */
   footer?: React.ReactNode;
@@ -139,8 +149,10 @@ export function FormScaffold({
             />
             <Text style={[theme.type.meta, styles.verdict, { color: theme.colors.ink3 }]}>
               {decision.fits
-                ? `Today has ${formatMinutes(free)} free. This fits.`
-                : `This puts you ${formatMinutes(decision.overBy)} over.`}
+                ? `${budget.dayLabel} has ${formatMinutes(free)} free. This fits.`
+                : budget.dayLabel === 'Today'
+                  ? `This puts you ${formatMinutes(decision.overBy)} over.`
+                  : `This puts ${budget.dayLabel} ${formatMinutes(decision.overBy)} over.`}
             </Text>
           </>
         )}
