@@ -101,7 +101,7 @@ describe('bestMove', () => {
 
     expect(bestMove(candidates, [day('Thursday', 2, DAY)], 40)?.detail).toBe('Thursday is empty');
     expect(bestMove(candidates, [day('Thursday', 2, 120, false)], 40)?.detail).toBe(
-      'Thursday has 120 minutes free',
+      'Thursday has 2h free',
     );
   });
 

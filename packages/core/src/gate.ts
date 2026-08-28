@@ -1,4 +1,5 @@
 import { capacity } from './capacity';
+import { formatMinutes } from './format';
 
 /**
  * The over-limit gate: what the app offers when a record would not fit.
@@ -126,7 +127,9 @@ export function bestMove(
     kind: 'move',
     record,
     day,
-    detail: day.isEmpty ? `${day.label} is empty` : `${day.label} has ${day.free} minutes free`,
+    detail: day.isEmpty
+      ? `${day.label} is empty`
+      : `${day.label} has ${formatMinutes(day.free)} free`,
   };
 }
 
