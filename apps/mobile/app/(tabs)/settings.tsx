@@ -49,7 +49,7 @@ const ROWS: { key: string; value: string; route?: string }[] = [
   { key: 'Money', value: 'Week limit', route: '/money' },
   { key: 'Diet plan', value: 'Paid' },
   { key: 'Activity', value: 'Paid' },
-  { key: 'Export', value: 'Always free' },
+  { key: 'Export', value: 'Always free', route: '/export' },
   { key: 'Account', value: '' },
 ];
 

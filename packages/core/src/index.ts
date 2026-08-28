@@ -44,6 +44,14 @@ export type { Closeable, CloseCounts, DaySummary } from './close';
 export { full } from './full';
 export type { Full, DayRecord } from './full';
 export {
+  EXPORT_FORMAT,
+  EXPORT_VERSION,
+  exportEnvelope,
+  exportSummary,
+  exportFilename,
+} from './export';
+export type { ExportEnvelope, ExportTables } from './export';
+export {
   isEntitled,
   capFor,
   canCreate,
