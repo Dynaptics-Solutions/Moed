@@ -10,7 +10,8 @@ import { randomUUID } from 'expo-crypto';
 import { useMemo } from 'react';
 
 import { db } from './client';
-import { bills, settings, spending } from './schema';
+import { bills, spending } from './schema';
+import { setSetting, useNumberSetting } from './settings';
 import { currentUserId } from '@/lib/user';
 
 export type Bill = typeof bills.$inferSelect;
@@ -89,25 +90,17 @@ export function useWeekSpending(date: Date) {
  * month — that wants a table shaped like `day_limits`, and this becomes its default.
  */
 export function useWeekMoneyLimit(): number {
-  const userId = currentUserId();
+  return useNumberSetting(WEEK_LIMIT_KEY, DEFAULT_WEEK_MONEY_LIMIT_MINOR);
+}
 
-  const { data } = useLiveQuery(
-    db
-      .select()
-      .from(settings)
-      .where(
-        and(
-          eq(settings.userId, userId),
-          eq(settings.key, WEEK_LIMIT_KEY),
-          isNull(settings.deletedAt),
-        ),
-      )
-      .limit(1),
-    [userId],
-  );
+/** £5 a step, and a range wide enough for a real week without a text field. */
+export const WEEK_LIMIT_STEP_MINOR = 500;
+export const WEEK_LIMIT_MIN_MINOR = 1_000;
+export const WEEK_LIMIT_MAX_MINOR = 500_000;
 
-  const stored = data?.[0]?.value;
-  return typeof stored === 'number' ? stored : DEFAULT_WEEK_MONEY_LIMIT_MINOR;
+export function setWeekMoneyLimit(minor: number): Promise<void> {
+  const clamped = Math.min(WEEK_LIMIT_MAX_MINOR, Math.max(WEEK_LIMIT_MIN_MINOR, minor));
+  return setSetting(WEEK_LIMIT_KEY, clamped);
 }
 
 /** What the bills take out of every week before anything is spent. */

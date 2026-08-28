@@ -7,13 +7,24 @@ import {
   weeklyShareMinor,
 } from '@moed/core';
 import { useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
 import { CapacityBar } from '@/components/CapacityBar';
-import { CURRENCY, useBills, useWeekMoneyLimit, useWeekSpending, useWeeklyBills } from '@/db/money';
+import { Stepper } from '@/components/Stepper';
+import {
+  CURRENCY,
+  WEEK_LIMIT_MAX_MINOR,
+  WEEK_LIMIT_MIN_MINOR,
+  WEEK_LIMIT_STEP_MINOR,
+  setWeekMoneyLimit,
+  useBills,
+  useWeekMoneyLimit,
+  useWeekSpending,
+  useWeeklyBills,
+} from '@/db/money';
 import { dayTitle, shortDate } from '@/lib/day';
 import { useTheme } from '@/theme';
 
@@ -35,6 +46,7 @@ export default function Money() {
 
   const today = useMemo(() => new Date(), []);
   const { start } = weekBounds(today);
+  const [editingLimit, setEditingLimit] = useState(false);
 
   const { data: billRows } = useBills();
   const { data: spendRows } = useWeekSpending(today);
@@ -80,6 +92,39 @@ export default function Money() {
           trailing={`of ${formatMoney(limit, CURRENCY)}`}
         />
       </View>
+
+      {/* The limit itself. It was a stored number with nothing anywhere to change it,
+          so every week was £600 — Phase 2's first stated deliverable, sitting behind a
+          figure the user had never chosen. */}
+      <Pressable
+        onPress={() => setEditingLimit((open) => !open)}
+        accessibilityRole="button"
+        style={styles.limitRow}
+      >
+        <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
+          {editingLimit ? 'Done' : 'Set the week’s limit'}
+        </Text>
+      </Pressable>
+
+      {editingLimit && (
+        <View style={styles.limitEditor}>
+          <Stepper
+            onLess={() => void setWeekMoneyLimit(limit - WEEK_LIMIT_STEP_MINOR)}
+            onMore={() => void setWeekMoneyLimit(limit + WEEK_LIMIT_STEP_MINOR)}
+            atLeast={limit <= WEEK_LIMIT_MIN_MINOR}
+            atMost={limit >= WEEK_LIMIT_MAX_MINOR}
+            lessLabel="A smaller week"
+            moreLabel="A larger week"
+          >
+            <Text style={[theme.type.body, { color: theme.colors.ink }]}>
+              <Text style={{ fontFamily: theme.fonts.uiSemiBold }}>
+                {formatMoney(limit, CURRENCY)}
+              </Text>{' '}
+              a week
+            </Text>
+          </Stepper>
+        </View>
+      )}
 
       {/* Said once, on the screen where the idea is new. The day never explains itself
           because an hour budget is obvious; a week that already owes its rent is not. */}
@@ -173,6 +218,8 @@ const styles = StyleSheet.create({
   week: { marginTop: 18 },
   headline: { marginTop: 7 },
   bar: { marginTop: 18 },
+  limitRow: { paddingTop: 12, paddingBottom: 2, alignItems: 'flex-end' },
+  limitEditor: { marginTop: 8 },
   explain: { marginTop: 16, borderWidth: 1, paddingVertical: 14, paddingHorizontal: 15 },
   list: { flex: 1, marginTop: 20 },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
