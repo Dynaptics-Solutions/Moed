@@ -1,12 +1,43 @@
-import { dayLoad, gate, isSameDay } from '@moed/core';
+import { dayLoad, gate, startOfDay } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 
+import type { DayBudget } from '@/db/budget';
 import { useDayLimit } from '@/db/dayLimits';
-import { createRecord, updateRecord, useDayRecords } from '@/db/records';
+import {
+  createFollowingOccurrences,
+  createRecord,
+  updateRecord,
+  useDayRecords,
+} from '@/db/records';
 import { createRecurrence } from '@/db/recurrences';
 import { useUpcomingDays } from '@/db/upcoming';
 import { encodeDraft, type RecordDraft } from '@/lib/draft';
+
+/**
+ * The day a saved record landed on, as a route parameter.
+ *
+ * Saving returned to today whatever day the record was for, so a task put on Saturday
+ * left you looking at Friday with an "Added" banner and a highlight pointing at a row
+ * that was not on screen. The confirmation has to be shown where the thing is.
+ */
+function dayOf(at: number | null | undefined): { date?: string } {
+  if (at === null || at === undefined) return {};
+  return { date: String(startOfDay(new Date(at)).getTime()) };
+}
+
+/**
+ * A record the app moved out of the way on the user's say-so, and everything needed to
+ * put it back exactly where it was.
+ */
+export type MovedAside = {
+  id: string;
+  title: string;
+  /** The day it went to, named the way the gate named it: "Thursday". */
+  to: string;
+  /** Where it was, or null if it had no time of day. */
+  from: number | null;
+};
 
 /**
  * Saving, from any form.
@@ -25,16 +56,47 @@ export function useSaveDraft() {
   const rows = dayRecords ?? [];
   const load = dayLoad(rows);
 
+  /**
+   * The record, and the rest of the series if it repeats.
+   *
+   * The repeat editor already promises "26 more of these. Each one costs its day 40
+   * minutes." Until now exactly one was ever written, so a weekly routine appeared
+   * once and the sentence under the rule was the only trace of the other twenty-six.
+   */
   const write = async (draft: RecordDraft) => {
     const recurrenceId = draft.recurrence ? await createRecurrence(draft.recurrence) : null;
-    const { recurrence: _rule, ...record } = draft;
-    return createRecord({ ...record, recurrenceId });
+    const { recurrence: rule, ...record } = draft;
+    const created = await createRecord({ ...record, recurrenceId });
+
+    if (rule && recurrenceId) await createFollowingOccurrences(rule, created, recurrenceId);
+
+    return created;
   };
 
-  /** Straight to the day, no gate — used once the gate has been answered. */
-  const commit = async (draft: RecordDraft) => {
+  /**
+   * Straight to the day, no gate — used once the gate has been answered.
+   *
+   * `alongside` is whatever else answering the gate did. It travels to the day so the
+   * one undo there reverses the whole answer rather than half of it: accepting "move
+   * Rye to Thursday" is one decision, and undoing it must not leave Rye on Thursday.
+   */
+  const commit = async (draft: RecordDraft, alongside?: MovedAside) => {
     const created = await write(draft);
-    router.replace({ pathname: '/', params: { landed: created.id } });
+    router.replace({
+      pathname: '/',
+      params: {
+        landed: created.id,
+        ...dayOf(created.startAt),
+        ...(alongside && {
+          movedId: alongside.id,
+          movedTitle: alongside.title,
+          movedTo: alongside.to,
+          // A record with no time of day has none to put back, and an empty parameter
+          // is the honest way to say so — `'null'` would be a string that reads as data.
+          movedFrom: alongside.from === null ? '' : String(alongside.from),
+        }),
+      },
+    });
   };
 
   /**
@@ -53,32 +115,39 @@ export function useSaveDraft() {
     const recurrenceId = draft.recurrence ? await createRecurrence(draft.recurrence) : undefined;
     const { recurrence: _rule, ...record } = draft;
     await updateRecord(id, { ...record, ...(recurrenceId && { recurrenceId }) });
-    router.replace({ pathname: '/', params: { landed: id } });
+    router.replace({ pathname: '/', params: { landed: id, ...dayOf(draft.startAt ?? null) } });
   };
 
-  const save = async (draft: RecordDraft, id?: string) => {
+  /**
+   * Save, through the gate of whichever day the record lands on.
+   *
+   * `onDay` is that day's budget. It used to be today's and only today's, with a
+   * `landsToday` check that skipped the gate entirely for any other day — so a day
+   * could be filled to fourteen hours without a word, as long as it was not this one.
+   * A planner that only enforces the limit on the day you happen to be looking at does
+   * not enforce it.
+   */
+  const save = async (draft: RecordDraft, id?: string, onDay?: DayBudget) => {
     if (id) return update(id, draft);
     if (draft.title.trim().length === 0) return;
 
+    const day = onDay ?? { load, limit, rows, upcoming };
+
     const decision = gate(
       {
-        committed: load.committed,
-        fixed: load.fixed,
-        limit,
+        committed: day.load.committed,
+        fixed: day.load.fixed,
+        limit: day.limit,
         adding: draft.lengthMinutes ?? 0,
         addingIsFixed: draft.isFixed,
       },
-      rows
+      day.rows
         .filter((r) => !r.isFixed && r.state === 'open')
         .map((r) => ({ id: r.id, title: r.title, lengthMinutes: r.lengthMinutes })),
-      upcoming,
+      day.upcoming,
     );
 
-    // The gate only has standing over the day the record would actually overfill.
-    // Something scheduled for Thursday is Thursday's problem.
-    const landsToday = draft.startAt ? isSameDay(new Date(draft.startAt), today) : false;
-
-    if (decision.fits || !landsToday) {
+    if (decision.fits) {
       await commit(draft);
       return;
     }

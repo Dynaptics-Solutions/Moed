@@ -4,7 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import { Chip } from '@/components/Chip';
 import { Field, Input } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
-import { clockTime } from '@/lib/day';
+import { ProjectField } from '@/components/ProjectField';
+import { WhenInput } from '@/components/WhenInput';
+import { clockTime, inSentence, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
 import { useKindForm } from '@/lib/useKindForm';
 
@@ -27,12 +29,19 @@ export default function Task() {
 
   return (
     <FormScaffold
-      kindLabel="New task"
+      kindLabel={form.isEditing ? 'Edit task' : 'New task'}
       leading={{ label: 'Cancel', onPress: form.cancel }}
       title={form.title}
       onTitleChange={form.setTitle}
-      saveLabel="Add to today"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      // Names the day it will actually land on. It said "Add to today" whatever the
+      // When field said, which is the same lie the foot above it used to tell.
+      saveLabel={`Add to ${inSentence(form.dayLabel)}`}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {
@@ -40,6 +49,7 @@ export default function Task() {
             title: form.title,
             lengthMinutes: form.lengthMinutes,
             startAt: form.startAt,
+            projectId: form.projectId,
             recurrence: form.recurrence,
           },
           form.id,
@@ -60,12 +70,14 @@ export default function Task() {
       </Field>
 
       <Field label="When">
-        <Input value={`Today · ${clockTime(start)} — ${clockTime(end)}`} />
+        <WhenInput
+          at={form.startAt}
+          onChange={form.setStartAt}
+          value={`${whenDay(start, form.today)} · ${clockTime(start)} — ${clockTime(end)}`}
+        />
       </Field>
 
-      <Field label="Project">
-        <Input value="None" muted />
-      </Field>
+      <ProjectField value={form.projectId} onChange={form.setProjectId} />
 
       <Field label="Remind">
         <Input value="Never" muted />

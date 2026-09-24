@@ -10,6 +10,20 @@ type AddAffordanceProps = {
 };
 
 /**
+ * How much room the affordance needs above the bottom inset, so a screen can keep its
+ * own content out from under it.
+ *
+ * The iOS pill sits in the flow and takes its own space, so nothing has to be reserved.
+ * The Android FAB floats, which means it silently sits on top of whatever is at the
+ * foot of the screen — and on the day that was the undo banner's "Undo", the one
+ * affordance the "undo, not confirm" rule depends on.
+ */
+export function useAddClearance(): number {
+  const add = useTheme().geometry.add;
+  return add.kind === 'fab' ? add.size + 16 : 0;
+}
+
+/**
  * Capture, which is the highest-frequency action in the app — so it gets each
  * platform's own shape rather than one compromise on both. Both variants position
  * themselves, so a screen renders this once and does not branch.
@@ -23,6 +37,12 @@ type AddAffordanceProps = {
  * action, so it is drawn in `accFill` here. And its `right: 18` is measured from the
  * screen edge while the content gutter is 20; the FAB aligns to the gutter instead, so
  * it lines up with everything above it.
+ *
+ * That alignment has to be stated as the gutter and cannot be inherited. An absolutely
+ * positioned child resolves `right` against its parent's padding box, so `right: 0`
+ * inside a screen padded by 20 still lands hard against the screen edge — which is
+ * where the FAB was sitting, touching the bezel and out of line with the date and the
+ * capacity bar above it.
  */
 export function AddAffordance({ onPress, bottomInset = 0 }: AddAffordanceProps) {
   const theme = useTheme();
@@ -108,7 +128,8 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    right: 0,
+    /** The 20 content gutter, matching every screen's `paddingHorizontal`. */
+    right: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },

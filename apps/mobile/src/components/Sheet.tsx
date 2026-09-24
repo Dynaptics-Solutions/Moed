@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useKeyboardInset } from '@/lib/keyboard';
 import { useTheme } from '@/theme';
 
 type SheetProps = {
@@ -24,12 +25,18 @@ type SheetProps = {
 export function Sheet({ children, accent, onDismiss }: SheetProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const keyboard = useKeyboardInset();
   const router = useRouter();
 
   const dismiss = onDismiss ?? (() => router.back());
 
+  // The keyboard's inset reaches the bottom of the screen, so while it is up it is
+  // already covering the gesture bar the safe-area inset exists to clear. Adding both
+  // would lift the sheet a further 24dp above the keys for no reason.
+  const footRoom = keyboard > 0 ? 0 : insets.bottom;
+
   return (
-    <View style={styles.host}>
+    <View style={[styles.host, { paddingBottom: keyboard }]}>
       <Pressable
         style={[StyleSheet.absoluteFill, { backgroundColor: theme.scrim }]}
         onPress={dismiss}
@@ -44,7 +51,7 @@ export function Sheet({ children, accent, onDismiss }: SheetProps) {
             backgroundColor: theme.colors.card,
             borderTopLeftRadius: theme.geometry.sheet.radius,
             borderTopRightRadius: theme.geometry.sheet.radius,
-            paddingBottom: (Platform.OS === 'ios' ? 30 : 22) + insets.bottom,
+            paddingBottom: (Platform.OS === 'ios' ? 30 : 22) + footRoom,
           },
           accent !== undefined && { borderTopWidth: 2, borderTopColor: accent },
         ]}

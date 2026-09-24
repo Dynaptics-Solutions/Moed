@@ -19,6 +19,12 @@ export type RecordRowProps = {
   overdue?: boolean;
   /** No separator above the first row in a group. */
   first?: boolean;
+  /**
+   * This record falls past the day's limit. It is drawn on an `overSoft` card in
+   * `over` — the only use that colour has, and the one the design gives it here: the
+   * offending row marked in place, so the day says which record it means.
+   */
+  past?: boolean;
   onPress?: () => void;
   onToggle?: () => void;
 };
@@ -32,36 +38,47 @@ export function RecordRow({
   trailing,
   overdue = false,
   first = false,
+  past = false,
   onPress,
   onToggle,
 }: RecordRowProps) {
   const theme = useTheme();
 
+  const title_ = past ? theme.colors.over : done ? theme.colors.ink3 : theme.colors.ink;
+  const meta_ = past ? theme.colors.over : theme.colors.ink3;
+
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      style={[styles.row, !first && { borderTopWidth: 1, borderTopColor: theme.colors.line2 }]}
+      style={[
+        styles.row,
+        !first && !past && { borderTopWidth: 1, borderTopColor: theme.colors.line2 },
+        past && [
+          styles.pastRow,
+          {
+            backgroundColor: theme.colors.overSoft,
+            borderRadius: theme.geometry.input.radius,
+          },
+        ],
+      ]}
     >
-      <Ring done={done} onPress={onToggle} label={title} />
+      <Ring
+        done={done}
+        onPress={onToggle}
+        label={title}
+        tone={past ? theme.colors.over : undefined}
+      />
 
       <View style={styles.body}>
-        <Text
-          style={[
-            theme.type.rowTitle,
-            { color: done ? theme.colors.ink3 : theme.colors.ink },
-            done && styles.struck,
-          ]}
-        >
-          {title}
-        </Text>
+        <Text style={[theme.type.rowTitle, { color: title_ }, done && styles.struck]}>{title}</Text>
 
         {meta !== undefined && (
           <View style={styles.meta}>
             {projectColour !== undefined && (
               <View style={[styles.dot, { backgroundColor: projectColour }]} />
             )}
-            <Text style={[theme.type.meta, { color: theme.colors.ink3 }]} numberOfLines={1}>
+            <Text style={[theme.type.meta, { color: meta_ }]} numberOfLines={1}>
               {meta}
             </Text>
           </View>
@@ -93,6 +110,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingVertical: 13,
   },
+  pastRow: { paddingHorizontal: 11, marginTop: 2 },
   body: { flex: 1, minWidth: 0 },
   struck: { textDecorationLine: 'line-through' },
   meta: { marginTop: 5, flexDirection: 'row', alignItems: 'center', gap: 7 },

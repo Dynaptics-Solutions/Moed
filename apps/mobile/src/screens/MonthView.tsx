@@ -2,15 +2,15 @@ import { capacity, dayLoad, formatMinutes, isSameDay, startOfDay } from '@moed/c
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CapacityBar } from '@/components/CapacityBar';
 import { RecordRow } from '@/components/RecordRow';
 import { SegmentedSwitch, type CalendarScale } from '@/components/SegmentedSwitch';
-import { limitFor, useLimitsByDate } from '@/db/dayLimits';
+import { limitFor, useDefaultDayLimit, useLimitsByDate } from '@/db/dayLimits';
 import { monthGridBounds, setDone, useRangeRecords } from '@/db/records';
 import { WEEKDAY_INITIALS, clockTime, monthName, weekdayShort } from '@/lib/day';
 import { useTheme } from '@/theme';
+import { useTabScreenInsets } from '@/lib/insets';
 
 /**
  * `month` — no text in the cells. One load bar per day, `over` where the day is over.
@@ -21,13 +21,14 @@ import { useTheme } from '@/theme';
  */
 export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void }) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
 
   const today = useMemo(() => new Date(), []);
   const { start, end, firstOfMonth } = monthGridBounds(today);
   const { data: records } = useRangeRecords(start, end);
   const limits = useLimitsByDate();
+  const fallback = useDefaultDayLimit();
 
   const [peeked, setPeeked] = useState<number>(() => startOfDay(today).getTime());
 
@@ -41,7 +42,7 @@ export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void
       const dayRows = rows.filter(
         (r) => r.startAt !== null && isSameDay(new Date(r.startAt), date),
       );
-      const c = capacity({ ...dayLoad(dayRows), limit: limitFor(limits, date) });
+      const c = capacity({ ...dayLoad(dayRows), limit: limitFor(limits, date, fallback) });
       return {
         date,
         rows: dayRows,
@@ -49,7 +50,7 @@ export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void
         inMonth: date.getMonth() === firstOfMonth.getMonth(),
       };
     });
-  }, [start, end, rows, limits, firstOfMonth]);
+  }, [start, end, rows, limits, firstOfMonth, fallback]);
 
   const peekedCell = cells.find((c) => isSameDay(c.date, new Date(peeked)));
   const openCount = peekedCell?.rows.filter((r) => r.state === 'open').length ?? 0;
@@ -142,7 +143,15 @@ export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void
 
       {peekedCell && (
         <Pressable
-          onPress={() => router.replace('/')}
+          // The peek answers "how full was that day"; tapping it opens that day, not
+          // this one. Opening today from a cell in the middle of last month was the
+          // month view's only way out and it went to the wrong place.
+          onPress={() =>
+            router.replace({
+              pathname: '/',
+              params: { date: String(startOfDay(peekedCell.date).getTime()) },
+            })
+          }
           style={[
             styles.peek,
             theme.shadow,
@@ -166,7 +175,7 @@ export function MonthView({ onScale }: { onScale: (scale: CalendarScale) => void
             <CapacityBar
               committed={dayLoad(peekedCell.rows).committed}
               fixed={dayLoad(peekedCell.rows).fixed}
-              limit={limitFor(limits, peekedCell.date)}
+              limit={limitFor(limits, peekedCell.date, fallback)}
               caption={false}
               height={8}
             />

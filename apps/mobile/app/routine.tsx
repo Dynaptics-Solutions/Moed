@@ -6,7 +6,7 @@ import { Chip } from '@/components/Chip';
 import { Field, Input, Note } from '@/components/Field';
 import { FormScaffold } from '@/components/FormScaffold';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
-import { useKindForm } from '@/lib/useKindForm';
+import { useKindForm, useListField } from '@/lib/useKindForm';
 import { useTheme } from '@/theme';
 
 /**
@@ -22,7 +22,7 @@ const LENGTHS = [20, 40, 60];
 export default function Routine() {
   const theme = useTheme();
   const form = useKindForm('routine', 40);
-  const [steps, setSteps] = useState<string[]>([]);
+  const [steps, setSteps] = useListField(form.existing?.steps);
   const [draftStep, setDraftStep] = useState('');
 
   const addStep = () => {
@@ -34,13 +34,18 @@ export default function Routine() {
 
   return (
     <FormScaffold
-      kindLabel="New routine"
+      kindLabel={form.isEditing ? 'Edit routine' : 'New routine'}
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
       onTitleChange={form.setTitle}
       titlePlaceholder="Morning routine"
       saveLabel="Save routine"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {
@@ -132,7 +137,7 @@ export default function Routine() {
         onPress={form.openRepeat}
       />
 
-      <Note>{`Costs the day ${formatMinutes(form.lengthMinutes)} once — not ${steps.length || 'six'} separate entries.`}</Note>
+      <Note>{`Costs the day ${formatMinutes(form.lengthMinutes)} once — not ${steps.length || 'six'} separate ${steps.length === 1 ? 'entry' : 'entries'}.`}</Note>
     </FormScaffold>
   );
 }

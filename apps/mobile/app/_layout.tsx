@@ -10,14 +10,18 @@ import { CormorantGaramond_400Regular } from '@expo-google-fonts/cormorant-garam
 import { CormorantGaramond_500Medium } from '@expo-google-fonts/cormorant-garamond/500Medium';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import * as Notifications from 'expo-notifications';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import migrations from '../drizzle/migrations';
 import { db } from '@/db/client';
+import { useEveningClose } from '@/lib/eveningClose';
+import { CLOSE_ACTION_OPEN, registerCloseCategory } from '@/lib/notifications';
+import { Splash } from '@/screens/Splash';
 import { useTheme } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync();
@@ -37,13 +41,42 @@ export default function RootLayout() {
   });
 
   const { success: migrated, error: migrationError } = useMigrations(db, migrations);
+  const router = useRouter();
+
+  const today = useMemo(() => new Date(), []);
+  useEveningClose(today);
+
+  // The actions have to exist before anything carrying them is sent, and registering is
+  // cheap and idempotent, so it happens once at the root rather than at the moment
+  // someone turns the close on.
+  useEffect(() => {
+    void registerCloseCategory();
+  }, []);
+
+  // "Close it" on the notification's face. It opens the close and nothing else — the app
+  // does not decide anything on the way in, and "Not tonight" is handled by not being
+  // handled: the day stays open and nothing fires again tonight.
+  useEffect(() => {
+    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
+      if (response.actionIdentifier === CLOSE_ACTION_OPEN) router.push('/close');
+    });
+    return () => sub.remove();
+  }, [router]);
 
   const ready = (fontsLoaded || fontError !== null) && migrated;
   const failure = migrationError ?? fontError;
 
+  // The moment React has something on screen, not when the planner is ready.
+  //
+  // The native splash is a static image; it cannot show progress, and while it was held
+  // until `ready` it covered precisely the window the designed splash exists to fill —
+  // which made that screen unreachable. Handing over as soon as this effect runs is
+  // safe, because an effect only runs after the first paint: the JS splash is already
+  // drawn underneath. The two are the same mark on the same `--bg`, so the swap is not
+  // visible.
   useEffect(() => {
-    if (ready || failure) void SplashScreen.hideAsync();
-  }, [ready, failure]);
+    void SplashScreen.hideAsync();
+  }, []);
 
   // A failure here means the app has no database or no type. Say what happened and
   // what it means, rather than showing an empty planner that looks like data loss.
@@ -63,7 +96,18 @@ export default function RootLayout() {
     );
   }
 
-  if (!ready) return null;
+  // The two things that have to happen before a planner can open. The splash draws the
+  // fraction rather than an invented one, so the rule finishes exactly when the app does
+  // — and on the usual launch, where both are already warm, it is never seen at all.
+  if (!ready) {
+    const done = (fontsLoaded || fontError !== null ? 1 : 0) + (migrated ? 1 : 0);
+    return (
+      <>
+        <StatusBar style={theme.isDark ? 'light' : 'dark'} />
+        <Splash progress={done / 2} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -86,6 +130,10 @@ export default function RootLayout() {
         />
         <Stack.Screen
           name="gate"
+          options={{ presentation: 'transparentModal', animation: 'fade' }}
+        />
+        <Stack.Screen
+          name="newproject"
           options={{ presentation: 'transparentModal', animation: 'fade' }}
         />
         {['types', 'task', 'routine', 'session', 'errand', 'appt', 'repeat', 'search'].map(

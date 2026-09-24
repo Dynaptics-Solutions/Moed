@@ -54,10 +54,15 @@ export function Button({
 }
 
 const styles = StyleSheet.create({
+  // No flexGrow/flexShrink here, deliberately. They were both 0, which is already
+  // Yoga's default in React Native — so they bought nothing, and they collided with
+  // callers: `flex: 1` and `flexGrow: 0` flatten into one object and reach Yoga as
+  // separate props, so the button kept flexBasis 0 from the shorthand while flexGrow
+  // stayed 0 and computed to zero width. That silently emptied the capture sheet and
+  // the detail sheet of their buttons. A row that needs these to share width says so
+  // with `flex: 1`, and now that works.
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexGrow: 0,
-    flexShrink: 0,
   },
 });

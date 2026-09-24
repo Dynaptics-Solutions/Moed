@@ -1,6 +1,6 @@
 import { describeRecurrence, formatMinutes } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
@@ -8,6 +8,7 @@ import { Sheet } from '@/components/Sheet';
 import { useProjects } from '@/db/projects';
 import { dropRecord, setDone, slipToNextDay, useRecord } from '@/db/records';
 import { useRecurrence } from '@/db/recurrences';
+import { startTimer } from '@/db/timer';
 import type { RecordKind } from '@/db/schema';
 import { clockTime, weekdayName } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
@@ -52,10 +53,16 @@ export default function Detail() {
 
   // The query has not answered yet, or the record has gone. An empty sheet says
   // nothing; the day is where the answer is either way.
-  if (!record) {
+  //
+  // Only a missing id is a dead link. A missing record while `id` is set is the live
+  // query still loading, and sending that back to the day would close the sheet before
+  // it opened. The redirect goes through an effect because navigating during render
+  // sets state on the navigator mid-render, which React rejects.
+  useEffect(() => {
     if (id === undefined) router.replace('/');
-    return null;
-  }
+  }, [id, router]);
+
+  if (!record) return null;
 
   const project = (projects ?? []).find((p) => p.id === record.projectId);
   const colour = project?.colour ?? theme.colors.acc;
@@ -65,7 +72,7 @@ export default function Detail() {
   const stops = record.stops ?? [];
 
   const close = () => router.back();
-  const after = async (action: () => Promise<void>) => {
+  const after = async (action: () => Promise<unknown>) => {
     await action();
     close();
   };
@@ -132,8 +139,19 @@ export default function Detail() {
         </View>
       ) : (
         <View style={styles.actions}>
-          {/* A session cannot be finished, only fed — so it does not get a Done. */}
-          {record.kind !== 'session' && (
+          {/* A session cannot be finished, only fed — so where every other kind offers
+              Done, a session offers the timer. Same slot, because feeding it is just as
+              much its primary action as finishing is theirs. */}
+          {record.kind === 'session' ? (
+            <Button
+              label="Start"
+              style={styles.action}
+              onPress={() => {
+                void startTimer(record.id);
+                router.replace({ pathname: '/timer', params: { id: record.id } });
+              }}
+            />
+          ) : (
             <Button
               label={record.state === 'done' ? 'Not done' : 'Done'}
               style={styles.action}

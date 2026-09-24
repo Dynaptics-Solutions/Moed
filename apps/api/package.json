@@ -1,0 +1,23 @@
+{
+  "name": "@moed/api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/index.js --external:@azure/functions",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "start": "pnpm build && func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.7.0",
+    "@moed/ai": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^9",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8"
+  }
+}

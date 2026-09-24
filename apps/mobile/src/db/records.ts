@@ -1,4 +1,10 @@
-import { dayBounds, monthGridBounds, weekBounds } from '@moed/core';
+import {
+  dayBounds,
+  followingOccurrences,
+  monthGridBounds,
+  weekBounds,
+  type Recurrence,
+} from '@moed/core';
 import { and, eq, gte, isNull, lt } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { randomUUID } from 'expo-crypto';
@@ -87,12 +93,100 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
     notes: input.notes ?? null,
     steps: input.steps ?? null,
     stops: input.stops ?? null,
+    /** Made here, so no calendar owns it and none mirrors it yet. */
+    calendarEventId: null,
+    mirroredEventId: null,
     state: 'open' as const,
     slipCount: 0,
+    /** No sitting under way and nothing fed yet — a session starts at zero like the rest. */
+    timerStartedAt: null,
+    timerSeconds: 0,
   };
 
   await db.insert(records).values(row);
   return row;
+}
+
+/** SQLite takes a bounded number of bind variables per statement; 40 rows stays well inside it. */
+const INSERT_CHUNK = 40;
+
+/**
+ * Write out the rest of a recurring record's occurrences.
+ *
+ * MATERIALISED RATHER THAN DERIVED, and it is a decision rather than an obvious call.
+ * Nothing in the planning documents settles it.
+ *
+ * The alternative is generating occurrences on read. It stores less and it is wrong
+ * here: the database is the state in this app, and every screen is a live query over
+ * this table. A derived occurrence has no row, so it cannot be ticked, cannot be moved,
+ * cannot slip into the tray, cannot be found by search, and cannot be counted by a
+ * project — and one of those is the first thing anyone does to an occurrence. Ticking
+ * one would have to write a row at that moment anyway, which is the same decision taken
+ * later and in a worse place.
+ *
+ * So each occurrence is an ordinary record that happens to share a `recurrenceId`. Every
+ * screen already works, and the tray, the close and the capacity bar need no special
+ * case for a kind of record that is only half there.
+ *
+ * NOT YET BUILT: editing a rule after the fact does not rewrite the occurrences already
+ * written. The rule row is shared and the detail sheet reads it back correctly, but the
+ * records themselves stay where they were put. That wants its own decision about what
+ * "change every occurrence" means for ones already moved or ticked, and inventing an
+ * answer here would settle it in the wrong place.
+ */
+export async function createFollowingOccurrences(
+  rule: Recurrence,
+  seed: PlannerRecord,
+  recurrenceId: string,
+): Promise<number> {
+  // A record with no time is not on a day, so there is no series to lay out.
+  if (seed.startAt === null) return 0;
+
+  const seedAt = new Date(seed.startAt);
+  const dates = followingOccurrences(rule, seedAt);
+  if (dates.length === 0) return 0;
+
+  const now = Date.now();
+  const userId = currentUserId();
+
+  const rows = dates.map((date) => {
+    // Each occurrence keeps the seed's time of day. A 7am routine is a 7am routine.
+    const at = new Date(date);
+    at.setHours(seedAt.getHours(), seedAt.getMinutes(), 0, 0);
+
+    return {
+      id: randomUUID(),
+      userId,
+      createdAt: now,
+      updatedAt: now,
+      deletedAt: null,
+      dirty: true,
+      syncedAt: null,
+      kind: seed.kind,
+      title: seed.title,
+      lengthMinutes: seed.lengthMinutes,
+      startAt: at.getTime(),
+      isFixed: seed.isFixed,
+      projectId: seed.projectId,
+      recurrenceId,
+      remindAt: null,
+      notes: seed.notes,
+      steps: seed.steps,
+      stops: seed.stops,
+      calendarEventId: null,
+      mirroredEventId: null,
+      state: 'open' as const,
+      slipCount: 0,
+      timerStartedAt: null,
+      timerSeconds: 0,
+    };
+  });
+
+  for (let i = 0; i < rows.length; i += INSERT_CHUNK) {
+    await db.insert(records).values(rows.slice(i, i + INSERT_CHUNK));
+  }
+
+  return rows.length;
 }
 
 /**
@@ -102,9 +196,9 @@ export async function createRecord(input: NewRecord): Promise<PlannerRecord> {
  * and nothing else on either day shifts. That is the whole behaviour: no cascade, no
  * repacking, no cleverness.
  */
-export async function moveRecord(id: string, toDayStart: number): Promise<void> {
+export async function moveRecord(id: string, toDayStart: number): Promise<number | null> {
   const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
-  if (!row) return;
+  if (!row) return null;
 
   let startAt = toDayStart;
   if (row.startAt !== null) {
@@ -114,6 +208,25 @@ export async function moveRecord(id: string, toDayStart: number): Promise<void> 
     startAt = to.getTime();
   }
 
+  await db
+    .update(records)
+    .set({ startAt, updatedAt: Date.now(), dirty: true })
+    .where(eq(records.id, id));
+
+  // Where it was, so whoever proposed the move can offer one tap back. The gate
+  // proposes and the person accepts, but accepting is still something the app did on
+  // their behalf, and nothing the app does on their behalf is one-way.
+  return row.startAt;
+}
+
+/**
+ * Put a record's time back exactly as it was, including back to no time at all.
+ *
+ * This is the other half of `moveRecord`: it undoes, so it takes the value rather than
+ * a day, and it does not touch the slip count — an undone move never happened, and a
+ * slip it did not cause is not its to record.
+ */
+export async function setStartAt(id: string, startAt: number | null): Promise<void> {
   await db
     .update(records)
     .set({ startAt, updatedAt: Date.now(), dirty: true })
@@ -147,9 +260,9 @@ export async function deleteRecord(id: string): Promise<void> {
  * having slipped three times, rather than quietly rescheduled a fourth — that is what
  * the tray exists to prevent, and the number is a fact rather than a reprimand.
  */
-export async function slipToNextDay(id: string, from: Date): Promise<void> {
+export async function slipToNextDay(id: string, from: Date): Promise<number | null> {
   const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
-  if (!row) return;
+  if (!row) return null;
 
   const to = new Date(from);
   to.setDate(to.getDate() + 1);
@@ -169,6 +282,31 @@ export async function slipToNextDay(id: string, from: Date): Promise<void> {
       dirty: true,
     })
     .where(eq(records.id, id));
+
+  return row.startAt;
+}
+
+/**
+ * Take back a slip: the record's time as it was, and the count down by one.
+ *
+ * The count has to come down with it. A slip that was undone is not a slip, and the
+ * tray's whole worth is that its number is the number of times something has actually
+ * been put off — inflating it by one every time someone changes their mind during a
+ * close would make the one figure the tray exists to show untrustworthy.
+ */
+export async function unslip(id: string, startAt: number | null): Promise<void> {
+  const [row] = await db.select().from(records).where(eq(records.id, id)).limit(1);
+  if (!row) return;
+
+  await db
+    .update(records)
+    .set({
+      startAt,
+      slipCount: Math.max(0, row.slipCount - 1),
+      updatedAt: Date.now(),
+      dirty: true,
+    })
+    .where(eq(records.id, id));
 }
 
 /**
@@ -180,6 +318,23 @@ export async function dropRecord(id: string): Promise<void> {
   await db
     .update(records)
     .set({ state: 'dropped', updatedAt: Date.now(), dirty: true })
+    .where(eq(records.id, id));
+}
+
+/**
+ * Take a record off the day and leave it waiting.
+ *
+ * `state: 'tray'` is what marks something owed with no day attached, so the tray finds
+ * it whatever its date says. The date is left alone deliberately: it is where the
+ * record was, and putting it back should not have to guess.
+ *
+ * No slip is counted. A slip is a day passing with the record still open on it; being
+ * set aside on purpose is a decision, and the tray's count only means the first thing.
+ */
+export async function moveToTray(id: string): Promise<void> {
+  await db
+    .update(records)
+    .set({ state: 'tray', updatedAt: Date.now(), dirty: true })
     .where(eq(records.id, id));
 }
 

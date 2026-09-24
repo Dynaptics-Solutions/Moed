@@ -4,10 +4,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from './Button';
 import { CapacityBar } from './CapacityBar';
+import { useKeyboardInset } from '@/lib/keyboard';
 import { useTheme } from '@/theme';
 
 type FormScaffoldProps = {
-  /** "New task", "New routine" — the small uppercase label in the bar. */
+  /**
+   * "New task", "Edit routine" — the small uppercase label in the bar. It names the
+   * kind *and* which of the two things is happening, because create and edit are the
+   * same screen: a form reached from Edit that still says NEW is telling the plainest
+   * possible lie about what the Save button will do.
+   */
   kindLabel: string;
   /** "Cancel" from capture, "Back" from the type picker. */
   leading: { label: string; onPress: () => void };
@@ -19,10 +25,29 @@ type FormScaffoldProps = {
   titlePlaceholder?: string;
   /**
    * When present, the foot carries the bar and the verdict — does this fit — so the
-   * gate is a confirmation rather than a surprise. The appointment form omits it,
-   * because it draws its own note about what travel would cost.
+   * gate is a confirmation rather than a surprise. Every kind passes it, the
+   * appointment included: fixed time still spends the day, and saying so in the foot
+   * costs nothing next to the note it already draws about travel.
    */
-  budget?: { load: DayLoad; limit: number; adding: number; addingIsFixed?: boolean };
+  budget?: {
+    load: DayLoad;
+    limit: number;
+    adding: number;
+    addingIsFixed?: boolean;
+    /**
+     * The day being described — "Today", "Thursday". The foot has to name it, because
+     * it is the landing day's free time and only sometimes this one's.
+     */
+    dayLabel: string;
+  };
+  /**
+   * Nothing on this form can be changed, because something else owns the record — an
+   * appointment mirrored in from a calendar is edited in the calendar it came from.
+   *
+   * The save control goes rather than being dimmed. A dimmed button says "not yet";
+   * this is "not here", and the two should not look alike.
+   */
+  readOnly?: boolean;
   children: React.ReactNode;
   /** Extra content above the save button, inside the fixed footer. */
   footer?: React.ReactNode;
@@ -42,11 +67,19 @@ export function FormScaffold({
   onTitleChange,
   titlePlaceholder = 'What is it',
   budget,
+  readOnly = false,
   children,
   footer,
 }: FormScaffoldProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const keyboard = useKeyboardInset();
+
+  // The title is edited in place, so the keyboard is up while the foot still has to be
+  // readable: it carries the bar and the verdict, which are the whole reason the gate
+  // is a confirmation rather than a surprise. Shrinking the screen by the keyboard's
+  // inset lets the fields scroll and keeps the foot above the keys.
+  const footRoom = keyboard > 0 ? 0 : insets.bottom;
 
   const decision = budget
     ? gate({
@@ -60,25 +93,50 @@ export function FormScaffold({
 
   const free = budget ? budget.limit - budget.load.committed - budget.load.fixed : 0;
 
+  /**
+   * `save` refuses a record with no title, and used to refuse it in silence: tapping
+   * Save on an untitled form did nothing at all, with no message and nothing to read.
+   * A screen that has to say no says why.
+   *
+   * Here rather than in each form, because the rule lives in one place and the control
+   * that obeys it should too. It matches the capture sheet, whose Save is already dim
+   * until there is something to save.
+   */
+  const canSave = !readOnly && title.trim().length > 0;
+
   return (
     <View
-      style={[styles.screen, { backgroundColor: theme.colors.bg, paddingTop: insets.top + 18 }]}
+      style={[
+        styles.screen,
+        {
+          backgroundColor: theme.colors.bg,
+          paddingTop: insets.top + 18,
+          paddingBottom: keyboard,
+        },
+      ]}
     >
       <View style={styles.bar}>
         <Pressable onPress={leading.onPress} hitSlop={12}>
           <Text style={[theme.type.bodySmall, { color: theme.colors.ink2 }]}>{leading.label}</Text>
         </Pressable>
         <Text style={[theme.type.sectionLabel, { color: theme.colors.taupe }]}>{kindLabel}</Text>
-        <Pressable onPress={onSave} hitSlop={12}>
-          <Text
-            style={[
-              theme.type.bodySmall,
-              { fontFamily: theme.fonts.uiSemiBold, color: theme.colors.acc },
-            ]}
-          >
-            Save
-          </Text>
-        </Pressable>
+        {readOnly ? (
+          <View style={styles.balance} />
+        ) : (
+          <Pressable onPress={canSave ? onSave : undefined} hitSlop={12}>
+            <Text
+              style={[
+                theme.type.bodySmall,
+                {
+                  fontFamily: theme.fonts.uiSemiBold,
+                  color: canSave ? theme.colors.acc : theme.colors.ink3,
+                },
+              ]}
+            >
+              Save
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       {onTitleChange ? (
@@ -105,7 +163,7 @@ export function FormScaffold({
         {children}
       </ScrollView>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 18 }]}>
+      <View style={[styles.footer, { paddingBottom: footRoom + 18 }]}>
         {footer}
         {budget && decision && (
           <>
@@ -116,14 +174,30 @@ export function FormScaffold({
               caption={false}
               height={8}
             />
-            <Text style={[theme.type.meta, styles.verdict, { color: theme.colors.ink3 }]}>
+            {/* The one colour that means past the limit, used at the one moment it
+                means it. Fitting is an ordinary fact and reads as one. */}
+            <Text
+              style={[
+                theme.type.meta,
+                styles.verdict,
+                { color: decision.fits ? theme.colors.ink3 : theme.colors.over },
+              ]}
+            >
               {decision.fits
-                ? `Today has ${formatMinutes(free)} free. This fits.`
-                : `This puts you ${formatMinutes(decision.overBy)} over.`}
+                ? `${budget.dayLabel} has ${formatMinutes(free)} free. This fits.`
+                : budget.dayLabel === 'Today'
+                  ? `This puts you ${formatMinutes(decision.overBy)} over.`
+                  : `This puts ${budget.dayLabel} ${formatMinutes(decision.overBy)} over.`}
             </Text>
           </>
         )}
-        <Button label={saveLabel} style={styles.save} onPress={onSave} />
+        {readOnly ? (
+          <Text style={[theme.type.meta, styles.owned, { color: theme.colors.ink3 }]}>
+            This came from your calendar. It is edited there, and read here.
+          </Text>
+        ) : (
+          <Button label={saveLabel} style={styles.save} onPress={onSave} disabled={!canSave} />
+        )}
       </View>
     </View>
   );
@@ -138,4 +212,6 @@ const styles = StyleSheet.create({
   footer: { flexGrow: 0, flexShrink: 0, gap: 0 },
   verdict: { marginTop: 8 },
   save: { marginTop: 14 },
+  balance: { width: 44 },
+  owned: { marginTop: 16, lineHeight: 17 },
 });

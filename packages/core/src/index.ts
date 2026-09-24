@@ -2,6 +2,16 @@ export { capacity, segmentWidths } from './capacity';
 export type { Capacity, CapacityInput, CapacitySegments } from './capacity';
 export { formatMinutes, minutes, remainingLabel } from './format';
 export type { Unit } from './format';
+export {
+  DEFAULT_WEEK_MONEY_LIMIT_MINOR,
+  formatMoney,
+  money,
+  moneyFromText,
+  normaliseAmountText,
+  weeklyBillsMinor,
+  weeklyShareMinor,
+} from './money';
+export type { BillCadence } from './money';
 export { parseCapture, parsedSummary } from './capture';
 export type { ParsedCapture, ParseOptions } from './capture';
 export { dayLoad } from './load';
@@ -24,13 +34,27 @@ export {
 export {
   describeRecurrence,
   occurrences,
+  followingOccurrences,
   remainingOccurrences,
   recurrenceCost,
   joinWords,
+  RECURRENCE_HORIZON_DAYS,
 } from './recurrence';
 export type { Recurrence, RecurrenceLabels, Frequency, Ends } from './recurrence';
 export { leftovers, daySummary, tomorrowLine, leftoverMeta } from './close';
 export type { Closeable, CloseCounts, DaySummary } from './close';
+export { reconcileCalendar, isImportable, eventLengthMinutes } from './calendar';
+export type { CalendarEvent, MirroredRecord, CalendarPlan } from './calendar';
+export { full } from './full';
+export type { Full, DayRecord } from './full';
+export {
+  EXPORT_FORMAT,
+  EXPORT_VERSION,
+  exportEnvelope,
+  exportSummary,
+  exportFilename,
+} from './export';
+export type { ExportEnvelope, ExportTables } from './export';
 export {
   isEntitled,
   capFor,

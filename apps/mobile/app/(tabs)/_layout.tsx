@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Platform, type ColorValue } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 import { useTheme } from '@/theme';
@@ -11,11 +12,19 @@ import { useTheme } from '@/theme';
  * all hang off Me — a tab bar is a claim about what the product is, and this one says
  * hours first.
  *
- * The bar's height and bottom padding differ by platform, as everything else does:
- * 36 + 26 on iOS, 36 + 14 on Android.
+ * The bar's height and bottom padding differ by platform, as everything else does —
+ * but the padding is the device's to decide, not the design's. Setting `height` and
+ * `paddingBottom` in `tabBarStyle` overrides React Navigation's own safe-area handling
+ * outright (it spreads `tabBarStyle` last), so whatever is written here is final. The
+ * prototype's 14 was not enough for either Android navigation mode: it left the labels
+ * inside the gesture strip, and wholly underneath the bar in three-button mode.
  */
 export default function TabsLayout() {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
+
+  // At least the design's pad, and more when the system needs it.
+  const bottomPad = Math.max(insets.bottom, theme.geometry.nav.minBottomPad);
 
   return (
     <Tabs
@@ -28,9 +37,9 @@ export default function TabsLayout() {
           backgroundColor: theme.colors.card,
           borderTopColor: theme.colors.line,
           borderTopWidth: 1,
-          height: theme.geometry.nav.height + theme.geometry.nav.bottomPad + 18,
+          height: theme.geometry.nav.height + bottomPad + 18,
           paddingTop: 9,
-          paddingBottom: theme.geometry.nav.bottomPad,
+          paddingBottom: bottomPad,
         },
         tabBarLabelStyle: {
           fontFamily: theme.fonts.uiMedium,

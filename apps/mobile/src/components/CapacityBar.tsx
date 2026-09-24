@@ -21,6 +21,16 @@ type CapacityBarProps = {
    */
   composition?: string;
   /**
+   * Overrides the rule-governed right-hand side, and exists for exactly one situation:
+   * a screen that already states what remains somewhere more prominent. Money is titled
+   * "£169 left", so repeating it in the caption underneath would be the same sentence
+   * twice; the caption carries "of £600" instead, which is the fact the title leaves out.
+   *
+   * Not a general escape hatch. What remains is the number this bar is for, and a screen
+   * that hides it has stopped using a capacity bar.
+   */
+  trailing?: string;
+  /**
    * The caption is meant to be there. This exists for the month grid, whose cells hold
    * one load bar per day and no text at all — not as licence to drop it from a screen
    * that has the room.
@@ -48,6 +58,7 @@ export function CapacityBar({
   limit,
   unit = minutes,
   composition,
+  trailing,
   caption = true,
   height,
 }: CapacityBarProps) {
@@ -60,7 +71,7 @@ export function CapacityBar({
 
   const barHeight = height ?? theme.geometry.bar.height;
   const left = composition ?? (c.isEmpty ? 'Nothing planned' : undefined);
-  const right = remainingLabel(c, unit);
+  const right = trailing ?? remainingLabel(c, unit);
 
   const onLayout = (e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width);
 

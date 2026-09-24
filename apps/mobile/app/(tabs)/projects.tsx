@@ -2,12 +2,12 @@ import { canCreate, capNotice, formatMinutes, projectStats, weekBounds } from '@
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 import { usePlan } from '@/db/plan';
 import { useProjectRecords, useProjects } from '@/db/projects';
 import { useTheme } from '@/theme';
+import { useTabScreenInsets } from '@/lib/insets';
 
 /**
  * `projects` — three on the free plan.
@@ -18,7 +18,7 @@ import { useTheme } from '@/theme';
  */
 export default function Projects() {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
 
   const plan = usePlan();
@@ -130,6 +130,28 @@ export default function Projects() {
           <Text style={[theme.type.body, { color: theme.colors.ink3 }]}>
             No projects yet. A project is somewhere to group records that share an end.
           </Text>
+        )}
+
+        {notice === null && (
+          <Pressable
+            onPress={() => router.push('/newproject')}
+            style={[
+              styles.capCard,
+              { borderColor: theme.colors.line, borderRadius: theme.geometry.card.radius },
+            ]}
+          >
+            <Text
+              style={[
+                theme.type.bodySmall,
+                { fontFamily: theme.fonts.uiMedium, color: theme.colors.acc },
+              ]}
+            >
+              New project
+            </Text>
+            <Text style={[theme.type.meta, styles.capSub, { color: theme.colors.ink3 }]}>
+              Three on the free plan
+            </Text>
+          </Pressable>
         )}
 
         {notice !== null && (

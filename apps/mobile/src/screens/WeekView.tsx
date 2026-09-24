@@ -6,17 +6,18 @@ import {
   isWeekend,
   isoWeek,
   mondayIndex,
+  startOfDay,
 } from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SegmentedSwitch, type CalendarScale } from '@/components/SegmentedSwitch';
-import { limitFor, useLimitsByDate } from '@/db/dayLimits';
+import { limitFor, useDefaultDayLimit, useLimitsByDate } from '@/db/dayLimits';
 import { useRangeRecords, weekBounds, type PlannerRecord } from '@/db/records';
 import { WEEKDAY_INITIALS, weekRangeLabel } from '@/lib/day';
 import { useTheme } from '@/theme';
+import { useTabScreenInsets } from '@/lib/insets';
 
 /**
  * `week` — seven columns at real block heights, with the now-line across them.
@@ -35,13 +36,19 @@ const DEFAULT_WINDOW = { from: 8, to: 19 };
 
 export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void }) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const router = useRouter();
 
   const today = useMemo(() => new Date(), []);
+
+  /** Open a day at the day scale. Any day — not always this one. */
+  const openDay = (date: Date) =>
+    router.replace({ pathname: '/', params: { date: String(startOfDay(date).getTime()) } });
+
   const { start, end } = weekBounds(today);
   const { data: records } = useRangeRecords(start, end);
   const limits = useLimitsByDate();
+  const fallback = useDefaultDayLimit();
 
   const days = useMemo(
     () =>
@@ -77,7 +84,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
   const perDay = days.map((date) => {
     const dayRows = rows.filter((r) => r.startAt !== null && isSameDay(new Date(r.startAt), date));
     const load = dayLoad(dayRows);
-    const c = capacity({ ...load, limit: limitFor(limits, date) });
+    const c = capacity({ ...load, limit: limitFor(limits, date, fallback) });
     return { date, rows: dayRows, load, capacity: c };
   });
 
@@ -112,7 +119,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
           return (
             <Pressable
               key={date.toISOString()}
-              onPress={() => router.replace('/')}
+              onPress={() => openDay(date)}
               style={[
                 styles.dayHead,
                 isToday && { backgroundColor: theme.colors.accSoft, borderRadius: 7 },
@@ -242,7 +249,7 @@ export function WeekView({ onScale }: { onScale: (scale: CalendarScale) => void 
 
     return (
       <Pressable
-        onPress={() => router.replace('/')}
+        onPress={() => openDay(start)}
         style={[
           styles.block,
           {

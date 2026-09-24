@@ -1,12 +1,15 @@
 import { dayLoad, formatMinutes, gate, type GateOption } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { CapacityBar } from '@/components/CapacityBar';
 import { Chip } from '@/components/Chip';
 import { Sheet } from '@/components/Sheet';
+import { useDayBudget } from '@/db/budget';
 import { moveRecord } from '@/db/records';
+import { whenDay } from '@/lib/day';
 import { decodeDraft } from '@/lib/draft';
 import { useSaveDraft } from '@/lib/saveDraft';
 import { useTheme } from '@/theme';
@@ -22,16 +25,26 @@ export default function Gate() {
   const theme = useTheme();
   const router = useRouter();
   const params = useLocalSearchParams<{ draft?: string }>();
-  const { commit, load, limit, rows, upcoming } = useSaveDraft();
+  const { commit, today } = useSaveDraft();
 
   const draft = decodeDraft(params.draft);
 
+  // The gate judges the day the record lands on. A draft with no day of its own is
+  // being added to this one.
+  const { date, rows, load, limit, upcoming } = useDayBudget(draft?.startAt ?? today.getTime());
+  const dayLabel = whenDay(date, today);
+
   // Nothing to decide about. Reached by a stale link or a reload; the day is the
-  // honest place to be rather than an empty sheet.
-  if (!draft) {
-    router.replace('/');
-    return null;
-  }
+  // honest place to be rather than an empty sheet. Through an effect, because
+  // navigating during render sets state on the navigator mid-render and React rejects
+  // it — the same fault that made the project screen unreachable.
+  const hasDraft = draft !== null;
+
+  useEffect(() => {
+    if (!hasDraft) router.replace('/');
+  }, [hasDraft, router]);
+
+  if (!draft) return null;
 
   const adding = draft.lengthMinutes ?? 0;
   const decision = gate(
@@ -49,9 +62,15 @@ export default function Gate() {
     }
 
     // Move carries everything: the record keeps its length, reminder and project, and
-    // nothing else on either day shifts.
-    await moveRecord(option.record.id, option.day.date);
-    await commit(draft);
+    // nothing else on either day shifts. Where it was travels to the day with it, so the
+    // undo waiting there reverses the move as well as the addition.
+    const from = await moveRecord(option.record.id, option.day.date);
+    await commit(draft, {
+      id: option.record.id,
+      title: option.record.title,
+      to: option.day.label,
+      from,
+    });
   };
 
   const after = dayLoad([
@@ -65,7 +84,9 @@ export default function Gate() {
         Before you add this
       </Text>
       <Text style={[theme.type.sheetTitle, { color: theme.colors.ink }]}>
-        This puts you {formatMinutes(decision.overBy)} over
+        {dayLabel === 'Today'
+          ? `This puts you ${formatMinutes(decision.overBy)} over`
+          : `This puts ${dayLabel} ${formatMinutes(decision.overBy)} over`}
       </Text>
 
       <CapacityBar

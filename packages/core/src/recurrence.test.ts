@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   describeRecurrence,
+  followingOccurrences,
   joinWords,
   occurrences,
   recurrenceCost,
@@ -209,5 +210,58 @@ describe('joinWords', () => {
     expect(joinWords(['Mon', 'Fri'])).toBe('Mon and Fri');
     expect(joinWords(['Mon', 'Wed', 'Fri'])).toBe('Mon, Wed and Fri');
     expect(joinWords([])).toBe('');
+  });
+});
+
+describe('followingOccurrences', () => {
+  const seed = new Date(2026, 7, 26, 7, 0, 0, 0); // Wednesday 26 August 2026
+
+  it('leaves out the day it starts from, which the record already occupies', () => {
+    const rest = followingOccurrences(
+      { freq: 'daily', interval: 1, ends: 'afterN', endsAfter: 4 },
+      seed,
+    );
+
+    expect(rest).toHaveLength(3);
+    expect(rest.every((d) => d.getTime() > seed.getTime())).toBe(true);
+  });
+
+  it('writes out exactly what the editor promised', () => {
+    // "26 more of these" has to be 26 records, or the sentence is decoration.
+    const rule: Recurrence = {
+      freq: 'weekly',
+      interval: 1,
+      byWeekday: [seed.getDay()],
+      ends: 'afterN',
+      endsAfter: 27,
+    };
+
+    expect(followingOccurrences(rule, seed, 400)).toHaveLength(26);
+  });
+
+  it('stops at the horizon for a rule that never ends', () => {
+    const rest = followingOccurrences({ freq: 'daily', interval: 1, ends: 'never' }, seed, 10);
+
+    expect(rest).toHaveLength(10);
+  });
+
+  it('stops on the end date when one is set', () => {
+    const endsOn = new Date(2026, 8, 9).getTime(); // two weeks later
+    const rest = followingOccurrences(
+      { freq: 'weekly', interval: 1, byWeekday: [seed.getDay()], ends: 'onDate', endsOn },
+      seed,
+    );
+
+    expect(rest).toHaveLength(2);
+  });
+
+  it('gives midnights, and leaves the time of day to the record', () => {
+    const rest = followingOccurrences(
+      { freq: 'daily', interval: 1, ends: 'afterN', endsAfter: 2 },
+      seed,
+    );
+
+    expect(rest[0]?.getHours()).toBe(0);
+    expect(rest[0]?.getMinutes()).toBe(0);
   });
 });

@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Field, Input } from '@/components/Field';
+import { WhenInput } from '@/components/WhenInput';
 import { FormScaffold } from '@/components/FormScaffold';
-import { clockTime } from '@/lib/day';
+import { clockTime, whenDay } from '@/lib/day';
 import { recurrenceLabels } from '@/lib/recurrenceParams';
-import { useKindForm } from '@/lib/useKindForm';
+import { useKindForm, useListField } from '@/lib/useKindForm';
 import { useTheme } from '@/theme';
 
 /**
@@ -23,7 +24,7 @@ import { useTheme } from '@/theme';
 export default function Errand() {
   const theme = useTheme();
   const form = useKindForm('errand', 40);
-  const [stops, setStops] = useState<string[]>([]);
+  const [stops, setStops] = useListField(form.existing?.stops);
   const [draftStop, setDraftStop] = useState('');
 
   const addStop = () => {
@@ -35,13 +36,18 @@ export default function Errand() {
 
   return (
     <FormScaffold
-      kindLabel="New errand"
+      kindLabel={form.isEditing ? 'Edit errand' : 'New errand'}
       leading={{ label: 'Back', onPress: form.back }}
       title={form.title}
       onTitleChange={form.setTitle}
       titlePlaceholder="Saturday run"
       saveLabel="Save errand"
-      budget={{ load: form.load, limit: form.limit, adding: form.lengthMinutes }}
+      budget={{
+        load: form.load,
+        limit: form.limit,
+        adding: form.lengthMinutes,
+        dayLabel: form.dayLabel,
+      }}
       onSave={() =>
         void form.save(
           {
@@ -125,7 +131,11 @@ export default function Errand() {
       <PaidCard />
 
       <Field label="When">
-        <Input value={`Today · ${clockTime(new Date(form.startAt))}`} />
+        <WhenInput
+          at={form.startAt}
+          onChange={form.setStartAt}
+          value={`${whenDay(new Date(form.startAt), form.today)} · ${clockTime(new Date(form.startAt))}`}
+        />
       </Field>
 
       <Input
@@ -137,7 +147,7 @@ export default function Errand() {
 
       <Text style={[theme.type.meta, { color: theme.colors.ink3 }]}>
         One {formatMinutes(form.lengthMinutes)} trip on the day, not{' '}
-        {stops.length > 0 ? stops.length : 'three'} loose tasks.
+        {stops.length > 0 ? stops.length : 'three'} loose {stops.length === 1 ? 'task' : 'tasks'}.
       </Text>
     </FormScaffold>
   );
