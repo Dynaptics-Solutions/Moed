@@ -2,7 +2,14 @@ import { describe, expect, it } from 'vitest';
 
 import { capacity } from './capacity';
 import { remainingLabel } from './format';
-import { formatMoney, money, weeklyBillsMinor, weeklyShareMinor } from './money';
+import {
+  formatMoney,
+  money,
+  moneyFromText,
+  normaliseAmountText,
+  weeklyBillsMinor,
+  weeklyShareMinor,
+} from './money';
 
 describe('formatMoney', () => {
   it('writes no digit it does not mean', () => {
@@ -95,5 +102,73 @@ describe('money as a capacity unit', () => {
   it('reads an untouched week as free rather than left', () => {
     const c = capacity({ committed: 0, fixed: 0, limit: 60_000 });
     expect(remainingLabel(c, money())).toBe('£600 free');
+  });
+});
+
+describe('reading an amount someone typed', () => {
+  it('reads a decimal comma as a decimal point', () => {
+    // The fault this function exists for. Android's `decimal-pad` offers `,` and `.`
+    // side by side; the screens stripped the comma and kept the digits, so a £12.50
+    // lunch typed on the comma key became £1,250 — a hundredfold overcharge, shown
+    // back as "£12,50" and contradicted only by a caption below the fold.
+    expect(moneyFromText('12,50')).toBe(1_250);
+    expect(moneyFromText('12.50')).toBe(1_250);
+    expect(normaliseAmountText('12,50')).toBe('12.50');
+  });
+
+  it('still reads the one comma that groups', () => {
+    // Three digits and then a separator or the end is the shape `formatMoney` writes,
+    // and the only shape a grouping comma ever arrives in — pasted off a statement or
+    // pre-filled, never typed, because the field shows the normalised text back.
+    expect(moneyFromText('1,250')).toBe(125_000);
+    expect(moneyFromText('1,205.65')).toBe(120_565);
+    expect(moneyFromText('1,234,567.89')).toBe(123_456_789);
+  });
+
+  it('normalises a comma the moment it is typed, so grouping never reassembles', () => {
+    // The keystroke path, which is the one that matters: a comma is a point before the
+    // next digit arrives, so "12,5" is already "12.5" and the third digit lands on a
+    // fraction rather than turning the pair into a thousand.
+    expect(normaliseAmountText('12,')).toBe('12.');
+    expect(normaliseAmountText('12,5')).toBe('12.5');
+    expect(normaliseAmountText('12.50')).toBe('12.50');
+  });
+
+  it('keeps a number to one point', () => {
+    // Dropped rather than run together: "12.5.7" is £12.50, and never £12.57.
+    expect(moneyFromText('12.5.7')).toBe(1_250);
+    expect(normaliseAmountText('12.5.7')).toBe('12.5');
+  });
+
+  it('pads a single decimal digit rather than reading it as pence', () => {
+    expect(moneyFromText('12.5')).toBe(1_250);
+    expect(moneyFromText('12.05')).toBe(1_205);
+  });
+
+  it('lets a half-typed amount stay half-typed', () => {
+    // Normalising runs on every keystroke, so it has to survive the states a field
+    // passes through on the way to a number.
+    expect(normaliseAmountText('12.')).toBe('12.');
+    expect(normaliseAmountText('')).toBe('');
+    expect(moneyFromText('')).toBe(0);
+    expect(moneyFromText('.')).toBe(0);
+  });
+
+  it('ignores everything that is not a digit or a point', () => {
+    expect(moneyFromText('£12.50')).toBe(1_250);
+    expect(moneyFromText('12 50')).toBe(125_000);
+  });
+
+  it('reads a currency with no minor unit as whole units', () => {
+    // `formatMoney` already refuses to write "1.00" for yen; reading has to agree.
+    expect(moneyFromText('1250', 'JPY')).toBe(1_250);
+    expect(moneyFromText('12.50', 'JPY')).toBe(12);
+    expect(normaliseAmountText('12.50', 'JPY')).toBe('12');
+  });
+
+  it('round-trips through formatMoney', () => {
+    for (const minor of [0, 5, 125, 1_250, 98_000, 120_565]) {
+      expect(moneyFromText(formatMoney(minor))).toBe(minor);
+    }
   });
 });

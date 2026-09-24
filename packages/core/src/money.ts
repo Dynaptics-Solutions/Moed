@@ -90,6 +90,63 @@ export function formatMoney(minor: number, currency = 'GBP'): string {
 }
 
 /**
+ * What someone typed into an amount field, reduced to what this product can mean by it.
+ *
+ * The inverse of `formatMoney`, and it lives beside it for the same reason that one is
+ * not written through `Intl`: a number this product reads has to be the same number on
+ * every device it runs on. The two money screens were each carrying their own copy of
+ * this, which is how they came to share a bug.
+ *
+ * **A comma is a decimal point, not a thousands separator.** Android's `decimal-pad`
+ * puts `,` and `.` side by side because it cannot know which glyph a locale writes for
+ * the same thing, and it offers no grouping key at all — so a comma arriving from that
+ * keyboard is someone typing a decimal point. The version this replaces stripped it and
+ * kept the digits, which read "12,50" as £1,250: a hundredfold overcharge, typed on a
+ * key the keyboard itself offered, shown back as "£12,50", and contradicted only by a
+ * caption under the fold.
+ *
+ * The one comma that still groups is the one `formatMoney` writes: three digits and then
+ * either another separator or the end, as in "1,205.65". That shape cannot be reached by
+ * typing, because the field shows this function's own answer back — after the first
+ * keystroke the comma is already a point, so a comma with three digits behind it only
+ * ever arrives pasted or pre-filled. It costs a European typing "1,250" for £1.25, which
+ * is three decimal digits of money and nobody's habit.
+ *
+ * The result is text and not a number, because it is what the field should show while
+ * it is still being typed: a trailing point survives, so "12." can become "12.5".
+ */
+export function normaliseAmountText(text: string, currency = 'GBP'): string {
+  const digits = text
+    .replace(/[^0-9.,]/g, '')
+    // Grouping, and only in the shape `formatMoney` writes it.
+    .replace(/,(?=\d{3}(?:[.,]|$))/g, '')
+    .replace(/,/g, '.');
+
+  const point = digits.indexOf('.');
+  if (point === -1) return digits;
+
+  // A currency with no minor unit has nothing after the point to keep.
+  if (ZERO_DECIMAL.has(currency.toUpperCase())) return digits.slice(0, point);
+
+  // A number has one point. Everything from a second one is dropped rather than run
+  // together with the first fraction, so "12.5.7" is £12.50 and never £12.57.
+  const rest = digits.slice(point + 1);
+  const second = rest.indexOf('.');
+  const fraction = (second === -1 ? rest : rest.slice(0, second)).slice(0, 2);
+  return `${digits.slice(0, point)}.${fraction}`;
+}
+
+/** The same text as minor units — pence, cents — which is the only form ever stored. */
+export function moneyFromText(text: string, currency = 'GBP'): number {
+  const normalised = normaliseAmountText(text, currency);
+  const [whole = '', fraction = ''] = normalised.split('.');
+  const pounds = Number(whole === '' ? '0' : whole);
+
+  if (ZERO_DECIMAL.has(currency.toUpperCase())) return pounds;
+  return pounds * 100 + Number(fraction.padEnd(2, '0'));
+}
+
+/**
  * The money unit for the capacity bar.
  *
  * A factory rather than a constant, because unlike minutes a money figure cannot be

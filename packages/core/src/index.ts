@@ -6,6 +6,8 @@ export {
   DEFAULT_WEEK_MONEY_LIMIT_MINOR,
   formatMoney,
   money,
+  moneyFromText,
+  normaliseAmountText,
   weeklyBillsMinor,
   weeklyShareMinor,
 } from './money';

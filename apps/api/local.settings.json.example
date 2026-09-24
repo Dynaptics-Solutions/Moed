@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+
+    "_comment": "Copy this file to local.settings.json and put your real keys there. local.settings.json is gitignored and must stay that way. In Azure these two come from Key Vault references, never from app settings typed by hand.",
+    "OPENAI_API_KEY": "",
+    "ANTHROPIC_API_KEY": ""
+  }
+}

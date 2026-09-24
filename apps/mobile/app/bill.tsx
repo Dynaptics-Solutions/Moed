@@ -1,4 +1,12 @@
-import { capacity, formatMoney, money, remainingLabel, weeklyShareMinor } from '@moed/core';
+import {
+  capacity,
+  formatMoney,
+  money,
+  moneyFromText,
+  normaliseAmountText,
+  remainingLabel,
+  weeklyShareMinor,
+} from '@moed/core';
 import type { BillCadence } from '@moed/core';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -64,7 +72,7 @@ export default function Bill() {
   const every = cadence ?? existing?.cadence ?? 'monthly';
   const dueAt = due ?? existing?.dueAt ?? null;
 
-  const amountMinor = textToMinor(amountText);
+  const amountMinor = moneyFromText(amountText, CURRENCY);
   const share = weeklyShareMinor(amountMinor, every);
 
   // Every other bill, so the foot shows what the week looks like with this one in it
@@ -152,9 +160,11 @@ export default function Bill() {
             ]}
           >
             <Text style={[theme.type.sheetTitle, { color: theme.colors.ink2 }]}>£</Text>
+            {/* As on `spend`: the field shows the figure it will save, so the comma
+                key cannot quietly multiply a bill by a hundred. */}
             <TextInput
               value={amountText}
-              onChangeText={setAmount}
+              onChangeText={(typed) => setAmount(normaliseAmountText(typed, CURRENCY))}
               placeholder="0.00"
               placeholderTextColor={theme.colors.ink3}
               keyboardType="decimal-pad"
@@ -246,19 +256,9 @@ function everyLabel(cadence: BillCadence): string {
 }
 
 /**
- * Pounds and pence, both directions, in minor units throughout.
- *
- * The text is kept as text while it is being typed — parsing on every keystroke is how
- * "1." becomes "1" under the finger and a decimal point stops being typeable.
+ * The other direction, and the field's own convention: ungrouped, so what is read back
+ * into the field is the plain text `normaliseAmountText` would have produced anyway.
  */
-function textToMinor(text: string): number {
-  const cleaned = text.replace(/[^0-9.]/g, '');
-  if (cleaned === '') return 0;
-  const [whole, part = ''] = cleaned.split('.');
-  const pence = `${part}00`.slice(0, 2);
-  return Number(whole || '0') * 100 + Number(pence);
-}
-
 function minorToText(minor: number): string {
   return minor % 100 === 0 ? String(minor / 100) : (minor / 100).toFixed(2);
 }

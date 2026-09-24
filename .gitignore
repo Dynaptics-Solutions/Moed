@@ -41,3 +41,6 @@ yarn-error.*
 # os
 .DS_Store
 Thumbs.db
+
+# Azure Functions local settings — holds real API keys
+local.settings.json

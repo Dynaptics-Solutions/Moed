@@ -1,4 +1,11 @@
-import { capacity, formatMoney, money, remainingLabel } from '@moed/core';
+import {
+  capacity,
+  formatMoney,
+  money,
+  moneyFromText,
+  normaliseAmountText,
+  remainingLabel,
+} from '@moed/core';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -45,7 +52,7 @@ export default function Spend() {
   const [category, setCategory] = useState('Food');
   const [note, setNote] = useState('');
 
-  const pending = textToMinor(amount);
+  const pending = moneyFromText(amount, CURRENCY);
   const committed = (spendRows ?? []).reduce((sum, s) => sum + s.amountMinor, 0);
 
   const after = capacity({ committed, fixed, estimated: pending, limit });
@@ -87,9 +94,12 @@ export default function Spend() {
           <Text style={[theme.type.bigNumber, styles.currency, { color: theme.colors.ink3 }]}>
             £
           </Text>
+          {/* The field shows what will be charged, which means the comma key the
+              decimal-pad offers becomes a point under the finger rather than a
+              hundredfold error under the fold. */}
           <TextInput
             value={amount}
-            onChangeText={setAmount}
+            onChangeText={(typed) => setAmount(normaliseAmountText(typed, CURRENCY))}
             placeholder="0.00"
             placeholderTextColor={theme.colors.ink3}
             keyboardType="decimal-pad"
@@ -168,14 +178,6 @@ export default function Spend() {
       </View>
     </View>
   );
-}
-
-function textToMinor(text: string): number {
-  const cleaned = text.replace(/[^0-9.]/g, '');
-  if (cleaned === '') return 0;
-  const [whole, part = ''] = cleaned.split('.');
-  const pence = `${part}00`.slice(0, 2);
-  return Number(whole || '0') * 100 + Number(pence);
 }
 
 const styles = StyleSheet.create({
